@@ -1,0 +1,116 @@
+.contact-section {
+    width: 100%;
+  }
+  
+  .contact-bg {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(153, 153, 153, 0.2));
+  }
+  
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @media (min-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .contact-image-container {
+    width: 100%;
+  }
+  
+  .contact-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .contact-text-container {
+    padding: 2rem;
+    text-align: justify;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+  
+  .contact-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 3.5rem;
+    letter-spacing: 0.05em;
+  }
+  
+  .contact-divider {
+    width: 100%;
+    height: 0.25rem;
+    background-color: white;
+  }
+  
+  .contact-description {
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  
+  .contact-info {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .contact-info-item {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+  }
+  
+  .contact-icon {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: gray;
+  }
+  
+  .contact-info-text {
+    font-size: 1rem;
+    line-height: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  
+  .contact-social {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .contact-social-list {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+  }
+  
+  .contact-social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.2s;
+    background-color: gray;
+    border-radius: 50%;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  
+  .contact-social-link:hover,
+  .contact-social-link:focus {
+    background-color: #BC890C;
+  }
+  
+  .contact-social-icon {
+    width: 1rem;
+    height: 1rem;
+  }
