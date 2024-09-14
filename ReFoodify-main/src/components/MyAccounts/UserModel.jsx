@@ -64,7 +64,7 @@ export default function UserModel({user}) {
               </DialogTitle>
               <form onSubmit={handleSubmit} className="mt-4">
                 <div className="mb-4 flex justify-center">
-                  <div className="relative">
+                  <div className="relative" >
                     <img
                       src={previewImage}
                       alt="Avatar preview"
