@@ -3,91 +3,53 @@ import { testtimonialsData } from "../../data/testimonials";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import QuoteImg from "@/assets/quote-img.png";
+import './testtimonials.style.css'; // Import the new CSS file
 
 const Testtimonials = () => {
   const [client, setClient] = useState(testtimonialsData[0]);
   const [activeIndex, setActiveIndex] = useState(0);
-  //   const [isLoading, setIsLoading] = useState(true);
-
-  //   useEffect(() => {
-  //     // Simulating image loading delay
-  //     setTimeout(() => {
-  //       setClient(testtimonialsData[activeIndex]);
-  //       setIsLoading(false);
-  //     }, 2000);
-  //   }, []);
 
   const handleClick = (index) => {
     setActiveIndex(index);
   };
 
   return (
-    <>
-      <div className="text-white">
-        <div className="py-16 container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center leading-10 tracking-wider font-bold text-lg">
-            Testimonials
+    <div className="testimonials-container">
+      <p className="testimonials-title">Testimonials</p>
+      <h2 className="testimonials-heading">What our Clients Say</h2>
+      <p className="testimonials-description">See what our satisfied customers have to say about ReFoodify</p>
+      <div className="testimonials-content">
+        <div className="quote-section">
+          <img src={QuoteImg} alt="quote icon" className="quote-icon" />
+          <p className="client-text">{client.text}</p>
+          <p className="client-info">
+            <span className="client-name">{client.name}</span> {client.title}
           </p>
-          <h2 className="mt-3  text-3xl font-bold leading-normal lg:leading-relaxed lg:text-5xl md:text-4xl md:mx-24 text-center lg:mx-36 mb-0">
-            What our Clients Say
-          </h2>
-          <p className="text-pColor my-3 leading-relaxed text-center mx-3 lg:mx-80 md:mx-36">
-            See what our satisfied customers have to say about ReFoodify
-          </p>
-          <div className="md:mt-16 mt-32 flex flex-col gap-0 md:gap-20 items-center justify-center lg:flex-row ">
-            <div className="lg:w-2/5">
-              <div className="flex justify-center lg:justify-start w-full">
+        </div>
+        <div className="client-images">
+          {testtimonialsData.map((client, index) => (
+            <div
+              className={`client-image ${index === activeIndex ? 'active' : 'inactive'}`}
+              key={index}
+              onClick={() => {
+                handleClick(index);
+                setClient(client);
+              }}
+            >
+              {!client.img ? (
+                <Skeleton height={120} width={180} />
+              ) : (
                 <img
-                  src={QuoteImg}
-                  width={200}
-                  height={100}
-                  alt="quote icon"
-                  className="w-24 md:w-36 -mb-16 md:-mb-20 md:-ml-10"
+                  src={client.img}
+                  alt={client.name}
+                  className="client-img"
                 />
-              </div>
-              <p className="text-custom_tertiary mt-20 leading-[34px] md:leading-[46px]   text-lg md:text-2xl  ">
-                {client.text}
-              </p>
-              <p className="text-pColor font-sm mt-6">
-                <span className="text-primary font-medium text-lg">
-                  {client.name}
-                </span>{" "}
-                {client.title}{" "}
-              </p>
+              )}
             </div>
-
-            <div className="flex gap-5 justify-center md:justify-start md:flex-row md:flex-nowrap flex-wrap  mt-10">
-              {testtimonialsData.map((client, index) => (
-                <div
-                  className={
-                    index === activeIndex
-                      ? "active ring-[2px] ring-primary rounded-md scale-105 transition-transform ease-in-out delay-150  duration-300 "
-                      : "opacity-50"
-                  }
-                  key={index}
-                  onClick={() => {
-                    handleClick(index);
-                    setClient(client);
-                  }}
-                >
-                  {!client.img ? (
-                    <Skeleton height={120} width={180} />
-                  ) : (
-                    <img
-                      src={client.img}
-                      alt={client.name}
-                      width={500}
-                      height={300}
-                      className="w-32 h-32 md:w-36 md:h-36 max-h-36 rounded-md cursor-pointer"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

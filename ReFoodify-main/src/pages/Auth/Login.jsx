@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useUser from "@/hooks/useUser";
-import './login.style.css';
+
+import "./login.style.css";
+import { useUser } from "@/hooks/useUser";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,8 +15,10 @@ const Login = () => {
     e.preventDefault();
     setError("");
     const success = await login(email, password);
+    console.log("success:", success);
     if (success) {
-      navigate("/"); // Redirect to dashboard on successful login
+      setError("");
+      navigate("/my-account"); // Redirect to dashboard on successful login
     } else {
       setError("Invalid email or password");
     }
@@ -33,11 +36,15 @@ const Login = () => {
             <Link className="login-link" to={"/login"}>
               Login
             </Link>
-            <Link className="login-link" to={"/register"}>Sign Up</Link>
+            <Link className="login-link" to={"/register"}>
+              Sign Up
+            </Link>
           </div>
           <form onSubmit={handleSubmit} className="login-form">
             <div className="form-group">
-              <label htmlFor="email" className="form-label">Email</label>
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -49,7 +56,9 @@ const Login = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password" className="form-label">Password</label>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
               <input
                 type="password"
                 id="password"
@@ -68,7 +77,10 @@ const Login = () => {
                   type="checkbox"
                   className="form-checkbox"
                 />
-                <label htmlFor="remember-me" className="form-remember-label ml-2">
+                <label
+                  htmlFor="remember-me"
+                  className="form-remember-label ml-2"
+                >
                   Remember me
                 </label>
               </div>
@@ -80,11 +92,7 @@ const Login = () => {
             </div>
             {error && <p className="form-error">{error}</p>}
             <div className="form-submit">
-              <button
-                type="submit"
-                disabled={loading}
-                className="form-button"
-              >
+              <button type="submit" disabled={loading} className="form-button">
                 {loading ? "Logging in..." : "Login"}
               </button>
             </div>
@@ -94,9 +102,7 @@ const Login = () => {
                 <button className="form-social-button facebook">
                   Facebook
                 </button>
-                <button className="form-social-button google">
-                  Google
-                </button>
+                <button className="form-social-button google">Google</button>
               </div>
             </div>
           </form>

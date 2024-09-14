@@ -16,7 +16,7 @@ import {
 } from "@heroicons/react/24/outline";
 import ScrollIndicator from "./ScrollIndicator";
 import log from "@/assets/logo.png";
-import useUser from "@/hooks/useUser";
+import { useUser } from "@/hooks/useUser";
 import useCart from "@/hooks/useCart";
 import PropTypes from "prop-types"; // Add this import
 
@@ -57,7 +57,7 @@ const MobileMenu = memo(function MobileMenu({
   setMobileMenuOpen,
 }) {
   // Added display name
-  const { getCartItemsCount, getCartTotal } = useCart(); // Add this line
+  const { getCartItemsCount } = useCart(); // Add this line
 
   return (
     <>
@@ -71,7 +71,7 @@ const MobileMenu = memo(function MobileMenu({
           <Bars3Icon aria-hidden="true" className="h-6 w-6" />
         </button>
         {user && (
-          <Menu as="div" className="relative inline-block text-left">
+          <Menu as="div" className="relative z-20 inline-block text-left">
             <Menu.Button className="flex items-center gap-2">
               <img
                 src={user?.photo || "default-avatar.png"}
@@ -121,6 +121,7 @@ const MobileMenu = memo(function MobileMenu({
         <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4 lg:flex-1">
+              {/* <img src={log} alt="logo" className="w-8 h-8" /> */}
               <NavLink to="/" className="-m-1.5 p-1.5">
                 <span className="text-[#316251] text-2xl tracking-wider font-bold">
                   ReFoodify
@@ -225,11 +226,10 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
             <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
               {getCartItemsCount()}
             </span>
-           
           </div>
         </NavLink>
         {user ? (
-          <Menu as="div" className="relative inline-block text-left">
+          <Menu as="div" className="relative z-20 inline-block text-left">
             <Menu.Button className="flex items-center gap-2">
               <img
                 src={user?.photo || "default-avatar.png"}

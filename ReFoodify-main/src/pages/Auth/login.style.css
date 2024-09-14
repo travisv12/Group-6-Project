@@ -180,16 +180,16 @@
 
 .login-heading {
     width: 100%;
-    font-size: 3.25rem;
-    line-height: 2.5rem;
+    font-size: 3rem;
+    line-height: 2rem;
     text-align: center;
     color: white;
 }
 
 @media (min-width: 1024px) {
     .login-heading {
-        font-size: 9rem;
-        line-height: 10.5rem;
+        font-size: 4rem;
+        line-height: 6rem;
         text-align: left;
     }
 }

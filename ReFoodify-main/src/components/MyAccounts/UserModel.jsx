@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState, useRef } from 'react'
 

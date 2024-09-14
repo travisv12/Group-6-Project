@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Contact = () => {
   return (
-    <section className="contact-section py-10">
+    <section className="contact-section">
       <div className="contact-bg">
         <div className="contact-grid">
           <div className="contact-image-container">

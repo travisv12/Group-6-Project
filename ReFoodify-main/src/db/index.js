@@ -63,18 +63,18 @@ const generateDummyData = () => {
   const reviews = generateReviews(users, recipes);
 
   // Add a single test user with photo
-  const testUser = {
-    id: 9999,
-    username: "testuser",
-    email: "testuser@example.com",
-    password: "password123",
-    points: 500,
-    photo: faker.image.avatar(),
-    createdAt: new Date("2023-01-01"),
-    updatedAt: new Date("2023-01-01"),
-  };
+  // const testUser = {
+  //   id: 9999,
+  //   username: "testuser",
+  //   email: "testuser@example.com",
+  //   password: "password123",
+  //   points: 500,
+  //   photo: faker.image.avatar(),
+  //   createdAt: new Date("2023-01-01"),
+  //   updatedAt: new Date("2023-01-01"),
+  // };
 
-  users.push(testUser);
+  // users.push(testUser);
 
   return { users, recipes, purchases, reviews };
 };
