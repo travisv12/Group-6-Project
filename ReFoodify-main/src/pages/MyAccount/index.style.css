@@ -1,0 +1,73 @@
+/* General Layout */
+.account-section {
+  /* background-color: rgba(255, 255, 255, 0.3); */
+  padding: 40px 0;
+}
+
+.account-container {
+  max-width: 100%;
+  margin: 0 0;
+  background-color: #295143;
+}
+
+.tab-group {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.2),
+    rgba(153, 153, 153, 0.2)
+  );
+  padding: px 0;
+}
+
+/* Tab List */
+.tab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 0;
+  justify-content: space-evenly;
+}
+
+@media (min-width: 768px) {
+  .tab-list {
+    flex-direction: row;
+  }
+}
+
+.tab-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #f6bb2b;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.tab-button:hover {
+  background-color: #bc8c14;
+  color: white;
+}
+
+.tab-button-selected {
+  background-color: #bc8c14;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Tab Panels */
+.tab-panels {
+  /* margin-top: 6px; */
+  width: 100%;
+  background-image: url("../assets/account_bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.tab-panel {
+  border-radius: 12px;
+  padding: 16px 130px;
+  background-color: transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

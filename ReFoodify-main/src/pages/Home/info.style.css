@@ -1,0 +1,124 @@
+.info-section {
+    width: 100%;
+    margin: 5rem 0;
+  }
+  
+  .info-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @media (min-width: 1024px) {
+    .info-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .info-image-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .info-image {
+    width: 60%;
+    height: auto;
+    border-radius: 0 100% 100% 0;
+  }
+  
+  .info-text-container {
+    width: 100%;
+  }
+  
+  .info-title {
+    color: white;
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .info-title {
+      font-size: 4rem;
+    }
+  }
+  
+  .info-description {
+    color: #FFD775;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+  
+  @media (min-width: 1024px) {
+    .info-description {
+      width: 41.666667%;
+    }
+  }
+  
+  .info-button-container {
+    margin-top: 2rem;
+  }
+  
+  .info-button {
+    padding: 0.75rem 2.5rem;
+    background-color: #FFD775;
+    color: #2F4F4F;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+  }
+  
+  .info-button:hover {
+    background-color: #FFC107;
+  }
+  
+  .info-ready-section {
+    width: 75%;
+    padding: 1rem;
+    margin: 0 auto;
+    margin-top: 2.5rem;
+    border-radius: 1.5rem;
+    background: linear-gradient(to right, rgba(253, 175, 140, 0.8), rgba(151, 104, 84, 0.8));
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    .info-ready-section {
+      width: 41.666667%;
+    }
+  }
+  
+  .info-ready-title {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: black;
+  }
+  
+  .info-ready-subtitle {
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  
+  .info-ready-button-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+  }
+  
+  .info-ready-button {
+    padding: 1rem;
+    background-color: #304013;
+    color: white;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }

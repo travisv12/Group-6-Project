@@ -1,0 +1,92 @@
+/* Container for the page */
+.purchase-history-container {
+  padding: 16px;
+  margin: 0 auto;
+  max-width: 960px;
+  background-color: rgba(255, 255, 255, 0.945);
+}
+
+/* Title styling */
+.purchase-history-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 16px 0;
+  color: black;
+}
+
+.purchase-history-title .title-primary {
+  color: #46a381;
+}
+
+/* Card container for each purchase item */
+.purchase-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 3.3px solid #ccc;
+  padding: 16px 0;
+  align-items: center;
+}
+
+.purchase-card-horizontal {
+  flex-direction: row;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+/* Image styling */
+.purchase-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.purchase-image-large {
+  width: 150px;
+  height: 150px;
+}
+
+.purchase-details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+}
+
+.purchase-details-left {
+  text-align: left;
+}
+
+/* Buttons and Price styling */
+.purchase-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.purchase-buttons-between {
+  justify-content: space-between;
+}
+
+.purchase-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.button-check-order {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+  background-color: #f6bb2b;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-check-order:hover {
+  background-color: #bc8c14;
+}

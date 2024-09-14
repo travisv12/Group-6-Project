@@ -1,0 +1,50 @@
+.brands-container {
+    background: linear-gradient(to right, #A5D157, #8BB148);
+  }
+  
+  .brands-section {
+    padding: 3rem 0;
+  }
+  
+  .brands-content {
+    padding: 0 1rem;
+    margin: 0 auto;
+    max-width: 112rem;
+  }
+  
+  .brands-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #4A5568;
+    margin-bottom: 4rem;
+  }
+  
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    align-items: center;
+  }
+  
+  @media (min-width: 640px) {
+    .brands-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .brands-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .brand-logo-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .brand-logo {
+    height: 2.5rem;
+    object-fit: contain;
+  }
