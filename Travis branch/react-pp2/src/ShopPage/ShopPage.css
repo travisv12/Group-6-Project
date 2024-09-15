@@ -1,0 +1,365 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+body {
+  background-color: #295143;
+  font-family: "Outfit", sans-serif;
+  color: var(--clr-grey-1);
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+
+/* NavBar part */
+.navbar {
+  background-color: #316251;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Roboto", sans-serif;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-logo {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.8);
+  transition: font-weight 0.3s ease;
+  padding-left: 50px;
+  transition: transform 0.3s ease;
+}
+.navbar-logo:hover {
+  transform: scale(1.05);
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+  padding-right: 50px;
+}
+
+.navbar-link {
+  color: white;
+  font-size: 1.1rem;
+  text-decoration: none;
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.8);
+  transition: color 0.3s ease;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.navbar-link:hover {
+  color: #e0e0e0;
+}
+
+.navbar-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.navbar-link:hover::after {
+  width: 80%;
+  left: 10%;
+}
+.profile-image {
+  width: 40px;
+  height: 40px;
+  margin-left: -15px;
+  transition: transform 0.3s ease;
+}
+.profile-image:hover {
+  transform: scale(1.1);
+}
+.cart-image {
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+}
+.cart-image:hover {
+  transform: scale(1.1);
+}
+/* NavBar part */
+
+/* SaveFood section */
+.save-food-container {
+  font-family: "Roboto", sans-serif;
+  background-size: cover;
+  background-position: center;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4rem;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.8);
+}
+
+.save-food-box {
+  background-color: rgba(255, 255, 255, 0.88);
+  padding: -1rem 2rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.8);
+  margin-top: -5rem;
+}
+
+.save-food-header-1 {
+  color: #295143;
+  font-size: 2.5rem;
+  margin-bottom: -1.5rem;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.save-food-header-2 {
+  color: #d49700;
+  font-size: 2rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+/* SaveFood section */
+
+/* Filter section */
+.filter-container {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.2)
+  );
+  padding: 1.5rem 0;
+  margin-top: 3rem;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.8);
+}
+
+.filter-content {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filter-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.filter-image {
+  width: 30px;
+  height: auto;
+  margin-left: 0.6rem;
+  transition: transform 0.3s ease;
+}
+
+.filter-image:hover {
+  transform: scale(1.1);
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.filter-button {
+  background-color: #dda924;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.7);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #bd8d1e;
+  transform: scale(1.05);
+}
+/* Filter section */
+
+/* Product section */
+.product-box {
+  background-color: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.9);
+  max-width: 90%;
+  padding: 1.5rem;
+  margin: 0.5rem;
+}
+
+.product-image {
+  max-width: 50%;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.product-name {
+  color: #295143;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  margin-top: -0.2rem;
+  font-weight: 700;
+}
+
+.product-price {
+  color: #295143;
+  font-weight: bold;
+  margin-top: -0.5rem;
+  font-size: 1.2rem;
+  font-family: "Roboto", sans-serif;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1.2rem;
+}
+
+.quantity-button {
+  background-color: #a5d157;
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 100px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+}
+.quantity-button2 {
+  background-color: #a5d157;
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 100px;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+}
+
+.add-button {
+  background-color: #fdaf8c;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.quantity-display {
+  margin: 0 1rem;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.add-button {
+  width: 50%;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+}
+.products-section {
+  padding: 2rem 0;
+}
+
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.product-box {
+  width: calc(16.66% - 1rem);
+  margin-right: 2rem;
+  margin-left: 2rem;
+  margin-bottom: 2rem;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 1200px) {
+  .product-box {
+    width: calc(20% - 1rem);
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .product-box {
+    width: calc(25% - 1rem);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .product-box {
+    width: calc(33.333% - 1rem);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .product-box {
+    width: calc(50% - 1rem);
+  }
+}
+/* Product section */
+
+/* Footer section*/
+.footer {
+  background-color: #4c6c61;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  color: white;
+  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.6);
+}
+
+.footer-content {
+  display: flex;
+  max-width: 85%;
+  width: 100%;
+}
+
+.footer-column {
+  flex: 1;
+}
+
+.footer-column:last-child {
+  flex: 2;
+}
+
+.footer-column h3,
+.footer-column h4 {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.footer-column a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+}
+
+.newsletter input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+/* Footer section*/
