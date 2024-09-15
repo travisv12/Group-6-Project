@@ -4,6 +4,7 @@ import './register.style.css';
 
 const Register = () => {
 
+  const [username, setUsername] = useState(""); // Username State
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -30,12 +31,25 @@ const Register = () => {
         <div className="register-form-container">
           <h2 className="register-title">Welcome</h2>
           <div className="register-links">
-            <Link className="register-link" to={"/login"}>
-              Login
-            </Link>
+            <Link className="register-link" to={"/login"}>Login</Link>
             <Link className="register-link" to={"/register"}>Sign Up</Link>
           </div>
           <form onSubmit={handleSubmit} className="register-form">
+            {/* Username Input */}
+            <div className="form-group">
+              <label htmlFor="username" className="form-label">Username</label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
+                className="form-input"
+                required
+              />
+            </div>
+
+            {/* Email Input */}
             <div className="form-group">
               <label htmlFor="email" className="form-label">Email</label>
               <input
@@ -48,6 +62,8 @@ const Register = () => {
                 required
               />
             </div>
+
+            {/* Password Inputs */}
             <div className="form-group">
               <label htmlFor="password" className="form-label">Password</label>
               <input
@@ -72,15 +88,15 @@ const Register = () => {
                 required
               />
             </div>
+
             {error && <p className="form-error">{error}</p>}
+
             <div className="form-submit">
-              <button
-                type="submit"
-                className="form-button"
-              >
+              <button type="submit" className="form-button">
                 Create account
               </button>
             </div>
+
             <div className="form-social">
               <p className="form-social-text">Or login with</p>
               <div className="form-social-buttons">
