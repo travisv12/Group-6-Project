@@ -1,4 +1,4 @@
-.brands-container {
+/* .brands-container {
     background: linear-gradient(to right, #A5D157, #8BB148);
   }
   
@@ -47,4 +47,38 @@
   .brand-logo {
     height: 2.5rem;
     object-fit: contain;
-  }
+  } */
+
+.collaboration-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+}
+
+.collaboration-text {
+  width: 100%;
+  text-align: left;
+  color: white;
+}
+
+.collaboration-box {
+  background-color: #8bb148;
+  width: 85%;
+  padding: 2rem;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.8);
+}
+
+.collaboration-images {
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+}
+
+.collaboration-images img {
+  max-width: 100px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}

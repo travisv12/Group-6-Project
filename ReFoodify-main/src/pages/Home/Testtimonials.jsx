@@ -3,7 +3,7 @@ import { testtimonialsData } from "../../data/testimonials";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import QuoteImg from "@/assets/quote-img.png";
-import './testtimonials.style.css'; // Import the new CSS file
+import "./testtimonials.style.css"; // Import the new CSS file
 
 const Testtimonials = () => {
   const [client, setClient] = useState(testtimonialsData[0]);
@@ -17,7 +17,9 @@ const Testtimonials = () => {
     <div className="testimonials-container">
       <p className="testimonials-title">Testimonials</p>
       <h2 className="testimonials-heading">What our Clients Say</h2>
-      <p className="testimonials-description">See what our satisfied customers have to say about ReFoodify</p>
+      <p className="testimonials-description">
+        See what our satisfied customers have to say about ReFoodify
+      </p>
       <div className="testimonials-content">
         <div className="quote-section">
           <img src={QuoteImg} alt="quote icon" className="quote-icon" />
@@ -29,7 +31,9 @@ const Testtimonials = () => {
         <div className="client-images">
           {testtimonialsData.map((client, index) => (
             <div
-              className={`client-image ${index === activeIndex ? 'active' : 'inactive'}`}
+              className={`client-image ${
+                index === activeIndex ? "active" : "inactive"
+              }`}
               key={index}
               onClick={() => {
                 handleClick(index);
@@ -37,7 +41,7 @@ const Testtimonials = () => {
               }}
             >
               {!client.img ? (
-                <Skeleton height={120} width={180} />
+                <Skeleton height={120} width={200} />
               ) : (
                 <img
                   src={client.img}
