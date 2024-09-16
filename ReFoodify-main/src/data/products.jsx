@@ -89,7 +89,7 @@ export const shopData = [
         icon: "activity",
       },
     ],
-    price: "$5.49",
+    price: "$3.49",
     image: kotimaistaGround,
     company: "Farm Fresh",
   },
@@ -109,7 +109,7 @@ export const shopData = [
         icon: "shieldCheck",
       },
     ],
-    price: "$3.99",
+    price: "$1.99",
     image: kotimaistaSkimmed,
     company: "Farm Fresh",
   },
@@ -129,7 +129,7 @@ export const shopData = [
         icon: "bone",
       },
     ],
-    price: "$4.29",
+    price: "$2.29",
     image: onion,
     company: "Nutty Delights", // Added company name
   },
@@ -149,7 +149,7 @@ export const shopData = [
         icon: "leaf",
       },
     ],
-    price: "$8.99",
+    price: "$3.99",
     image: rainbowRiisipiirakka,
     company: "Green Eats", // Added company name
   },
@@ -191,7 +191,7 @@ export const shopData = [
     ],
     price: "$3.59",
     image: valioArkiCheeseSlice,
-    company: "Crispy Greens", // Added company name
+    company: "Crispy Greens", 
   },
   {
     id: "8",
@@ -211,6 +211,6 @@ export const shopData = [
     ],
     price: "$2.99",
     image: xtraEggs,
-    company: "Cocoa Haven", // Added company name
+    company: "Cocoa Haven", 
   },
 ];
