@@ -15,10 +15,12 @@ import {
   InboxIcon,
 } from "@heroicons/react/24/outline";
 import ScrollIndicator from "./ScrollIndicator";
+
 import log from "@/assets/logo.png";
 import { useUser } from "@/hooks/useUser";
+
 import useCart from "@/hooks/useCart";
-import PropTypes from "prop-types"; // Add this import
+import PropTypes from "prop-types";
 
 const navLinks = [
   { path: "/", title: "Home", icon: <HomeIcon className="w-6 h-6" /> },

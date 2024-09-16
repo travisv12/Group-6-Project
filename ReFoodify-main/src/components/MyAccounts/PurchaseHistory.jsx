@@ -23,7 +23,7 @@ const PurchaseHistory = () => {
             <div className="purchase-details purchase-details-left">
               <div className="text-center md:text-left">
                 <p className="text-lg font-bold text-black">
-                  K-Supermarket Iso Omena
+                  K-Supermarket Is Omena
                 </p>
                 <p>19.02.2024</p>
               </div>
@@ -42,7 +42,7 @@ const PurchaseHistory = () => {
             <div className="purchase-details purchase-details-left">
               <div className="text-center md:text-left">
                 <p className="text-lg font-bold text-black">
-                  K-Supermarket Iso Omena
+                  K-Supermarket Is Omena
                 </p>
                 <p>19.02.2024</p>
               </div>
@@ -61,7 +61,7 @@ const PurchaseHistory = () => {
             <div className="purchase-details purchase-details-left">
               <div className="text-center md:text-left">
                 <p className="text-lg font-bold text-black">
-                  K-Supermarket Iso Omena
+                  K-Supermarket Is Omena
                 </p>
                 <p>19.02.2024</p>
               </div>
