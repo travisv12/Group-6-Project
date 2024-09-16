@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable react/display-name */
 import { useEffect, useState, useCallback, memo } from "react";
 import { useLocation, NavLink } from "react-router-dom";
-import { Dialog, DialogPanel, PopoverGroup } from "@headlessui/react";
+import { Dialog, PopoverGroup } from "@headlessui/react";
 import { Menu } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -15,39 +14,19 @@ import {
   InboxIcon,
 } from "@heroicons/react/24/outline";
 import ScrollIndicator from "./ScrollIndicator";
-import log from "@/assets/logo.png";
+
 import { useUser } from "@/hooks/useUser";
 import useCart from "@/hooks/useCart";
-import PropTypes from "prop-types"; // Add this import
+import PropTypes from "prop-types";
 import avatar from "./avatar.jpg";
 
 const navLinks = [
-  { path: "/", title: "Home", icon: <HomeIcon className="w-6 h-6" /> },
-  {
-    path: "/shop",
-    title: "Shop",
-    icon: <ShoppingBagIcon className="w-6 h-6" />,
-  },
-  {
-    path: "/about",
-    title: "About",
-    icon: <InformationCircleIcon className="w-6 h-6" />,
-  },
-  {
-    path: "/vision",
-    title: "Vision",
-    icon: <InformationCircleIcon className="w-6 h-6" />,
-  },
-  {
-    path: "/recipes",
-    title: "Recipes",
-    icon: <ShoppingBagIcon className="w-6 h-6" />,
-  },
-  {
-    path: "/contact",
-    title: "Contact",
-    icon: <InboxIcon className="w-6 h-6" />,
-  },
+  { path: "/", title: "Home", icon: <HomeIcon className="w-6 h-6" aria-hidden="true" /> },
+  { path: "/shop", title: "Shop", icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" /> },
+  { path: "/about", title: "About", icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" /> },
+  { path: "/vision", title: "Vision", icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" /> },
+  { path: "/recipes", title: "Recipes", icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" /> },
+  { path: "/contact", title: "Contact", icon: <InboxIcon className="w-6 h-6" aria-hidden="true" /> },
 ];
 
 const MobileMenu = memo(function MobileMenu({
@@ -57,8 +36,7 @@ const MobileMenu = memo(function MobileMenu({
   mobileMenuOpen,
   setMobileMenuOpen,
 }) {
-  // Added display name
-  const { getCartItemsCount } = useCart(); // Add this line
+  const { getCartItemsCount } = useCart();
 
   return (
     <>
@@ -115,20 +93,17 @@ const MobileMenu = memo(function MobileMenu({
       </div>
       <Dialog
         open={mobileMenuOpen}
-        onClose={setMobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
         className="lg:hidden"
       >
         <div className="fixed inset-0 z-10" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 lg:flex-1">
-              {/* <img src={log} alt="logo" className="w-8 h-8" /> */}
-              <NavLink to="/" className="-m-1.5 p-1.5">
-                <span className="text-[#316251] text-2xl tracking-wider font-bold">
-                  ReFoodify
-                </span>
-              </NavLink>
-            </div>
+            <NavLink to="/" className="-m-1.5 p-1.5">
+              <span className="text-[#316251] text-2xl tracking-wider font-bold">
+                ReFoodify
+              </span>
+            </NavLink>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
@@ -159,7 +134,7 @@ const MobileMenu = memo(function MobileMenu({
               <div className="py-6">
                 <NavLink
                   to="/cart"
-                  className="-mx-3 flex rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 items-center justify-between"
+                  className="flex items-center justify-between -mx-3 rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   <div className="flex items-center gap-2">
                     <ShoppingCartIcon className="h-6 w-6 text-white" />
@@ -176,7 +151,7 @@ const MobileMenu = memo(function MobileMenu({
                 <div className="py-6">
                   <NavLink
                     to="/login"
-                    className="-mx-3 flex rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 items-center gap-2"
+                    className="flex items-center gap-2 -mx-3 rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     <ArrowLeftOnRectangleIcon className="w-6 h-6" />
                     <span>Log in</span>
@@ -185,15 +160,19 @@ const MobileMenu = memo(function MobileMenu({
               )}
             </div>
           </div>
-        </DialogPanel>
+        </Dialog.Panel>
       </Dialog>
     </>
   );
 });
 
+MobileMenu.displayName = "MobileMenu";
+
 MobileMenu.propTypes = {
-  // Add prop types validation
-  user: PropTypes.object,
+  user: PropTypes.shape({
+    username: PropTypes.string,
+    photo: PropTypes.string,
+  }),
   isActive: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   mobileMenuOpen: PropTypes.bool.isRequired,
@@ -202,6 +181,7 @@ MobileMenu.propTypes = {
 
 const DesktopMenu = memo(({ user, isActive, logout }) => {
   const { getCartItemsCount } = useCart();
+
   return (
     <>
       <PopoverGroup className="hidden lg:flex lg:gap-x-12">
@@ -217,18 +197,19 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
           </NavLink>
         ))}
       </PopoverGroup>
-      <div className="hidden lg:flex lg:flex-1 items-center gap-4 lg:justify-end">
+      <div className="hidden lg:flex lg:gap-x-12">
         <NavLink
           to="/cart"
-          className="text-sm font-semibold leading-6 text-gray-900"
+          className="flex items-center gap-2 font-regular leading-6 text-white drop-shadow-md text-lg hover:text-gray-200 no-underline transition-colors duration-300 ease-in-out px-1 py-1.5 relative"
         >
-          <ShoppingCartIcon className="h-6 w-6 text-white" />
-          <div className="flex items-center gap-2">
-            <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
-              {getCartItemsCount()}
-            </span>
-          </div>
+          <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+          <span>Cart</span>
+          <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
+            {getCartItemsCount()}
+          </span>
         </NavLink>
+      </div>
+      <div className="hidden lg:flex lg:gap-x-12">
         {user ? (
           <Menu as="div" className="relative z-20 inline-block text-left">
             <Menu.Button className="flex items-center gap-2">
@@ -237,11 +218,7 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
                 alt={user?.username}
                 className="w-8 h-8 rounded-full"
               />
-              {/* <span>{`${user?.username
-                ?.charAt(0)
-                // eslint-disable-next-line react/prop-types
-                .toUpperCase()}${user?.username?.slice(1)}`}</span> */}
-              <span className="text-white font-bold">Test user</span>
+              <span className="text-white font-bold">{user.username}</span>
             </Menu.Button>
             <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div className="px-1 py-1">
@@ -287,6 +264,17 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
   );
 });
 
+DesktopMenu.displayName = "DesktopMenu";
+
+DesktopMenu.propTypes = {
+  user: PropTypes.shape({
+    username: PropTypes.string,
+    photo: PropTypes.string,
+  }),
+  isActive: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
@@ -310,7 +298,7 @@ export default function Header() {
   );
 
   return (
-    <header className={`bg-[#316251] drop-shadow-md `}>
+    <header className={`bg-[#316251] drop-shadow-md`}>
       {isSticky && <ScrollIndicator />}
 
       <nav
@@ -318,7 +306,6 @@ export default function Header() {
         className="mx-auto flex max-w-[105rem] items-center justify-between p-6 lg:px-8"
       >
         <div className="flex items-center gap-4 lg:flex-1 lg:justify-start">
-          {/* <img src={log} alt="logo" className="w-8 h-8" /> */}
           <NavLink to="/" className="-m-1.5 p-1.5">
             <span className="text-white text-2xl tracking-wider font-bold drop-shadow-md hover:text-[1.6rem] transition-all duration-300 ease-in-out">
               ReFoodify

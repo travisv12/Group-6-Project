@@ -20,11 +20,15 @@ import {
   IconReceipt,
 } from "@tabler/icons-react";
 
-import avacadoImage from "@/assets/avacado.png";
-import blueberriesImage from "@/assets/blueberries.png";
-import wheatBreadImage from "@/assets/wheat-bread.png";
-import almondMilkImage from "@/assets/almond-milk.png";
-import quinoaSaladImage from "@/assets/quinoa-salad.png";
+
+import chiquitaBanana from "@/assets/chiquita-banana.png";
+import kotimaistaGround from "@/assets/kotimaista-ground.png";
+import kotimaistaSkimmed from "@/assets/kotimaista-skimmed.png";
+import onion from "@/assets/onion.png";
+import rainbowRiisipiirakka from "@/assets/rainbow-riisipiirakka.png";
+import royalGalaApple from "@/assets/royal-gala-apple.png";
+import valioArkiCheeseSlice from "@/assets/valio-arki-cheese-slice.png";
+import xtraEggs from "@/assets/xtra-eggs.png";
 
 export const icons = {
   check: IconCheck,
@@ -51,7 +55,7 @@ export const icons = {
 export const shopData = [
   {
     id: "1",
-    name: "Organic Avocado",
+    name: "Chiquita Banana",
     discount: "Up to 20% off",
     rating: 4.8,
     reviews: 153,
@@ -66,12 +70,12 @@ export const shopData = [
       },
     ],
     price: "$2.99",
-    image: avacadoImage,
+    image: chiquitaBanana,
     company: "Farm Fresh",
   },
   {
     id: "2",
-    name: "Fresh Blueberries",
+    name: "Kotimaista Ground Meat 20% 400g",
     discount: "Up to 15% off",
     rating: 4.7,
     reviews: 89,
@@ -85,13 +89,13 @@ export const shopData = [
         icon: "activity",
       },
     ],
-    price: "$5.49",
-    image: blueberriesImage,
+    price: "$3.49",
+    image: kotimaistaGround,
     company: "Farm Fresh",
   },
   {
     id: "3",
-    name: "Whole Wheat Bread",
+    name: "Kotimaista Skimmed Milk 1L",
     discount: "Up to 10% off",
     rating: 4.5,
     reviews: 234,
@@ -105,13 +109,13 @@ export const shopData = [
         icon: "shieldCheck",
       },
     ],
-    price: "$3.99",
-    image: wheatBreadImage,
+    price: "$1.99",
+    image: kotimaistaSkimmed,
     company: "Farm Fresh",
   },
   {
     id: "4",
-    name: "Almond Milk",
+    name: "Onion",
     discount: "Up to 25% off",
     rating: 4.9,
     reviews: 320,
@@ -125,13 +129,13 @@ export const shopData = [
         icon: "bone",
       },
     ],
-    price: "$4.29",
-    image: almondMilkImage,
+    price: "$2.29",
+    image: onion,
     company: "Nutty Delights", // Added company name
   },
   {
     id: "5",
-    name: "Quinoa Salad",
+    name: "Rainbow Riisipiirakka 65g",
     discount: "Up to 30% off",
     rating: 4.6,
     reviews: 187,
@@ -145,13 +149,13 @@ export const shopData = [
         icon: "leaf",
       },
     ],
-    price: "$8.99",
-    image: quinoaSaladImage,
+    price: "$3.99",
+    image: rainbowRiisipiirakka,
     company: "Green Eats", // Added company name
   },
   {
     id: "6",
-    name: "Greek Yogurt",
+    name: "Royal Gala Apple",
     discount: "Up to 20% off",
     rating: 4.8,
     reviews: 411,
@@ -166,19 +170,19 @@ export const shopData = [
       },
     ],
     price: "$1.49",
-    image: "https://via.placeholder.com/150x150?text=Greek+Yogurt",
+    image: royalGalaApple,
     company: "Dairy Delight", // Added company name
   },
   {
     id: "7",
-    name: "Kale Chips",
+    name: "Valio Arki Cheese Slice 500g",
     discount: "Up to 15% off",
     rating: 4.3,
     reviews: 75,
     features: [
       {
         text: "Healthy Snack",
-        icon: "heart", 
+        icon: "heart",
       },
       {
         text: "No Artificial Flavors",
@@ -186,12 +190,12 @@ export const shopData = [
       },
     ],
     price: "$3.59",
-    image: "https://via.placeholder.com/150x150?text=Kale+Chips",
-    company: "Crispy Greens", // Added company name
+    image: valioArkiCheeseSlice,
+    company: "Crispy Greens", 
   },
   {
     id: "8",
-    name: "Dark Chocolate",
+    name: "Xtra Eggs M15 855g",
     discount: "Up to 40% off",
     rating: 4.9,
     reviews: 289,
@@ -206,47 +210,7 @@ export const shopData = [
       },
     ],
     price: "$2.99",
-    image: "https://via.placeholder.com/150x150?text=Dark+Chocolate",
-    company: "Cocoa Haven", // Added company name
-  },
-  {
-    id: "9",
-    name: "Sushi Platter",
-    discount: "Up to 35% off",
-    rating: 4.7,
-    reviews: 124,
-    features: [
-      {
-        text: "Freshly Made",
-        icon: "textWrap",
-      },
-      {
-        text: "Contains Fish",
-        icon: "fish",
-      },
-    ],
-    price: "$12.99",
-    image: "https://via.placeholder.com/150x150?text=Sushi+Platter",
-    company: "Ocean Fresh", // Added company name
-  },
-  {
-    id: "10",
-    name: "Spaghetti Bolognese",
-    discount: "Up to 10% off",
-    rating: 4.6,
-    reviews: 158,
-    features: [
-      {
-        text: "Authentic Recipe",
-        icon: "receipt",
-      },
-      {
-        text: "Gluten-Free Pasta Option",
-        icon: "leaf",
-      },
-    ],
-    price: "$9.99",
-    image: "https://via.placeholder.com/150x150?text=Spaghetti+Bolognese",
-    company: "Pasta Paradise", // Added company name
+    image: xtraEggs,
+    company: "Cocoa Haven", 
   },
 ];
