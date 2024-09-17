@@ -1,77 +1,48 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import poached_eggs from "@/assets/poached_eggs.png"; // Fallback image
-
-import "./myRecipes.style.css";
+import { useEffect, useState } from 'react';
+import RecipeGenerator from './RecipeGenerator';
 
 const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);
-  const navigate = useNavigate();
 
-  // Load recipes from localStorage on component mount
   useEffect(() => {
-    const storedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
-    setRecipes(storedRecipes);
+    fetch('/api/recipes')
+      .then(response => response.json())
+      .then(data => setRecipes(data));
   }, []);
 
-  // Handle edit button click, navigate to update page with recipe ID in the URL
-  const handleEdit = (id) => {
-    navigate(`/recipes/update/${id}`);
-  };
-
-  // Handle delete recipe
-  const handleDelete = (id) => {
-    const updatedRecipes = recipes.filter((recipe) => recipe.id !== id);
-    setRecipes(updatedRecipes);
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`/api/recipes/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setRecipes(recipes.filter(recipe => recipe.id !== id));
+      } else {
+        console.error('Failed to delete recipe');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
-    <div className="recipes-container-unique">
-      <div className="recipes-wrapper-unique p-4 md:p-10">
-        <h1 className="recipes-title-unique">
-          My <span className="title-highlight-unique">Recipes</span>
-        </h1>
+    <div className="my-recipes-container">
+      <h1 className="my-recipes-title">My Recipes</h1>
 
-        {recipes.length === 0 ? (
-          <p className="recipes-no-data-unique">No recipes found.</p>
-        ) : (
-          <div className="recipe-list-unique">
-            {recipes.map((recipe) => (
-              <div
-                key={recipe.id}
-                className="recipe-card-unique recipe-card-horizontal-unique"
-              >
-                <img
-                  src={recipe.image || poached_eggs} // Use stored image or fallback image
-                  alt={recipe.recipeName}
-                  className="recipe-image-unique recipe-image-large-unique"
-                />
-                <div className="recipe-details-unique recipe-details-left-unique">
-                  <div className="recipe-name-unique">{recipe.recipeName}</div>
-                  <div className="recipe-date-unique">
-                    {recipe.createdAt || "Unknown Date"}
-                  </div>
-                  <div className="recipe-buttons-unique">
-                    <button
-                      className="button-edit-unique"
-                      onClick={() => handleEdit(recipe.id)}
-                    >
-                      Edit Recipe
-                    </button>
-                    <button
-                      className="button-delete-unique"
-                      onClick={() => handleDelete(recipe.id)}
-                    >
-                      Delete Recipe
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Display the list of recipes */}
+      <ul className="recipe-list">
+        {recipes.map(recipe => (
+          <li key={recipe.id} className="recipe-item">
+            <div className="recipe-title">{recipe.title}</div>
+            <button onClick={() => handleDelete(recipe.id)} className="delete-recipe-button">
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Add Recipe Generator */}
+      <RecipeGenerator />
     </div>
   );
 };

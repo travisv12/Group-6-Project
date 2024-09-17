@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import './register.style.css';
 
 const Register = () => {
-  const [username, setUsername] = useState(""); 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,15 +17,33 @@ const Register = () => {
       setError("Passwords do not match");
       return;
     }
-    // For now, just navigate to the home page
-    navigate("/");
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        navigate("/login"); 
+      } else {
+        const data = await response.json();
+        setError(data.message || "Registration failed");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+    }
   };
 
   return (
-    <section
-      className="register-section"
-      style={{ backgroundImage: "url('/images/auth/auth.png')" }}
-    >
+    <section className="register-section" style={{ backgroundImage: "url('/images/auth/auth.png')" }}>
       <div className="register-grid">
         <div className="register-form-container">
           <h2 className="register-title">Welcome</h2>
@@ -34,7 +52,6 @@ const Register = () => {
             <Link className="register-link" to={"/register"}>Sign Up</Link>
           </div>
           <form onSubmit={handleSubmit} className="register-form">
-            {/* Username Input */}
             <div className="form-group">
               <label htmlFor="username" className="form-label">Username</label>
               <input
@@ -47,8 +64,6 @@ const Register = () => {
                 required
               />
             </div>
-
-            {/* Email Input */}
             <div className="form-group">
               <label htmlFor="email" className="form-label">Email</label>
               <input
@@ -61,8 +76,6 @@ const Register = () => {
                 required
               />
             </div>
-
-            {/* Password Inputs */}
             <div className="form-group">
               <label htmlFor="password" className="form-label">Password</label>
               <input
@@ -91,28 +104,18 @@ const Register = () => {
             {error && <p className="form-error">{error}</p>}
 
             <div className="form-submit">
-              <button type="submit" className="form-button">
-                Create account
-              </button>
+              <button type="submit" className="form-button">Create account</button>
             </div>
-
             <div className="form-social">
               <p className="form-social-text">Or login with</p>
               <div className="form-social-buttons">
-                <button className="form-social-button facebook">
-                  Facebook
-                </button>
-                <button className="form-social-button google">
-                  Google
-                </button>
+                <button className="form-social-button facebook">Facebook</button>
+                <button className="form-social-button google">Google</button>
               </div>
             </div>
           </form>
         </div>
-
-        <h1 className="register-heading">
-          Reduce Food Wastage for Sustainable Living
-        </h1>
+        <h1 className="register-heading">Reduce Food Wastage for Sustainable Living</h1>
       </div>
     </section>
   );
