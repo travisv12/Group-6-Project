@@ -12,14 +12,15 @@ const Info = () => {
         <div className="points-box">
           <div className="points-header">
             <h2>
-              GENERATE RECIPE FROM YOUR INGREDIENTS AND SHARE YOUR RECIPE WITH
-              US
+              GENERATE RECIPE FROM YOUR INGREDIENTS <br />
+              AND SHARE YOUR RECIPE WITH US
             </h2>
           </div>
           <div className="points-text">
             <p>
               Discover mouthwatering recipes that are delicious help you reduce
-              food waste. Submit your recipe to win amazing rewards.
+              food waste. <br />
+              Submit your recipe to win amazing rewards.
             </p>
           </div>
           <div className="points-button-container">

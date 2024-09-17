@@ -4,6 +4,7 @@ import Info from "./Info";
 import Footer from "@/components/Footer";
 import Testtimonials from "./Testtimonials";
 import CallToAction from "./CallToAction";
+import Started from "./Started";
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
       <Brands />
       <CallToAction />
       <Info />
+      <Started />
       <Testtimonials />
       <Footer />
     </>
