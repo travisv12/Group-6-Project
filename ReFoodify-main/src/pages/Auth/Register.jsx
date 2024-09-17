@@ -12,7 +12,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Reset error state
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -95,7 +96,7 @@ const Register = () => {
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="Re-enter your password"
                 className="form-input"
                 required
               />
