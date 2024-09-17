@@ -1,24 +1,26 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useState, useRef, useEffect } from 'react'
+import PropTypes from 'prop-types';
+import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { useState, useRef, useEffect } from 'react';
 
-export default function UserModel({ user }) {
+const UserModel = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
-    username: user?.username || '',
-    email: user?.email || '',
+    username: '',
+    email: '',
   });
-  const [previewImage, setPreviewImage] = useState(user?.avatarUrl || '/avatars/avatar.jpg');
+  const [previewImage, setPreviewImage] = useState('/avatars/avatar.jpg');
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    // Fetch user data from API
-    fetch("/api/get-user-profile")
-      .then(response => response.json())
-      .then(data => {
-        setFormData({ username: data.username, email: data.email });
-        setPreviewImage(data.avatarUrl || '/avatars/avatar.jpg');
+    // Initialize form data from user prop
+    if (user) {
+      setFormData({
+        username: user.username || '',
+        email: user.email || '',
       });
-  }, []);
+      setPreviewImage(user.avatarUrl || '/avatars/avatar.jpg');
+    }
+  }, [user]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -123,3 +125,14 @@ export default function UserModel({ user }) {
     </>
   );
 }
+
+// Add PropTypes validation
+UserModel.propTypes = {
+  user: PropTypes.shape({
+    username: PropTypes.string,
+    email: PropTypes.string,
+    avatarUrl: PropTypes.string,
+  }).isRequired,
+};
+
+export default UserModel;
