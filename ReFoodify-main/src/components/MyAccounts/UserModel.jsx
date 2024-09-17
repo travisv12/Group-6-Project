@@ -1,63 +1,56 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
-
-export default function UserModel({user}) {
-  let [isOpen, setIsOpen] = useState(false)
+export default function UserModel({ user }) {
+  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     username: user?.username || '',
     email: user?.email || '',
-  })
-  const [previewImage, setPreviewImage] = useState(user?.avatarUrl || '/avatars/avatar.jpg')
-  const fileInputRef = useRef(null)
+  });
+  const [previewImage, setPreviewImage] = useState(user?.avatarUrl || '/avatars/avatar.jpg');
+  const fileInputRef = useRef(null);
 
-  function open() {
-    setIsOpen(true)
-  }
-
-  function close() {
-    setIsOpen(false)
-  }
-
-  function handleChange(e) {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
-
-  function handleImageChange(e) {
-    const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setPreviewImage(reader.result)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
+  useEffect(() => {
+    // Fetch user data from API
+    fetch("/api/get-user-profile")
+      .then(response => response.json())
+      .then(data => {
+        setFormData({ username: data.username, email: data.email });
+        setPreviewImage(data.avatarUrl || '/avatars/avatar.jpg');
+      });
+  }, []);
 
   function handleSubmit(e) {
-    e.preventDefault()
-    // TODO: Implement API call to update user data
-    console.log('Submitting:', formData)
-    console.log('New avatar:', fileInputRef.current.files[0])
-    close()
+    e.preventDefault();
+    const formDataToSend = new FormData();
+    formDataToSend.append('username', formData.username);
+    formDataToSend.append('email', formData.email);
+    if (fileInputRef.current.files[0]) {
+      formDataToSend.append('avatar', fileInputRef.current.files[0]);
+    }
+
+    fetch("/api/update-profile", {
+      method: "POST",
+      body: formDataToSend,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Profile updated:", data);
+        setIsOpen(false); // Close the modal
+      })
+      .catch(error => console.error("Error updating profile:", error));
   }
 
   return (
     <>
-      <Button
-        onClick={open}
-        className="rounded-md bg-black/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
-      >
+      <Button onClick={() => setIsOpen(true)} className="rounded-md bg-black/20 py-2 px-4 text-sm font-medium text-white">
         Edit Profile
       </Button>
 
-      <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={close}>
+      <Dialog open={isOpen} as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4">
-            <DialogPanel
-              transition
-              className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl"
-            >
+            <DialogPanel className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
               <DialogTitle as="h3" className="text-lg font-medium text-gray-900">
                 Edit Profile
               </DialogTitle>
@@ -82,48 +75,44 @@ export default function UserModel({user}) {
                     <input
                       type="file"
                       ref={fileInputRef}
-                      onChange={handleImageChange}
+                      onChange={e => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => setPreviewImage(reader.result);
+                          reader.readAsDataURL(file);
+                        }
+                      }}
                       className="hidden"
-                      accept="image/*"
                     />
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                  <label className="block mb-1 text-sm font-semibold text-gray-700" htmlFor="username">Username</label>
                   <input
                     type="text"
-                    name="username"
                     id="username"
                     value={formData.username}
-                    onChange={handleChange}
-                    className="mt-1 block p-3 w-full rounded-md border border-green-500 shadow-sm focus:border-green-500 focus:ring-green-500"
+                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none"
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                  <label className="block mb-1 text-sm font-semibold text-gray-700" htmlFor="email">Email</label>
                   <input
                     type="email"
-                    name="email"
                     id="email"
                     value={formData.email}
-                    onChange={handleChange}
-                    className="mt-1 block p-3 border w-full rounded-md border-green-500 shadow-sm focus:border-green-500 focus:ring-green-500"
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none"
                   />
                 </div>
-            
-                <div className="mt-4 flex justify-end">
-                  <Button
-                    type="button"
-                    className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none"
-                    onClick={close}
-                  >
+                <div className="flex justify-end space-x-2">
+                  <Button onClick={() => setIsOpen(false)} className="px-4 py-2 text-sm bg-gray-200 rounded-md">
                     Cancel
                   </Button>
-                  <Button
-                    type="submit"
-                    className="inline-flex justify-center rounded-md border bg-[#BC890C] px-4 py-2 text-sm font-medium text-white hover:bg-[#A67A0B]"
-                  >
-                    Save Changes
+                  <Button type="submit" className="px-4 py-2 text-sm bg-blue-500 text-white rounded-md">
+                    Save
                   </Button>
                 </div>
               </form>
@@ -132,5 +121,5 @@ export default function UserModel({user}) {
         </div>
       </Dialog>
     </>
-  )
+  );
 }
