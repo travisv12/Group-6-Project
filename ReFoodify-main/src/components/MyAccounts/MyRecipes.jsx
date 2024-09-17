@@ -10,8 +10,13 @@ const MyRecipes = () => {
 
   // Load recipes from localStorage on component mount
   useEffect(() => {
-    const storedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
-    setRecipes(storedRecipes);
+    try {
+      const storedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
+      setRecipes(storedRecipes);
+    } catch (error) {
+      console.error("Failed to load recipes:", error);
+      setRecipes([]);
+    }
   }, []);
 
   // Handle edit button click, navigate to update page with recipe ID in the URL
@@ -19,11 +24,23 @@ const MyRecipes = () => {
     navigate(`/recipes/update/${id}`);
   };
 
-  // Handle delete recipe
+
   const handleDelete = (id) => {
-    const updatedRecipes = recipes.filter((recipe) => recipe.id !== id);
-    setRecipes(updatedRecipes);
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
+    
+    const recipeToDelete = recipes.find((recipe) => recipe.id === id);
+    
+    if (recipeToDelete) {
+ 
+      console.log(`Deleted recipe: "${recipeToDelete.recipeName}"`);
+      
+      const updatedRecipes = recipes.filter((recipe) => recipe.id !== id);
+      
+     
+      setRecipes(updatedRecipes);
+      localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
+    } else {
+      console.log(`Recipe with ID: ${id} not found.`);
+    }
   };
 
   return (
@@ -43,9 +60,13 @@ const MyRecipes = () => {
                 className="recipe-card-unique recipe-card-horizontal-unique"
               >
                 <img
-                  src={recipe.image || poached_eggs} // Use stored image or fallback image
-                  alt={recipe.recipeName}
+                  src={recipe.image || poached_eggs} 
+                  alt={recipe.recipeName || "Recipe image"}
                   className="recipe-image-unique recipe-image-large-unique"
+                  onError={(e) => {
+                    e.target.onerror = null; 
+                    e.target.src = poached_eggs; 
+                  }}
                 />
                 <div className="recipe-details-unique recipe-details-left-unique">
                   <div className="recipe-name-unique">{recipe.recipeName}</div>
