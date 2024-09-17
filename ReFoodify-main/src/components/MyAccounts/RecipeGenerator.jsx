@@ -2,8 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import './recipeGenerator.style.css';
 
-const RecipeGenerator = ({ initialIngredients = [] }) => {
-  // Initialize state with provided ingredients
+const RecipeGenerator = ({ initialIngredients = [], onRecipeGenerate }) => {
   const [ingredients, setIngredients] = useState(
     initialIngredients.map(ingredient => ({ name: ingredient, amount: '', selected: false }))
   );
@@ -30,8 +29,9 @@ const RecipeGenerator = ({ initialIngredients = [] }) => {
 
   const handleGenerateRecipe = () => {
     const selectedIngredients = ingredients.filter(ingredient => ingredient.selected);
-    console.log('Selected Ingredients:', selectedIngredients);
-    // Logic to generate recipe based on selectedIngredients
+    if (onRecipeGenerate) {
+      onRecipeGenerate(selectedIngredients);
+    }
   };
 
   return (
@@ -64,6 +64,7 @@ const RecipeGenerator = ({ initialIngredients = [] }) => {
 
 RecipeGenerator.propTypes = {
   initialIngredients: PropTypes.arrayOf(PropTypes.string),
+  onRecipeGenerate: PropTypes.func,
 };
 
 export default RecipeGenerator;
