@@ -2,18 +2,34 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './register.style.css';
 
+
+const formFields = [
+  { id: "username", label: "Username", type: "text", placeholder: "Enter your username" },
+  { id: "email", label: "Email", type: "email", placeholder: "Enter your email" },
+  { id: "password", label: "Password", type: "password", placeholder: "Enter your password" },
+  { id: "confirmPassword", label: "Re-enter Password", type: "password", placeholder: "Re-enter your password" },
+];
+
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (password !== confirmPassword) {
+
+    if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
@@ -25,14 +41,14 @@ const Register = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username,
-          email,
-          password,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
         }),
       });
 
       if (response.ok) {
-        navigate("/login"); 
+        navigate("/login");
       } else {
         const data = await response.json();
         setError(data.message || "Registration failed");
@@ -48,61 +64,25 @@ const Register = () => {
         <div className="register-form-container">
           <h2 className="register-title">Welcome</h2>
           <div className="register-links">
-            <Link className="register-link" to={"/login"}>Login</Link>
-            <Link className="register-link" to={"/register"}>Sign Up</Link>
+            <Link className="register-link" to="/login">Login</Link>
+            <Link className="register-link" to="/register">Sign Up</Link>
           </div>
           <form onSubmit={handleSubmit} className="register-form">
-            <div className="form-group">
-              <label htmlFor="username" className="form-label">Username</label>
-              <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email" className="form-label">Email</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">Password</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="confirmPassword" className="form-label">Re-enter Password</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="form-input"
-                required
-              />
-            </div>
-
+            {formFields.map(({ id, label, type, placeholder }) => (
+              <div key={id} className="form-group">
+                <label htmlFor={id} className="form-label">{label}</label>
+                <input
+                  type={type}
+                  id={id}
+                  value={formData[id]}
+                  onChange={handleChange}
+                  placeholder={placeholder}
+                  className="form-input"
+                  required
+                />
+              </div>
+            ))}
             {error && <p className="form-error">{error}</p>}
-
             <div className="form-submit">
               <button type="submit" className="form-button">Create account</button>
             </div>

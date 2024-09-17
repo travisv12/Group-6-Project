@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
-import { v4 as uuidv4 } from "uuid"; // Import uuid
+import { v4 as uuidv4 } from "uuid";
 import recipeBg from "@/assets/recipe-detail-bg.png";
 import "./createRecipe.style.css";
 
-// Available Ingredients (Mock data)
-const availableIngredients = [
+const availableIngredients = () => [
   "Fish",
   "Carrot",
   "Beetroot",
@@ -33,23 +32,20 @@ const CreateRecipe = () => {
     duration: "",
     servings: "",
     image: "",
-    ingredients: [], // Ingredients will now include an amount
+    ingredients: [],
     instructions: "",
   });
 
   const [recipes, setRecipes] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
-  const [filteredIngredients, setFilteredIngredients] =
-    useState(availableIngredients); // Filtered ingredients list
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredIngredients, setFilteredIngredients] = useState(availableIngredients());
 
-  // Load data from localStorage when the component mounts
   useEffect(() => {
     const savedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
-    setRecipes(savedRecipes); // Load all recipes from localStorage
+    setRecipes(savedRecipes);
   }, []);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -58,20 +54,18 @@ const CreateRecipe = () => {
     }));
   };
 
-  // Handle adding ingredient
   const handleAddIngredient = (ingredient) => {
     if (!formData.ingredients.find((ing) => ing.name === ingredient)) {
       setFormData((prevData) => ({
         ...prevData,
         ingredients: [
           ...prevData.ingredients,
-          { name: ingredient, amount: "" }, // Add ingredient with an empty amount
+          { name: ingredient, amount: "" },
         ],
       }));
     }
   };
 
-  // Handle removing ingredient
   const handleRemoveIngredient = (ingredientName) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -81,7 +75,6 @@ const CreateRecipe = () => {
     }));
   };
 
-  // Handle changing the amount of an ingredient
   const handleAmountChange = (e, ingredientName) => {
     const { value } = e.target;
     setFormData((prevData) => ({
@@ -92,23 +85,21 @@ const CreateRecipe = () => {
     }));
   };
 
-  // Handle file selection
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result); // Show preview of image
+        setImagePreview(reader.result);
         setFormData((prevData) => ({
           ...prevData,
-          image: reader.result, // Store image as base64
+          image: reader.result,
         }));
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // Handle removing image
   const handleDeleteImage = () => {
     setImagePreview(null);
     setFormData((prevData) => ({
@@ -117,19 +108,17 @@ const CreateRecipe = () => {
     }));
   };
 
-  // Save or update the recipe
   const handleSubmit = () => {
     const newRecipe = {
       ...formData,
-      id: uuidv4(), // Generate a unique ID using uuid
-      createdAt: new Date().toLocaleString(), // Date and time of recipe creation
+      id: uuidv4(),
+      createdAt: new Date().toLocaleString(),
     };
 
-    const updatedRecipes = [...recipes, newRecipe]; // Add the new recipe to the list of recipes
+    const updatedRecipes = [...recipes, newRecipe];
     setRecipes(updatedRecipes);
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes)); // Save to localStorage
+    localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
 
-    // Reset form and image preview
     setFormData({
       recipeName: "",
       duration: "",
@@ -142,18 +131,19 @@ const CreateRecipe = () => {
     console.log("Recipe saved to localStorage", updatedRecipes);
   };
 
-  // Delete a recipe
   const handleDeleteRecipe = (index) => {
+    const recipeToDelete = recipes[index];
     const updatedRecipes = recipes.filter((_, i) => i !== index);
     setRecipes(updatedRecipes);
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes)); // Update localStorage
+    localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
+
+    console.log(`Recipe "${recipeToDelete.recipeName}" has been deleted.`);
   };
 
-  // Handle ingredient search input change
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-    const filtered = availableIngredients.filter((ingredient) =>
+    const filtered = availableIngredients().filter((ingredient) =>
       ingredient.toLowerCase().includes(term)
     );
     setFilteredIngredients(filtered);
@@ -187,7 +177,7 @@ const CreateRecipe = () => {
       >
         <div className="content-container">
           <div className="create-form-container">
-            {/* form */}
+            {/* Form */}
             <div className="create-form-group">
               <label className="form-label">Recipe name:</label>
               <input
@@ -254,8 +244,8 @@ const CreateRecipe = () => {
                     type="text"
                     className="search-input"
                     placeholder="write what you have here..."
-                    value={searchTerm} // Search term from state
-                    onChange={handleSearchChange} // Handle search input
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                   />
                   <IconSearch />
                 </div>
@@ -321,43 +311,8 @@ const CreateRecipe = () => {
             {/* POST button */}
             <div className="btn-submit-container">
               <button className="btn-submit" onClick={handleSubmit}>
-                POST
+                Save Recipe
               </button>
-            </div>
-
-            {/* Saved Recipes */}
-            <div className="saved-recipes">
-              <h2 className="saved-recipes-title">Saved Recipes:</h2>
-              {recipes.length === 0 && <p>No recipes saved yet.</p>}
-              <ul className="saved-recipes-list">
-                {recipes.map((recipe, index) => (
-                  <li key={index} className="recipe-item">
-                    <div className="recipe-card">
-                      <h3 className="recipe-name">{recipe.recipeName}</h3>
-                      <p>Recipe ID: {recipe.id}</p>
-                      <p>Created At: {recipe.createdAt}</p>
-                      <p>Duration: {recipe.duration} minutes</p>
-                      <p>Servings: {recipe.servings}</p>
-                      <p>Instructions: {recipe.instructions}</p>
-                      {recipe.image && (
-                        <img
-                          src={recipe.image}
-                          alt={recipe.recipeName}
-                          className="recipe-image"
-                        />
-                      )}
-                      <div className="btn-delete-container">
-                        <button
-                          className="btn-delete-recipe"
-                          onClick={() => handleDeleteRecipe(index)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
         </div>

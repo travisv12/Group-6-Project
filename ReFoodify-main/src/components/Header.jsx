@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+ 
 import { useEffect, useState, useCallback, memo } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import { Dialog, PopoverGroup } from "@headlessui/react";
