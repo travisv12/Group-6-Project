@@ -1,15 +1,43 @@
-
-.generate-button {
+.recipe-generator {
+    margin: 20px;
+  }
+  
+  .recipe-generator h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .ingredient-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .ingredient-item input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .ingredient-item label {
+    margin-right: 10px;
+  }
+  
+  .ingredient-item input[type="text"] {
+    margin-left: 10px;
+    width: 100px;
+  }
+  
+  button {
+    margin-top: 20px;
     padding: 10px 20px;
-    background-color: #007bff;
+    font-size: 1rem;
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
   }
   
-  .generate-button:hover {
-    background-color: #0056b3;
+  button:hover {
+    background-color: #45a049;
   }
   

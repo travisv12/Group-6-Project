@@ -1,67 +1,69 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import './recipeGenerator.style.css';
 
-const RecipeGenerator = () => {
-  // Initial list of ingredients
-  const [ingredients, setIngredients] = useState([
-    { name: 'Beetroot', amount: '' },
-    { name: 'Chicken', amount: '' },
-    { name: 'Tomato', amount: '' },
-    { name: 'Potato', amount: '' },
-    { name: 'Paprika', amount: '' },
-    { name: 'Garlic', amount: '' },
-    { name: 'Eggs', amount: '' },
-    { name: 'Vinegar', amount: '' }
-  ]);
+const RecipeGenerator = ({ initialIngredients = [] }) => {
+  // Initialize state with provided ingredients
+  const [ingredients, setIngredients] = useState(
+    initialIngredients.map(ingredient => ({ name: ingredient, amount: '', selected: false }))
+  );
 
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
-
-  // Handle selection of an ingredient
-  const handleIngredientSelect = (ingredient) => {
-    // Check if the ingredient is already selected
-    const alreadySelected = selectedIngredients.some(
-      (selected) => selected.name === ingredient.name
+  const handleCheckboxChange = (name) => {
+    setIngredients(prevIngredients =>
+      prevIngredients.map(ingredient =>
+        ingredient.name === name
+          ? { ...ingredient, selected: !ingredient.selected }
+          : ingredient
+      )
     );
-
-    if (!alreadySelected) {
-      // Add to selectedIngredients
-      setSelectedIngredients([...selectedIngredients, ingredient]);
-      console.log('Ingredient Selected:', ingredient); // Log the selected ingredient
-    }
   };
 
-  // Handle the amount change
-  const handleAmountChange = (index, amount) => {
-    const newIngredients = [...ingredients];
-    newIngredients[index].amount = amount;
-    setIngredients(newIngredients);
+  const handleAmountChange = (name, value) => {
+    setIngredients(prevIngredients =>
+      prevIngredients.map(ingredient =>
+        ingredient.name === name
+          ? { ...ingredient, amount: value }
+          : ingredient
+      )
+    );
   };
 
   const handleGenerateRecipe = () => {
+    const selectedIngredients = ingredients.filter(ingredient => ingredient.selected);
     console.log('Selected Ingredients:', selectedIngredients);
+    // Logic to generate recipe based on selectedIngredients
   };
 
   return (
-    <div>
+    <div className="recipe-generator">
       <h3>Select Ingredients:</h3>
       <ul>
-        {ingredients.map((ingredient, index) => (
-          <li key={ingredient.name}>
-            <button onClick={() => handleIngredientSelect(ingredient)}>
-              Add {ingredient.name}
-            </button>
+        {ingredients.map(ingredient => (
+          <li key={ingredient.name} className="ingredient-item">
             <input
-              type="text"
-              placeholder="Amount"
-              value={ingredient.amount}
-              onChange={(e) => handleAmountChange(index, e.target.value)}
+              type="checkbox"
+              checked={ingredient.selected}
+              onChange={() => handleCheckboxChange(ingredient.name)}
             />
+            <label>{ingredient.name}</label>
+            {ingredient.selected && (
+              <input
+                type="text"
+                placeholder="Amount"
+                value={ingredient.amount}
+                onChange={(e) => handleAmountChange(ingredient.name, e.target.value)}
+              />
+            )}
           </li>
         ))}
       </ul>
       <button onClick={handleGenerateRecipe}>Generate Recipe</button>
     </div>
   );
+};
+
+RecipeGenerator.propTypes = {
+  initialIngredients: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default RecipeGenerator;
