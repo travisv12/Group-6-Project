@@ -1,27 +1,45 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { login, signup, logout } from "../../redux/slices/userSlice";
 
 import "./login.style.css";
-import { useUser } from "@/hooks/useUser";
+// import { useUser } from "@/hooks/useUser";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { login, loading } = useUser();
+  // const [error, setError] = useState("");
+  // const { login, loading } = useUser();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const user = useSelector((state) => state.user.user);
+  const accessToken = useSelector((state) => state.user.accessToken);
+  // const user = useSelector((state) => state.user.user);
+  const loading = useSelector((state) => state.user.loading);
+  const error = useSelector((state) => state.user.error);
 
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  // e.preventDefault();
+  // setError("");
+  // const handleLogin = (email, password) => {
+  // dispatch(login({ email, password }));
+  // };
+  // const success = await login(email, password);
+  // console.log("success:", success);
+  // if (success) {
+  //   setError("");
+  //   navigate("/my-account"); // Redirect to dashboard on successful login
+  // } else {
+  //   setError("Invalid email or password");
+  // }
+  // };
+
+  const handleLogin = (email, password) => {
     e.preventDefault();
     setError("");
-    const success = await login(email, password);
-    console.log("success:", success);
-    if (success) {
-      setError("");
-      navigate("/my-account"); // Redirect to dashboard on successful login
-    } else {
-      setError("Invalid email or password");
-    }
+    dispatch(login({ email, password }));
+    console.log("success:", user.accessToken);
   };
 
   return (
@@ -40,7 +58,7 @@ const Login = () => {
               Sign Up
             </Link>
           </div>
-          <form onSubmit={handleSubmit} className="login-form">
+          <form onSubmit={handleLogin} className="login-form">
             <div className="form-group">
               <label htmlFor="email" className="form-label">
                 Email

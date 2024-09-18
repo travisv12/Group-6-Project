@@ -15,18 +15,42 @@ import {
 } from "@heroicons/react/24/outline";
 import ScrollIndicator from "./ScrollIndicator";
 
-import { useUser } from "@/hooks/useUser";
+// import { useUser } from "@/hooks/useUser";
 import useCart from "@/hooks/useCart";
 import PropTypes from "prop-types";
 import avatar from "./avatar.jpg";
 
 const navLinks = [
-  { path: "/", title: "Home", icon: <HomeIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/shop", title: "Shop", icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/about", title: "About", icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/vision", title: "Vision", icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/recipes", title: "Recipes", icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/contact", title: "Contact", icon: <InboxIcon className="w-6 h-6" aria-hidden="true" /> },
+  {
+    path: "/",
+    title: "Home",
+    icon: <HomeIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/shop",
+    title: "Shop",
+    icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/about",
+    title: "About",
+    icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/vision",
+    title: "Vision",
+    icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/recipes",
+    title: "Recipes",
+    icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/contact",
+    title: "Contact",
+    icon: <InboxIcon className="w-6 h-6" aria-hidden="true" />,
+  },
 ];
 
 const MobileMenu = memo(function MobileMenu({
@@ -35,7 +59,8 @@ const MobileMenu = memo(function MobileMenu({
   logout,
   mobileMenuOpen,
   setMobileMenuOpen,
-}) {
+})
+ {
   const { getCartItemsCount } = useCart();
 
   return (
@@ -278,7 +303,7 @@ DesktopMenu.propTypes = {
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
-  const { user, logout } = useUser();
+  // const { user, logout } = useUser();
   const location = useLocation();
 
   useEffect(() => {
@@ -314,13 +339,13 @@ export default function Header() {
         </div>
 
         <MobileMenu
-          user={user}
+          // user={user}
           isActive={isActive}
-          logout={logout}
+          // logout={logout}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
         />
-        <DesktopMenu user={user} isActive={isActive} logout={logout} />
+        {/* <DesktopMenu user={user} isActive={isActive} logout={logout} /> */}
       </nav>
     </header>
   );
