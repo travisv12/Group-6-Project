@@ -1,4 +1,4 @@
-/* Header and Go Back Section */
+
 .header-section {
   background-color: #295143;
   padding: 20px 0;
@@ -50,7 +50,6 @@
   font-size: 1.25rem;
 }
 
-/* Background Section */
 .background-section {
   position: relative;
   padding-bottom: 20px;
@@ -293,5 +292,16 @@
   color: white;
   padding: 10px 20px;
   border-radius: 10px;
+  cursor: pointer;
+}
+
+
+.btn-generate-recipe {
+  background-color: #f6bb2b;
+  color: white;
+  padding: 10px 30px;
+  border-radius: 10px;
+  font-weight: bold;
+  border: none;
   cursor: pointer;
 }
