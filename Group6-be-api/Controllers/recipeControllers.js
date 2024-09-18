@@ -1,36 +1,19 @@
 
-const Recipe = require("../Models/recipe");
+const {
+  createRecipe,
+  updateRecipe,
+  getRecipeById,
+  getUserRecipes,
+  filterRecipes,
+} = require("../Services/recipeService");
 
-const filterRecipes = async (req, res) => {
+
+// Handler for filtering recipes by ingredients
+const filterRecipesController = async (req, res) => {
   const { ingredients } = req.body;
 
   try {
-    const recipes = await Recipe.aggregate([
-      {
-        $addFields: {
-          matchingIngredientsCount: {
-            $size: {
-              $filter: {
-                input: "$ingredients",
-                as: "ingredient",
-                cond: { $in: ["$$ingredient.name", ingredients] },
-              },
-            },
-          },
-        },
-      },
-      {
-        $match: {
-          matchingIngredientsCount: { $gt: 0 },
-        },
-      },
-      {
-        $sort: {
-          matchingIngredientsCount: -1,
-        },
-      },
-    ]);
-
+    const recipes = await filterRecipes(ingredients);
     res.status(200).json(recipes);
   } catch (err) {
     console.error(err.message);
@@ -38,33 +21,25 @@ const filterRecipes = async (req, res) => {
   }
 };
 
-
-const addRecipe = async (req, res) => {
-  const { name, ingredients, instructions, duration, serving } = req.body; // Include new fields
-  const userId = req.user.id; // Get user ID from the authenticated user
+// Handler for creating a new recipe
+const createRecipeController = async (req, res) => {
+  const recipeData = { ...req.body, userId: req.user.id };
 
   try {
-    const recipe = new Recipe({
-      name,
-      ingredients,
-      instructions,
-      duration,
-      serving,
-      userId,
-    }); // Include new fields
-    await recipe.save();
-    res.status(201).send("Recipe added successfully");
+    const recipe = await createRecipe(recipeData);
+    res.status(201).json(recipe);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
   }
 };
 
-const getUserRecipes = async (req, res) => {
+// Handler for fetching all recipes of a user
+const getUserRecipesController = async (req, res) => {
   const userId = req.user.id; // Get user ID from the authenticated user
 
   try {
-    const recipes = await Recipe.find({ userId });
+    const recipes = await getUserRecipes(userId);
     res.status(200).json(recipes);
   } catch (err) {
     console.error(err.message);
@@ -73,15 +48,12 @@ const getUserRecipes = async (req, res) => {
 };
 
 // Handler for fetching a recipe by ID
-const getRecipeById = async (req, res) => {
+const getRecipeByIdController = async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
 
   try {
-    const recipe = await Recipe.findOne({ _id: id, userId });
-    if (!recipe) {
-      return res.status(404).send("Recipe not found or not authorized");
-    }
+    const recipe = await getRecipeById(id, userId);
     res.status(200).json(recipe);
   } catch (err) {
     console.error(err.message);
@@ -89,21 +61,15 @@ const getRecipeById = async (req, res) => {
   }
 };
 
-const updateRecipe = async (req, res) => {
+// Handler for updating a recipe
+const updateRecipeController = async (req, res) => {
   const { id } = req.params;
-  const { name, ingredients, instructions, duration, serving } = req.body; // Include new fields
-  const userId = req.user.id; // Get user ID from the authenticated user
+  const userId = req.user.id;
+  const updateData = req.body;
 
   try {
-    const recipe = await Recipe.findOneAndUpdate(
-      { _id: id, userId },
-      { name, ingredients, instructions, duration, serving }, // Include new fields
-      { new: true }
-    );
-    if (!recipe) {
-      return res.status(404).send("Recipe not found or not authorized");
-    }
-    res.status(200).send("Recipe updated successfully");
+    const message = await updateRecipe(id, userId, updateData);
+    res.status(200).send(message);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -111,10 +77,9 @@ const updateRecipe = async (req, res) => {
 };
 
 module.exports = {
-  filterRecipes,
-  addRecipe,
-  getUserRecipes,
-  updateRecipe,
-  getRecipeById,
-};
-
+  createRecipeController,
+  updateRecipeController,
+  getRecipeByIdController,
+  getUserRecipesController,
+  filterRecipesController,
+}
