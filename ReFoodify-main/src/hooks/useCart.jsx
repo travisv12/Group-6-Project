@@ -43,7 +43,7 @@ const useCart = () => {
 
   const getCartTotal = () => {
     return cart.reduce((total, item) => {
-      const price = parseFloat(item.price.replace('$', ''));
+      const price = parseFloat(item.salePrice.replace("€", "").trim());
       return total + price * item.quantity;
     }, 0);
   };

@@ -3,18 +3,13 @@ import { FiFilter } from "react-icons/fi";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { icons, shopData } from "@/data/products";
-import useCart from "@/hooks/useCart";
+import { MdLocationOn } from "react-icons/md";
 import "./index.style.css";
+import useCartStore from "@/hooks/useCartStore";
 
 const Shop = () => {
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    getCartTotal,
-    getCartItemsCount,
-  } = useCart();
+  // Use global cart store methods
+  const { cart, addToCart, updateQuantity } = useCartStore();
   const [products, setProducts] = useState(shopData);
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
@@ -24,16 +19,23 @@ const Shop = () => {
     company: "",
   });
   const [sortOrder, setSortOrder] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 8;
+  const [visibleProducts, setVisibleProducts] = useState(8);
 
   // Get unique companies from shopData
   const companies = [...new Set(shopData.map((item) => item.company))];
 
+  // Helper function to clean up price strings
+  const parsePrice = (priceString) => {
+    const cleanedPrice = priceString
+      .replace(/[^\d,.-]/g, "") // Remove non-numeric characters except comma, dot, and minus
+      .replace(",", "."); // Convert comma to dot if necessary
+    return parseFloat(cleanedPrice);
+  };
+
   // Apply search and filters when state changes
   useEffect(() => {
     let filteredProducts = shopData.filter((product) => {
-      const productPrice = parseFloat(product.price.replace("$", ""));
+      const productPrice = parsePrice(product.salePrice);
       return (
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
         product.rating >= filters.minRating &&
@@ -43,23 +45,18 @@ const Shop = () => {
       );
     });
 
-    // Apply sorting
+    // Apply sorting by price
     if (sortOrder === "asc") {
       filteredProducts.sort(
-        (a, b) =>
-          parseFloat(a.price.replace("$", "")) -
-          parseFloat(b.price.replace("$", ""))
+        (a, b) => parsePrice(a.salePrice) - parsePrice(b.salePrice)
       );
     } else if (sortOrder === "desc") {
       filteredProducts.sort(
-        (a, b) =>
-          parseFloat(b.price.replace("$", "")) -
-          parseFloat(a.price.replace("$", ""))
+        (a, b) => parsePrice(b.salePrice) - parsePrice(a.salePrice)
       );
     }
 
     setProducts(filteredProducts);
-    setCurrentPage(1); // Reset to first page when filters or sorting change
   }, [searchQuery, filters, sortOrder]);
 
   const handleFilterChange = (e) => {
@@ -74,15 +71,9 @@ const Shop = () => {
     setSortOrder(order);
   };
 
-  // Pagination logic
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  const handlePagination = (pageNumber) => setCurrentPage(pageNumber);
+  const handleShowMore = () => {
+    setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 8);
+  };
 
   return (
     <div className="shop-container">
@@ -117,7 +108,6 @@ const Shop = () => {
               ))}
             </select>
             <div className="shop-filters-sort">
-              {/* <p className="shop-filters-sort-title">Sort by Price:</p> */}
               <div className="shop-filters-sort-buttons">
                 <button
                   className={`shop-filters-sort-button ${
@@ -125,8 +115,11 @@ const Shop = () => {
                   }`}
                   onClick={() => handleSortChange("asc")}
                 >
-                 Price{" "}
-                  <FaArrowUp size={18} className="shop-filters-sort-icon inline" />
+                  Price{" "}
+                  <FaArrowDown
+                    size={18}
+                    className="shop-filters-sort-icon inline"
+                  />
                 </button>
                 <button
                   className={`shop-filters-sort-button ${
@@ -134,16 +127,20 @@ const Shop = () => {
                   }`}
                   onClick={() => handleSortChange("desc")}
                 >
-                 Price{" "}
-                  <FaArrowDown size={18} className="shop-filters-sort-icon inline" />
+                  Price{" "}
+                  <FaArrowUp
+                    size={18}
+                    className="shop-filters-sort-icon inline"
+                  />
                 </button>
               </div>
             </div>
           </div>
+
           {/* Shop List */}
           <div className="shop-list">
             <div className="shop-list-grid">
-              {currentProducts.map((product, index) => (
+              {products.slice(0, visibleProducts).map((product, index) => (
                 <div key={index} className="shop-list-item">
                   <div className="shop-list-item-image-container">
                     <a href={product.link}>
@@ -163,7 +160,14 @@ const Shop = () => {
                     </Link>
 
                     <div className="shop-list-item-details">
-                      <p className="shop-list-item-price">{product.price}</p>
+                      <p className="shop-list-item-price">
+                        {product.salePrice}
+                      </p>
+                      <p className="shop-list-item-price">{product.company}</p>
+                      <p className="text-sm text-center">
+                        <MdLocationOn className="mr-2 inline" />
+                        {product.location}
+                      </p>
 
                       <div className="shop-list-item-quantity">
                         <button
@@ -206,30 +210,20 @@ const Shop = () => {
               ))}
             </div>
 
-            {/* Pagination */}
-            <div className="shop-pagination">
-              {[
-                ...Array(Math.ceil(products.length / productsPerPage)).keys(),
-              ].map((number) => (
+            {/* Show More Button */}
+            {visibleProducts < products.length && (
+              <div className="w-full flex items-center justify-center gap-3 p-5">
                 <button
-                  key={number + 1}
-                  onClick={() => handlePagination(number + 1)}
-                  className={`shop-pagination-button ${
-                    currentPage === number + 1 ? "active" : ""
-                  }`}
+                  onClick={handleShowMore}
+                  className="p-3 rounded shadow bg-yellow-400 w-fit"
                 >
-                  {number + 1}
+                  Show More
                 </button>
-              ))}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
-      {/* You can add a cart summary here
-      <div className="shop-cart-summary">
-        <p>Total Items in Cart: {getCartItemsCount()}</p>
-        <p>Total Price: ${getCartTotal().toFixed(2)}</p>
-      </div> */}
     </div>
   );
 };

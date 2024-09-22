@@ -20,16 +20,6 @@ import {
   IconReceipt,
 } from "@tabler/icons-react";
 
-
-import chiquitaBanana from "@/assets/chiquita-banana.png";
-import kotimaistaGround from "@/assets/kotimaista-ground.png";
-import kotimaistaSkimmed from "@/assets/kotimaista-skimmed.png";
-import onion from "@/assets/onion.png";
-import rainbowRiisipiirakka from "@/assets/rainbow-riisipiirakka.png";
-import royalGalaApple from "@/assets/royal-gala-apple.png";
-import valioArkiCheeseSlice from "@/assets/valio-arki-cheese-slice.png";
-import xtraEggs from "@/assets/xtra-eggs.png";
-
 export const icons = {
   check: IconCheck,
   plant2: IconPlant2,
@@ -56,7 +46,8 @@ export const shopData = [
   {
     id: "1",
     name: "Chiquita Banana",
-    discount: "Up to 20% off",
+    originalPrice: "0,35€", // Changed from discount to originalPrice
+    salePrice: "0,15 €", // Changed from price to salePrice
     rating: 4.8,
     reviews: 153,
     features: [
@@ -69,14 +60,170 @@ export const shopData = [
         icon: "check",
       },
     ],
-    price: "$2.99",
-    image: chiquitaBanana,
-    company: "Farm Fresh",
+    image: "/images/1.png",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
   },
   {
     id: "2",
-    name: "Kotimaista Ground Meat 20% 400g",
-    discount: "Up to 15% off",
+    name: "Royal Gala Apple",
+    originalPrice: "0,40€", // Changed from discount to originalPrice
+    salePrice: "0,20€", // Changed from price to salePrice
+    rating: 4.8,
+    reviews: 153,
+    features: [
+      {
+        text: "Farm Fresh",
+        icon: "plant2",
+      },
+      {
+        text: "Best Quality",
+        icon: "check",
+      },
+    ],
+    image: "/images/2.png",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
+  },
+  {
+    id: "3",
+    name: "Kotimaista Ground",
+    originalPrice: "0,50€", // Changed from discount to originalPrice
+    salePrice: "0,25€", // Changed from price to salePrice
+    rating: 4.8,
+    reviews: 153,
+    features: [
+      {
+        text: "Farm Fresh",
+        icon: "plant2",
+      },
+      {
+        text: "Best Quality",
+        icon: "check",
+      },
+    ],
+    image: "/images/3.png",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
+  },
+  {
+    id: "4",
+    name: "Kotimaista Skimmed Milk 1L",
+    originalPrice: "0,45€", // Changed from discount to originalPrice
+    salePrice: "0,30€", // Changed from price to salePrice
+    rating: 4.8,
+    reviews: 153,
+    features: [
+      {
+        text: "Farm Fresh",
+        icon: "plant2",
+      },
+      {
+        text: "Best Quality",
+        icon: "check",
+      },
+    ],
+    image: "/images/4.png",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
+  },
+  {
+    id: "5",
+    name: "Rainbow Riisipiirakka 65g",
+    originalPrice: "0,50€", // Changed from discount to originalPrice
+    salePrice: "0,30€", // Changed from price to salePrice
+    rating: 4.8,
+    reviews: 153,
+    features: [
+      {
+        text: "Farm Fresh",
+        icon: "plant2",
+      },
+      {
+        text: "Best Quality",
+        icon: "check",
+      },
+    ],
+    image: "/images/5.png",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
+  },
+  {
+    id: "6",
+    name: "Onion",
+    originalPrice: "0,53€", // Changed from discount to originalPrice
+    salePrice: "0,20€", // Changed from price to salePrice
+    rating: 4.8,
+    reviews: 153,
+    features: [
+      {
+        text: "Farm Fresh",
+        icon: "plant2",
+      },
+      {
+        text: "Best Quality",
+        icon: "check",
+      },
+    ],
+    image: "/images/6.png",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
+  },
+  {
+    id: "7",
+    name: "Valio Arki Cheese Slice 500g",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
+    rating: 4.8,
+    reviews: 153,
+    features: [
+      {
+        text: "Farm Fresh",
+        icon: "plant2",
+      },
+      {
+        text: "Best Quality",
+        icon: "check",
+      },
+    ],
+    image: "/images/7.png",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
+  },
+  {
+    id: "8",
+    name: "Xtra Eggs M15 855g",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
+    rating: 4.8,
+    reviews: 153,
+    features: [
+      {
+        text: "Farm Fresh",
+        icon: "plant2",
+      },
+      {
+        text: "Best Quality",
+        icon: "check",
+      },
+    ],
+    image: "/images/8.jpeg",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
+  },
+  {
+    id: "9",
+    name: "Quinoa Vegetables",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
     rating: 4.7,
     reviews: 89,
     features: [
@@ -89,14 +236,15 @@ export const shopData = [
         icon: "activity",
       },
     ],
-    price: "$3.49",
-    image: kotimaistaGround,
-    company: "Farm Fresh",
+    image: "/images/9.jpeg",
+    company: "Prisma Leppävaara",
+    location: "Kontulantie 1, 00940 Helsinki, Finland",
   },
   {
-    id: "3",
-    name: "Kotimaista Skimmed Milk 1L",
-    discount: "Up to 10% off",
+    id: "10",
+    name: "Greek Yogurt",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
     rating: 4.5,
     reviews: 234,
     features: [
@@ -109,14 +257,16 @@ export const shopData = [
         icon: "shieldCheck",
       },
     ],
-    price: "$1.99",
-    image: kotimaistaSkimmed,
-    company: "Farm Fresh",
+    image: "/images/10.jpeg",
+    company: "Lidl Herttoniemi",
+    location:
+      "Alberganesplanadi 1, 02600 Espoo, Finland (Inside Sello Shopping Center)",
   },
   {
-    id: "4",
-    name: "Onion",
-    discount: "Up to 25% off",
+    id: "11",
+    name: "Avocado",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
     rating: 4.9,
     reviews: 320,
     features: [
@@ -129,14 +279,16 @@ export const shopData = [
         icon: "bone",
       },
     ],
-    price: "$2.29",
-    image: onion,
-    company: "Nutty Delights", // Added company name
+    image: "/images/11.jpeg",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
   },
   {
-    id: "5",
-    name: "Rainbow Riisipiirakka 65g",
-    discount: "Up to 30% off",
+    id: "12",
+    name: "Sweet Potatoes",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
     rating: 4.6,
     reviews: 187,
     features: [
@@ -149,14 +301,15 @@ export const shopData = [
         icon: "leaf",
       },
     ],
-    price: "$3.99",
-    image: rainbowRiisipiirakka,
-    company: "Green Eats", // Added company name
+    image: "/images/12.jpeg",
+    company: "Alepa Kamppi",
+    location: "Hiihtomäentie 14, 00810 Helsinki, Finland",
   },
   {
-    id: "6",
-    name: "Royal Gala Apple",
-    discount: "Up to 20% off",
+    id: "13",
+    name: "Silk Almond",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
     rating: 4.8,
     reviews: 411,
     features: [
@@ -169,14 +322,15 @@ export const shopData = [
         icon: "weight",
       },
     ],
-    price: "$1.49",
-    image: royalGalaApple,
-    company: "Dairy Delight", // Added company name
+    image: "/images/13.jpeg",
+    company: "Alepa Kamppi",
+    location: "Hiihtomäentie 14, 00810 Helsinki, Finland",
   },
   {
-    id: "7",
+    id: "14",
     name: "Valio Arki Cheese Slice 500g",
-    discount: "Up to 15% off",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
     rating: 4.3,
     reviews: 75,
     features: [
@@ -189,14 +343,16 @@ export const shopData = [
         icon: "flask",
       },
     ],
-    price: "$3.59",
-    image: valioArkiCheeseSlice,
-    company: "Crispy Greens", 
+    image: "/images/14.jpeg",
+    company: "S-Market Kontula",
+    location:
+      "Piispansilta 11, 02230 Espoo, Finland (Inside Iso Omena Shopping Center)",
   },
   {
-    id: "8",
-    name: "Xtra Eggs M15 855g",
-    discount: "Up to 40% off",
+    id: "15",
+    name: "Vihreä Tee",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
     rating: 4.9,
     reviews: 289,
     features: [
@@ -209,8 +365,51 @@ export const shopData = [
         icon: "percentage",
       },
     ],
-    price: "$2.99",
-    image: xtraEggs,
-    company: "Cocoa Haven", 
+    image: "/images/15.jpeg",
+    company: "Alepa Kamppi",
+    location: "Hiihtomäentie 14, 00810 Helsinki, Finland",
   },
+  {
+    id: "16",
+    name: "Ruisleipä",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
+    rating: 4.6,
+    reviews: 120,
+    features: [
+      {
+        text: "Traditional Finnish Rye Bread",
+        icon: "bread",
+      },
+      {
+        text: "High Fiber",
+        icon: "check",
+      },
+    ],
+    image: "/images/16.jpeg",
+    company: "K-Citymarket",
+    location: "Hämeentie 1, 00530 Helsinki, Finland",
+  },
+  {
+    id: "17",
+    name: "Karjalanpiirakka",
+    originalPrice: "0,56€", // Changed from discount to originalPrice
+    salePrice: "0,10€", // Changed from price to salePrice
+    rating: 4.9,
+    reviews: 200,
+    features: [
+      {
+        text: "Traditional Karelian Pie",
+        icon: "plant",
+      },
+      {
+        text: "Made with Rice Pudding",
+        icon: "check",
+      },
+    ],
+    image: "/images/17.jpeg",
+    company: "Prisma",
+    location: "Kauppakatu 1, 00100 Helsinki, Finland",
+  },
+
 ];

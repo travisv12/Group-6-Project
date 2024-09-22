@@ -42,7 +42,6 @@ const Hero = () => {
     // </div>
 
     <div className="sustainability-wrapper">
-      {" "}
       <div className="sustainability-box">
         <div className="sustainability-content">
           <div className="sustainability-header">

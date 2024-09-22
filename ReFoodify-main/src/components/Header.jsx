@@ -1,4 +1,3 @@
- 
 import { useEffect, useState, useCallback, memo } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import { Dialog, PopoverGroup } from "@headlessui/react";
@@ -19,14 +18,39 @@ import { useUser } from "@/hooks/useUser";
 import useCart from "@/hooks/useCart";
 import PropTypes from "prop-types";
 import avatar from "./avatar.jpg";
+import useCartStore from "@/hooks/useCartStore";
 
 const navLinks = [
-  { path: "/", title: "Home", icon: <HomeIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/shop", title: "Shop", icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/about", title: "About", icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/vision", title: "Vision", icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/recipes", title: "Recipes", icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" /> },
-  { path: "/contact", title: "Contact", icon: <InboxIcon className="w-6 h-6" aria-hidden="true" /> },
+  {
+    path: "/",
+    title: "Home",
+    icon: <HomeIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/shop",
+    title: "Shop",
+    icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/about",
+    title: "About",
+    icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/vision",
+    title: "Vision",
+    icon: <InformationCircleIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/recipes",
+    title: "Recipes",
+    icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden="true" />,
+  },
+  {
+    path: "/contact",
+    title: "Contact",
+    icon: <InboxIcon className="w-6 h-6" aria-hidden="true" />,
+  },
 ];
 
 const MobileMenu = memo(function MobileMenu({
@@ -36,7 +60,8 @@ const MobileMenu = memo(function MobileMenu({
   mobileMenuOpen,
   setMobileMenuOpen,
 }) {
-  const { getCartItemsCount } = useCart();
+  const { getCartItemsCount } = useCartStore();
+  const totalItems = getCartItemsCount()
 
   return (
     <>
@@ -44,10 +69,13 @@ const MobileMenu = memo(function MobileMenu({
         <button
           type="button"
           onClick={() => setMobileMenuOpen(true)}
-          className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+          className="-m-1.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
         >
           <span className="sr-only">Open main menu</span>
-          <Bars3Icon aria-hidden="true" className="h-6 w-6" />
+          <Bars3Icon
+            aria-hidden="true"
+            className="h-6 w-6 text-white stroke-2"
+          />
         </button>
         {user && (
           <Menu as="div" className="relative z-20 inline-block text-left">
@@ -142,7 +170,7 @@ const MobileMenu = memo(function MobileMenu({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
-                      {getCartItemsCount()}
+                      {totalItems}
                     </span>
                   </div>
                 </NavLink>
@@ -184,32 +212,32 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
 
   return (
     <>
-      <PopoverGroup className="hidden lg:flex lg:gap-x-12">
-        {navLinks.map(({ path, title }) => (
-          <NavLink
-            key={path}
-            to={path}
-            className={`font-regular leading-6 ${
-              isActive(path) ? "text-primary" : "text-white"
-            } drop-shadow-md text-lg no-underline shadow-text transition-colors duration-300 ease-in-out px-1 py-1.5 relative hover:text-gray-200 after:content-[''] after:absolute after:w-0 after:h-0.5 after:bottom-0 after:left-1/2 after:bg-white after:transition-all after:duration-300 after:ease-in-out hover:after:w-4/5 hover:after:left-[10%]`}
-          >
-            {title}
-          </NavLink>
-        ))}
-      </PopoverGroup>
-      <div className="hidden lg:flex lg:gap-x-12">
+      <div className="hidden lg:flex lg:flex-1 lg:justify-center">
+        <PopoverGroup className="flex lg:gap-x-12">
+          {navLinks.map(({ path, title }) => (
+            <NavLink
+              key={path}
+              to={path}
+              className={`font-regular leading-6 ${
+                isActive(path) ? "text-primary" : "text-white"
+              } drop-shadow-md text-lg no-underline shadow-text transition-colors duration-300 ease-in-out px-1 py-1.5 relative hover:text-gray-200 after:content-[''] after:absolute after:w-0 after:h-0.5 after:bottom-0 after:left-1/2 after:bg-white after:transition-all after:duration-300 after:ease-in-out hover:after:w-4/5 hover:after:left-[10%]`}
+            >
+              {title}
+            </NavLink>
+          ))}
+        </PopoverGroup>
+      </div>
+      <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-12">
         <NavLink
           to="/cart"
           className="flex items-center gap-2 font-regular leading-6 text-white drop-shadow-md text-lg hover:text-gray-200 no-underline transition-colors duration-300 ease-in-out px-1 py-1.5 relative"
         >
           <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-          <span>Cart</span>
+          <span></span>
           <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
             {getCartItemsCount()}
           </span>
         </NavLink>
-      </div>
-      <div className="hidden lg:flex lg:gap-x-12">
         {user ? (
           <Menu as="div" className="relative z-20 inline-block text-left">
             <Menu.Button className="flex items-center gap-2">
@@ -256,14 +284,13 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
             to="/login"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            Log in <span aria-hidden="true">&rarr;</span>
+            Log in <span aria-hidden="true">→</span>
           </NavLink>
         )}
       </div>
     </>
   );
 });
-
 DesktopMenu.displayName = "DesktopMenu";
 
 DesktopMenu.propTypes = {

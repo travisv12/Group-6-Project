@@ -157,7 +157,7 @@ const Recipes = () => {
 
         {/* Check out a sample recipe */}
         {recipes.length > 0 && (
-          <div className="mt-[80px]">
+          <div className="mt-[50px]">
             <div className="main-recipe-preview">
               <div className="mian-recipe-card">
                 <img
@@ -246,16 +246,16 @@ const Recipes = () => {
               <p className="no-recipes">No recipes saved yet.</p>
             )}
 
-            {recipes.length > 3 && (
+            {/* {recipes.length > 3 && (
               <div className="btn-show-more">
                 <button className="btn-show-more-recipe">SHOW MORE</button>
               </div>
-            )}
+            )} */}
           </div>
 
           {/* show more button */}
           <div className="main-btn-show-more-recipe-container">
-            <button className="main-btn-show-more-recipe">Shore More</button>
+            <button className="main-btn-show-more-recipe">Show More</button>
           </div>
         </div>
       </div>
