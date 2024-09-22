@@ -18,6 +18,7 @@ import { useUser } from "@/hooks/useUser";
 import useCart from "@/hooks/useCart";
 import PropTypes from "prop-types";
 import avatar from "./avatar.jpg";
+import useCartStore from "@/hooks/useCartStore";
 
 const navLinks = [
   {
@@ -59,7 +60,8 @@ const MobileMenu = memo(function MobileMenu({
   mobileMenuOpen,
   setMobileMenuOpen,
 }) {
-  const { getCartItemsCount } = useCart();
+  const { getCartItemsCount } = useCartStore();
+  const totalItems = getCartItemsCount()
 
   return (
     <>
@@ -168,7 +170,7 @@ const MobileMenu = memo(function MobileMenu({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
-                      {getCartItemsCount()}
+                      {totalItems}
                     </span>
                   </div>
                 </NavLink>
