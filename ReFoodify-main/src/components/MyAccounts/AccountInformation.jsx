@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useUser} from "@/hooks/useUser";
+import { useUser } from "@/hooks/useUser";
 import PropTypes from "prop-types";
 
 import Avatar from "@/assets/genericAvatar.png";
@@ -69,6 +69,24 @@ const AccountInformation = () => {
     points: user?.points || "5200 points",
   });
 
+  // Handle Redeem Points and return True if successful
+  const [redeemMessage, setRedeemMessage] = useState("");
+  const handleRedeem = () => {
+    const currentPoints = parseInt(updatedUserInfo.points);
+    if (currentPoints >= 5000) {
+      const remainingPoints = currentPoints - 5000;
+      setUpdatedUserInfo((prevInfo) => ({
+        ...prevInfo,
+        points: `${remainingPoints} points`,
+      }));
+      setRedeemMessage("Redeem successful");
+      console.log("Remaining points:", remainingPoints);
+      return true;
+    } else {
+      setRedeemMessage("Points not enough");
+      return false;
+    }
+  };
   const [avatar, setAvatar] = useState(Avatar);
 
   const handleEditClick = (field) => {
@@ -206,16 +224,37 @@ const AccountInformation = () => {
               <div>
                 <h2 className="account-info-title">My Reward Points</h2>
                 <p className="account-info-value">{updatedUserInfo.points}</p>
+                <p className="text-sm text-gray-600 mt-1">
+                  Redeem 5000 points to receive -5€ off next purchase
+                </p>
               </div>
             </div>
-            <button className="action-button-small-responsive">Redeem</button>
+            <div className="flex flex-col items-end">
+              <button
+                className="action-button-small-responsive"
+                onClick={handleRedeem}
+              >
+                Redeem
+              </button>
+              {redeemMessage && (
+                <p
+                  className={`text-sm mt-2 ${
+                    redeemMessage === "Redeem successful"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {redeemMessage}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Log Out Button */}
-        <hr className="my-6 border-t-2 border-[#D9D9D9]" />
-        <div className="flex justify-center">
-          <button className="logout-button-responsive">Log Out</button>
+          {/* Log Out Button */}
+          <hr className="my-6 border-t-2 border-[#D9D9D9]" />
+          <div className="flex justify-center">
+            <button className="logout-button-responsive">Log Out</button>
+          </div>
         </div>
       </div>
     </div>
