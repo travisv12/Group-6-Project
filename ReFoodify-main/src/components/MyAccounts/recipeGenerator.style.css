@@ -1,0 +1,43 @@
+.recipe-generator {
+    margin: 20px;
+  }
+  
+  .recipe-generator h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .ingredient-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .ingredient-item input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .ingredient-item label {
+    margin-right: 10px;
+  }
+  
+  .ingredient-item input[type="text"] {
+    margin-left: 10px;
+    width: 100px;
+  }
+  
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  

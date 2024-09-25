@@ -1,0 +1,151 @@
+body {
+  background-color: #295143;
+  font-family: "Outfit", sans-serif;
+  color: var(--clr-grey-1);
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+.contact-section {
+  margin-top: 4rem;
+  margin-bottom: 5rem;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.contact-bg {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.2),
+    rgba(153, 153, 153, 0.2)
+  );
+}
+
+.contact-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+@media (min-width: 850px) {
+  .contact-grid {
+    flex-direction: row;
+  }
+
+  .contact-image-container {
+    flex: 4;
+  }
+
+  .contact-text-container {
+    flex: 5;
+  }
+}
+
+.contact-image-container {
+  flex: 1;
+  overflow: hidden;
+  aspect-ratio: 2/1;
+}
+
+.contact-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.contact-text-container {
+  flex: 1;
+  padding: 3rem;
+  text-align: justify;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.contact-title {
+  font-size: 3rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
+.contact-divider {
+  width: 100%;
+  height: 0.25rem;
+  background-color: white;
+  margin-top: -2rem;
+}
+
+.contact-description {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+.contact-info {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+}
+
+.contact-icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: gray;
+}
+
+.contact-info-text {
+  font-size: 1rem;
+  line-height: 2.5rem;
+  letter-spacing: 0.05em;
+}
+
+.contact-social {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.contact-title-2nd {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.contact-social-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.contact-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 0.2s;
+  background-color: gray;
+  border-radius: 50%;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.contact-social-link:hover,
+.contact-social-link:focus {
+  background-color: #bc890c;
+}
+
+.contact-social-icon {
+  width: 1rem;
+  height: 1rem;
+}
