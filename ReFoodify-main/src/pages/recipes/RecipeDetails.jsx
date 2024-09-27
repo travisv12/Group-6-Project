@@ -3,30 +3,33 @@ import { useParams, useNavigate } from "react-router-dom";
 import { IconCircleArrowLeft } from "@tabler/icons-react";
 import backgroundBg from "@/assets/recipe-detail-bg.png";
 import meet_stew from "@/assets/meet_stew.png";
-
+import { useSelector } from "react-redux";
 import "./recipeDetails.style.css";
 
 const RecipeDetails = () => {
   const { id } = useParams(); // Extract the recipe ID from the URL
+   const recipes = useSelector((state) => state.recipes.recipes);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null); // State to store the fetched recipe
 
   // Load recipe data from localStorage when component mounts
   useEffect(() => {
-    const storedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
-    const foundRecipe = storedRecipes.find((recipe) => recipe.id === id);
+    const foundRecipe = recipes.find((recipe) => recipe._id === id);
     if (foundRecipe) {
-      setRecipe(foundRecipe); // Set the recipe data
+      setRecipe(foundRecipe);
     } else {
       console.error("Recipe not found");
-      navigate("/recipes"); // Navigate back if recipe not found
     }
-  }, [id, navigate]);
+  }, [id, recipes]);
+
+  if (!recipe) {
+    return <div>Recipe not found</div>;
+  }
 
   // Fallback UI when recipe data is not yet available
-  if (!recipe) {
-    return <div>Loading...</div>;
-  }
+  // if (!recipe) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div
@@ -54,7 +57,7 @@ const RecipeDetails = () => {
         {/* Recipe Title */}
         <div className="recipe-title-section">
           <div>
-            <h1 className="recipe-detail-title">{recipe.recipeName}</h1>
+            <h1 className="recipe-detail-title">{recipe.name}</h1>
             <div className="recipe-meta">
               <p className="-ml-8">Duration: {recipe.duration}</p>
               <p>Serving: {recipe.servings} people</p>
@@ -70,7 +73,7 @@ const RecipeDetails = () => {
         <div className="recipe-image-section">
           <img
             src={recipe.image || meet_stew} // Show recipe image or fallback to meat stew
-            alt={recipe.recipeName}
+            alt={recipe.name}
             className="recipe-detail-image"
           />
         </div>

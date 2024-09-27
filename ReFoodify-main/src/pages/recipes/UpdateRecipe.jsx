@@ -3,6 +3,8 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
 import { message } from "antd"; // Import message from antd
 import recipeBg from "@/assets/recipe-detail-bg.png";
+import { updateRecipe } from "@/redux/slices/recipeSlice";
+import { useDispatch, useSelector } from "react-redux";
 import "./updateRecipe.style.css";
 
 // Available Ingredients (Mock data)
@@ -29,7 +31,9 @@ const availableIngredients = [
 
 const UpdateRecipe = () => {
   const { id } = useParams(); // Extract the recipe ID from the URL
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const recipes = useSelector((state) => state.recipes.recipes);
   const [formData, setFormData] = useState({
     recipeName: "",
     duration: "",
@@ -38,30 +42,30 @@ const UpdateRecipe = () => {
     ingredients: [], // Assumed to be an array of objects with name and amount
     instructions: "",
   });
-
-  const [recipes, setRecipes] = useState([]);
-  const [imagePreview, setImagePreview] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // New state for search term
   const [filteredIngredients, setFilteredIngredients] =
     useState(availableIngredients); // Filtered ingredients list
+  const [imagePreview, setImagePreview] = useState(null);
 
-  // Load data from localStorage when the component mounts and populate form fields with the recipe data
   useEffect(() => {
-    const savedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
-    setRecipes(savedRecipes); // Load all recipes from localStorage
-
-    // Find the recipe by ID and set the form data
-    const recipeToUpdate = savedRecipes.find((recipe) => recipe.id === id);
-    if (recipeToUpdate) {
-      setFormData(recipeToUpdate); // Populate the form fields with the found recipe data
-      setImagePreview(recipeToUpdate.image); // Set the image preview if available
-    } else {
-      console.error("Recipe not found");
+    if (id && recipes.length > 0) {
+      const selectedRecipe = recipes.find((recipe) => recipe._id === id);
+      if (selectedRecipe) {
+        setFormData({
+          recipeName: selectedRecipe.name,
+          ingredients: selectedRecipe.ingredients || [],
+          instructions: selectedRecipe.instructions,
+          duration: selectedRecipe.duration,
+          servings: selectedRecipe.serving,
+          image: selectedRecipe.img,
+        });
+        setImagePreview(selectedRecipe.img);
+                console.log("Image preview set to:", selectedRecipe.img); 
+      }
     }
-    console.log("recipeToUpdate", recipeToUpdate);
-  }, [id]);
+  }, [id, recipes]);
 
-  // Handle input changes
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -70,7 +74,6 @@ const UpdateRecipe = () => {
     }));
   };
 
-  // Handle adding ingredient
   const handleAddIngredient = (ingredient) => {
     if (!formData.ingredients.some((ing) => ing.name === ingredient)) {
       setFormData((prevData) => ({
@@ -83,43 +86,48 @@ const UpdateRecipe = () => {
     }
   };
 
-  // Handle removing ingredient
-  const handleRemoveIngredient = (ingredientName) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      ingredients: prevData.ingredients.filter(
-        (ing) => ing.name !== ingredientName
-      ),
-    }));
-  };
+ const handleRemoveIngredient = (ingredientName) => {
+   setFormData((prevData) => ({
+     ...prevData,
+     ingredients: prevData.ingredients.filter(
+       (ing) => ing.name !== ingredientName
+     ),
+   }));
+ };
 
-  // Handle changing the ingredient amount
-  const handleIngredientAmountChange = (name, amount) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      ingredients: prevData.ingredients.map((ing) =>
-        ing.name === name ? { ...ing, amount } : ing
-      ),
-    }));
-  };
+   const handleIngredientAmountChange = (name, amount) => {
+     setFormData((prevData) => ({
+       ...prevData,
+       ingredients: prevData.ingredients.map((ing) =>
+         ing.name === name ? { ...ing, amount } : ing
+       ),
+     }));
+   };
 
-  // Handle file selection
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result); // Show preview of image
-        setFormData((prevData) => ({
-          ...prevData,
-          image: reader.result, // Store image as base64
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+     const handleSearchChange = (e) => {
+       const term = e.target.value.toLowerCase();
+       setSearchTerm(term);
+       const filtered = availableIngredients.filter((ingredient) =>
+         ingredient.toLowerCase().includes(term)
+       );
+       setFilteredIngredients(filtered);
+     };
 
-  // Handle removing image
+       const handleFileChange = (e) => {
+         const file = e.target.files[0];
+         if (file) {
+           const reader = new FileReader();
+           reader.onloadend = () => {
+             setImagePreview(reader.result); // Show preview of image
+             setFormData((prevData) => ({
+               ...prevData,
+               image: reader.result, // Store image as base64
+             }));
+           };
+           reader.readAsDataURL(file);
+         }
+       };
+
   const handleDeleteImage = () => {
     setImagePreview(null);
     setFormData((prevData) => ({
@@ -128,27 +136,13 @@ const UpdateRecipe = () => {
     }));
   };
 
-  // Update the recipe in localStorage and show success toast
-  const handleUpdate = () => {
-    const updatedRecipes = recipes.map((recipe) =>
-      recipe.id === id ? formData : recipe
-    );
-    setRecipes(updatedRecipes);
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes)); // Update the recipe in localStorage
-
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    dispatch(updateRecipe({ id, ...formData }));
     message.success("Recipe updated successfully!"); // Show success toast
-    navigate("/recipes"); // Navigate back to the recipes list
+    navigate("/my-recipes");
   };
 
-  // Handle ingredient search input change
-  const handleSearchChange = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = availableIngredients.filter((ingredient) =>
-      ingredient.toLowerCase().includes(term)
-    );
-    setFilteredIngredients(filtered);
-  };
 
   return (
     <div>

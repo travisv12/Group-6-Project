@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+// eslint-disable react/prop-types 
 import { useEffect, useState, useCallback, memo } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import { Dialog, PopoverGroup } from "@headlessui/react";
@@ -322,6 +322,12 @@ export default function Header() {
     [location.pathname]
   );
 
+    const handleLogout = () => {
+      // Define your logout logic here
+      console.log("User logged out");
+    };
+
+
   return (
     <header className={`bg-[#316251] drop-shadow-md`}>
       {isSticky && <ScrollIndicator />}
@@ -341,7 +347,7 @@ export default function Header() {
         <MobileMenu
           // user={user}
           isActive={isActive}
-          // logout={logout}
+          logout={handleLogout}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
         />

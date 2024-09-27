@@ -1,25 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import './register.style.css';
+import { useSelector, useDispatch } from "react-redux";
+import {
+  signup,
+  setAccessToken,
+  setUser,
+  setRefreshToken,
+} from "../../redux/slices/userSlice";
+
+import "./register.style.css";
 
 const Register = () => {
-  const [username, setUsername] = useState(""); 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  // const [error, setError] = useState("");
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  const userAccessToken = useSelector((state) => state.user.accessToken);
+  const loading = useSelector((state) => state.user.loading);
+  const error = useSelector((state) => state.user.error);
+
+  useEffect(() => {
+    if (userAccessToken) {
+      console.log("access token updated:", userAccessToken);
+    }
+  }, [userAccessToken]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    // setError("");
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      console.error("Passwords do not match");
       return;
     }
-    // For now, just navigate to the home page
-    navigate("/");
+    try {
+      const result = await dispatch(
+        signup({ username, email, password })
+      ).unwrap();
+      dispatch(setUser(result.userId));
+      dispatch(setAccessToken(result.accessToken));
+      dispatch(setRefreshToken(result.refreshToken));
+      navigate("/login");
+    } catch (err) {
+      console.error("SignUp failed:", err.message);
+    }
   };
+  // For now, just navigate to the home page
+  // navigate("/");
 
   return (
     <section
@@ -30,13 +60,19 @@ const Register = () => {
         <div className="register-form-container">
           <h2 className="register-title">Welcome</h2>
           <div className="register-links">
-            <Link className="register-link" to={"/login"}>Login</Link>
-            <Link className="register-link" to={"/register"}>Sign Up</Link>
+            <Link className="register-link" to={"/login"}>
+              Login
+            </Link>
+            <Link className="register-link" to={"/register"}>
+              Sign Up
+            </Link>
           </div>
           <form onSubmit={handleSubmit} className="register-form">
             {/* Username Input */}
             <div className="form-group">
-              <label htmlFor="username" className="form-label">Username</label>
+              <label htmlFor="username" className="form-label">
+                Username
+              </label>
               <input
                 type="text"
                 id="username"
@@ -50,7 +86,9 @@ const Register = () => {
 
             {/* Email Input */}
             <div className="form-group">
-              <label htmlFor="email" className="form-label">Email</label>
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -64,7 +102,9 @@ const Register = () => {
 
             {/* Password Inputs */}
             <div className="form-group">
-              <label htmlFor="password" className="form-label">Password</label>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
               <input
                 type="password"
                 id="password"
@@ -76,7 +116,9 @@ const Register = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="confirmPassword" className="form-label">Re-enter Password</label>
+              <label htmlFor="confirmPassword" className="form-label">
+                Re-enter Password
+              </label>
               <input
                 type="password"
                 id="confirmPassword"
@@ -102,9 +144,7 @@ const Register = () => {
                 <button className="form-social-button facebook">
                   Facebook
                 </button>
-                <button className="form-social-button google">
-                  Google
-                </button>
+                <button className="form-social-button google">Google</button>
               </div>
             </div>
           </form>

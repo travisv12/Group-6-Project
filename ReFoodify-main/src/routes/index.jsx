@@ -1,23 +1,25 @@
+import { useSelector } from "react-redux";
+import { useRoutes, Navigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import About from "@/pages/About";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
 import Contact from "@/pages/Contact";
-
 import MyAccount from "@/pages/MyAccount";
 import RecipeDetails from "@/pages/recipes/RecipeDetails";
-
 import Recipes from "@/pages/recipes";
-
-import { useRoutes } from "react-router-dom";
 import Vision from "@/pages/Vision";
 import CreateRecipe from "@/pages/recipes/CreateRecipe";
 import Shop from "@/pages/Shop";
 import Cart from "@/pages/Cart";
 import Home from "@/pages/Home";
 import UpdateRecipe from "@/pages/recipes/UpdateRecipe";
+import AccountInformation from "@/components/MyAccounts/AccountInformation";
+import MyRecipes from "@/components/MyAccounts/MyRecipes";
+import PurchaseHistory from "@/components/MyAccounts/PurchaseHistory";
 
 export default function Router() {
+  const isAuthenticated = useSelector((state) => !!state.user.accessToken);
   const routes = useRoutes([
     {
       element: <Layout />,
@@ -34,6 +36,7 @@ export default function Router() {
           path: "/recipes",
           element: <Recipes />,
         },
+
         {
           path: "/recipes/details/:id",
           element: <RecipeDetails />,
@@ -65,14 +68,32 @@ export default function Router() {
         {
           path: "/my-account",
           element: <MyAccount />,
+          children: [
+            {
+              path: "account-information",
+              element: <AccountInformation />,
+            },
+            {
+              path: "purchase-history",
+              element: <PurchaseHistory />,
+            },
+            {
+              path: "my-recipes",
+              element: <MyRecipes />,
+            },
+          ],
         },
         {
           path: "/register",
-          element: <Register />,
+          element: isAuthenticated ? (
+            <Navigate to="/my-account" />
+          ) : (
+            <Register />
+          ),
         },
         {
           path: "/login",
-          element: <Login />,
+          element: isAuthenticated ? <Navigate to="/my-account" /> : <Login />,
         },
       ],
     },
