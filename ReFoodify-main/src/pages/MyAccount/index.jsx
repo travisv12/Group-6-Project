@@ -1,9 +1,6 @@
 // src/components/MyAccounts/MyAccount.jsx
 import React from "react";
 import { useSelector } from "react-redux";
-import AccountInformation from "@/components/MyAccounts/AccountInformation";
-import MyRecipes from "@/components/MyAccounts/MyRecipes";
-import PurchaseHistory from "@/components/MyAccounts/PurchaseHistory";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import "./index.style.css";
 import { Link, Outlet, useLocation } from "react-router-dom";

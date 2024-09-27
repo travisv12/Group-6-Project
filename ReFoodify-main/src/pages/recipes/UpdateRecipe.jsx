@@ -140,7 +140,7 @@ const UpdateRecipe = () => {
     e.preventDefault();
     dispatch(updateRecipe({ id, ...formData }));
     message.success("Recipe updated successfully!"); // Show success toast
-    navigate("/my-recipes");
+    navigate("/my-account/my-recipes");
   };
 
 

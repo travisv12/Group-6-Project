@@ -30,7 +30,7 @@ const Login = () => {
     try {
       const result = await dispatch(login({ email, password })).unwrap();
       dispatch(setAccessToken(result.accessToken));
-    navigate("/my-account");
+      navigate("/my-account/account-information");
     } catch (err) {
       console.error("Login failed:", err.message);
     }

@@ -145,51 +145,54 @@ const recipeSlice = createSlice({
     error: null,
   },
   reducers: {
-    // Add any synchronous reducers if needed
+    // deleteRecipe: (state, action) => {
+    //   state.recipes = state.recipes.filter((_, i) => i !== action.payload);
+    // },
   },
-extraReducers: (builder) => {
-  builder
-    .addCase(fetchUserRecipes.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(fetchUserRecipes.fulfilled, (state, action) => {
-      state.loading = false;
-      state.recipes = action.payload;
-    })
-    .addCase(fetchUserRecipes.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    })
-    .addCase(fetchFilteredRecipes.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(createRecipe.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(createRecipe.fulfilled, (state, action) => {
-      state.loading = false;
-      state.recipes.push(action.payload);
-    })
-    .addCase(createRecipe.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    })
-    .addCase(fetchFilteredRecipes.fulfilled, (state, action) => {
-      state.loading = false;
-      state.recipes = action.payload; // Update the state with the fetched recipes
-    })
-    .addCase(fetchFilteredRecipes.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    });
-    
-},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUserRecipes.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserRecipes.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recipes = action.payload;
+      })
+      .addCase(fetchUserRecipes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchFilteredRecipes.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createRecipe.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createRecipe.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recipes.push(action.payload);
+      })
+      .addCase(createRecipe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchFilteredRecipes.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recipes = action.payload; // Update the state with the fetched recipes
+      })
+      .addCase(fetchFilteredRecipes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
 
 
 export const {actions, reducer } = recipeSlice;
+// export const { deleteRecipe } = recipeSlice.actions;
+
 export default recipeSlice.reducer;

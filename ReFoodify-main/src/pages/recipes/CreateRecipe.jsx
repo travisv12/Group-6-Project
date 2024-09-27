@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
 import { v4 as uuidv4 } from "uuid"; // Import uuid
 import recipeBg from "@/assets/recipe-detail-bg.png";
+import { createRecipe } from "@/redux/slices/recipeSlice";
 import "./createRecipe.style.css";
 
 // Available Ingredients (Mock data)
@@ -28,32 +30,27 @@ const availableIngredients = [
 ];
 
 const CreateRecipe = () => {
+  const dispatch = useDispatch();
+  const recipes = useSelector((state) => state.recipes.recipes);
+  const [filteredIngredients, setFilteredIngredients] =
+    useState(availableIngredients); // Filtered ingredients list
   const [formData, setFormData] = useState({
-    recipeName: "",
+    name: "",
     duration: "",
-    servings: "",
+    serving: "",
     image: "",
     ingredients: [], // Ingredients will now include an amount
     instructions: "",
   });
 
-  const [recipes, setRecipes] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // New state for search term
-  const [filteredIngredients, setFilteredIngredients] =
-    useState(availableIngredients); // Filtered ingredients list
-
-  // Load data from localStorage when the component mounts
-  useEffect(() => {
-    const savedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
-    setRecipes(savedRecipes); // Load all recipes from localStorage
-  }, []);
 
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
     }));
   };
@@ -61,11 +58,11 @@ const CreateRecipe = () => {
   // Handle adding ingredient
   const handleAddIngredient = (ingredient) => {
     if (!formData.ingredients.find((ing) => ing.name === ingredient)) {
-      setFormData((prevData) => ({
-        ...prevData,
+      setFormData((prevFormData) => ({
+        ...prevFormData,
         ingredients: [
-          ...prevData.ingredients,
-          { name: ingredient, amount: "" }, // Add ingredient with an empty amount
+          ...prevFormData.ingredients,
+          { name: ingredient, quantity: "" }, // Add ingredient with an empty amount
         ],
       }));
     }
@@ -73,24 +70,24 @@ const CreateRecipe = () => {
 
   // Handle removing ingredient
   const handleRemoveIngredient = (ingredientName) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      ingredients: prevData.ingredients.filter(
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ingredients: prevFormData.ingredients.filter(
         (ing) => ing.name !== ingredientName
       ),
     }));
   };
 
   // Handle changing the amount of an ingredient
-  const handleAmountChange = (e, ingredientName) => {
-    const { value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      ingredients: prevData.ingredients.map((ing) =>
-        ing.name === ingredientName ? { ...ing, amount: value } : ing
-      ),
-    }));
-  };
+  // const handleAmountChange = (e, ingredientName) => {
+  //   const { value } = e.target;
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     ingredients: prevFormData.ingredients.map((ing) =>
+  //       ing.name === ingredientName ? { ...ing, amount: value } : ing
+  //     ),
+  //   }));
+  // };
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -111,43 +108,65 @@ const CreateRecipe = () => {
   // Handle removing image
   const handleDeleteImage = () => {
     setImagePreview(null);
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       image: "",
     }));
   };
 
+  const handleQuantityChange = (e, ingredientName) => {
+    const { value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ingredients: prevFormData.ingredients.map((ing) =>
+        ing.name === ingredientName ? { ...ing, quantity: value } : ing
+      ),
+    }));
+  };
+
   // Save or update the recipe
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // Log the form data to debug
+    console.log("Form Data:", formData);
+    // Ensure required fields are present
+    if (
+      !formData.name ||
+      !formData.serving ||
+      formData.ingredients.some((ing) => !ing.quantity)
+    ) {
+      console.error("Missing required fields");
+      return;
+    }
+
     const newRecipe = {
       ...formData,
       id: uuidv4(), // Generate a unique ID using uuid
       createdAt: new Date().toLocaleString(), // Date and time of recipe creation
     };
 
-    const updatedRecipes = [...recipes, newRecipe]; // Add the new recipe to the list of recipes
-    setRecipes(updatedRecipes);
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes)); // Save to localStorage
+    try {
+      await dispatch(createRecipe(newRecipe)).unwrap(); // Dispatch the createRecipe thunk
+      console.log("Recipe saved to database", newRecipe);
 
-    // Reset form and image preview
-    setFormData({
-      recipeName: "",
-      duration: "",
-      servings: "",
-      image: "",
-      ingredients: [],
-      instructions: "",
-    });
-    setImagePreview(null);
-    console.log("Recipe saved to localStorage", updatedRecipes);
+      // Reset form and image preview
+      setFormData({
+        name: "",
+        duration: "",
+        serving: "",
+        image: "",
+        ingredients: [],
+        instructions: "",
+      });
+      setImagePreview(null);
+    } catch (error) {
+      console.error("Failed to save recipe:", error);
+    }
   };
 
   // Delete a recipe
-  const handleDeleteRecipe = (index) => {
-    const updatedRecipes = recipes.filter((_, i) => i !== index);
-    setRecipes(updatedRecipes);
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes)); // Update localStorage
-  };
+  // const handleDeleteRecipe = (index) => {
+  //   dispatch(deleteRecipe(index));
+  // };
 
   // Handle ingredient search input change
   const handleSearchChange = (e) => {
@@ -192,8 +211,8 @@ const CreateRecipe = () => {
               <label className="form-label">Recipe name:</label>
               <input
                 type="text"
-                name="recipeName"
-                value={formData.recipeName}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 className="input-field"
               />
@@ -212,8 +231,8 @@ const CreateRecipe = () => {
               <label className="form-label">Servings (person):</label>
               <input
                 type="text"
-                name="servings"
-                value={formData.servings}
+                name="serving"
+                value={formData.serving}
                 onChange={handleChange}
                 className="input-field"
               />
@@ -297,8 +316,10 @@ const CreateRecipe = () => {
                         type="text"
                         placeholder="write amount here"
                         className="input-ingredient-amount"
-                        value={ingredient.amount}
-                        onChange={(e) => handleAmountChange(e, ingredient.name)}
+                        value={ingredient.quantity || ""}
+                        onChange={(e) =>
+                          handleQuantityChange(e, ingredient.name)
+                        }
                       />
                     </div>
                   ))}
@@ -333,16 +354,16 @@ const CreateRecipe = () => {
                 {recipes.map((recipe, index) => (
                   <li key={index} className="recipe-item">
                     <div className="recipe-card">
-                      <h3 className="recipe-name">{recipe.recipeName}</h3>
+                      <h3 className="recipe-name">{recipe.name}</h3>
                       <p>Recipe ID: {recipe.id}</p>
                       <p>Created At: {recipe.createdAt}</p>
                       <p>Duration: {recipe.duration} minutes</p>
-                      <p>Servings: {recipe.servings}</p>
+                      <p>Servings: {recipe.serving}</p>
                       <p>Instructions: {recipe.instructions}</p>
                       {recipe.image && (
                         <img
                           src={recipe.image}
-                          alt={recipe.recipeName}
+                          alt={recipe.name}
                           className="recipe-image"
                         />
                       )}

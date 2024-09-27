@@ -241,16 +241,14 @@ const Recipes = () => {
                     <div>
                       <div className="flex-center">
                         <div className="flex justify-center">
-                          <p className="mian-recipe-name">
-                            {recipe.name}
-                          </p>
+                          <p className="mian-recipe-name">{recipe.name}</p>
                         </div>
                       </div>
                       <div className="mian-recipe-details">
                         <p>Duration: {recipe.duration} mins</p>
                         <p>Servings: {recipe.servings} people</p>
                       </div>
-                      <Link to={`/recipes/details/${recipe.id}`}>
+                      <Link to={`/recipes/details/${recipes[0]._id}`}>
                         <button className="btn-checkout-recipe">
                           CHECK OUT RECIPE
                         </button>

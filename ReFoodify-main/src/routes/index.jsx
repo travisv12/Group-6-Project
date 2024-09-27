@@ -17,6 +17,7 @@ import UpdateRecipe from "@/pages/recipes/UpdateRecipe";
 import AccountInformation from "@/components/MyAccounts/AccountInformation";
 import MyRecipes from "@/components/MyAccounts/MyRecipes";
 import PurchaseHistory from "@/components/MyAccounts/PurchaseHistory";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function Router() {
   const isAuthenticated = useSelector((state) => !!state.user.accessToken);
@@ -34,20 +35,20 @@ export default function Router() {
         },
         {
           path: "/recipes",
-          element: <Recipes />,
+          element: <ProtectedRoute element={<Recipes />} />,
         },
 
         {
           path: "/recipes/details/:id",
-          element: <RecipeDetails />,
+          element: <ProtectedRoute element={<RecipeDetails />} />,
         },
         {
           path: "/recipes/update/:id",
-          element: <UpdateRecipe />,
+          element: <ProtectedRoute element={<UpdateRecipe />} />,
         },
         {
           path: "/recipes/createRecipe",
-          element: <CreateRecipe />,
+          element: <ProtectedRoute element={<CreateRecipe />} />,
         },
         {
           path: "/about",
@@ -63,12 +64,16 @@ export default function Router() {
         },
         {
           path: "/cart",
-          element: <Cart />,
+          element: <ProtectedRoute element={<Cart />} />,
         },
         {
           path: "/my-account",
-          element: <MyAccount />,
+          element: <ProtectedRoute element={<MyAccount />} />,
           children: [
+            {
+              index: true,
+              element: <Navigate to="account-information" />,
+            },
             {
               path: "account-information",
               element: <AccountInformation />,
