@@ -9,27 +9,28 @@ const logos = [
 
 const Brands = () => {
   return (
-    // <div className="brands-container">
-    //   <div className="brands-section">
-    //     <div className="brands-content">
-    //       <h2 className="brands-title">
-    //         Trusted by Top Brands
-    //       </h2>
+    <>
+    <div className="brands-container">
+      <div className="brands-section">
+        <div className="brands-content">
+          <h2 className="brands-title">
+            Trusted by Top Brands
+          </h2>
 
-    //       <div className="brands-grid">
-    //         {logos.map((logo, index) => (
-    //           <div key={index} className="brand-logo-container">
-    //             <img
-    //               src={logo.src}
-    //               alt={logo.alt}
-    //               className="brand-logo"
-    //             />
-    //           </div>
-    //         ))}
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
+          <div className="brands-grid">
+            {logos.map((logo, index) => (
+              <div key={index} className="brand-logo-container">
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="brand-logo"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
     <div className="collaboration-container">
       <div className="collaboration-text flex justify-center mb-6">
         <h2 className="text-2xl font-bold">TRUSTED BY TOP BRANDS</h2>
@@ -51,6 +52,7 @@ const Brands = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-/* .brands-container {
+ .brands-container {
     background: linear-gradient(to right, #A5D157, #8BB148);
   }
   
@@ -47,7 +47,7 @@
   .brand-logo {
     height: 2.5rem;
     object-fit: contain;
-  } */
+  } 
 
 .collaboration-container {
   display: flex;

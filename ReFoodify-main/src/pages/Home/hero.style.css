@@ -191,7 +191,7 @@ body {
     margin-bottom: 1rem;
   }
 }
-/* .hero-grid {
+.hero-grid {
   background-color: rgba(255, 255, 255, 0.2);
   margin-top: 4rem;
   display: flex;
@@ -346,4 +346,4 @@ body {
 
 .hero-image.loaded {
   opacity: 1;
-} */
+}
