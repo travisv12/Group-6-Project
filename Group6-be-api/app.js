@@ -3,7 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./Models/database");
 const userRoutes = require("./Routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
 const recipeRoutes = require("./Routes/recipeRoutes");
+const orderRoutes = require("./Routes/orderRoutes");
 const {
   errorLogger,
   errorResponder,
@@ -24,6 +26,12 @@ app.use("/api/users", userRoutes);
 
 // Use the recipe routes
 app.use("/api", recipeRoutes);
+
+// Use the product routes
+app.use("/api", productRoutes);
+
+// Use the cart routes
+app.use("/api", orderRoutes);
 
 // Use the invalid path handler for undefined routes
 app.use("*", invalidPathHandler);

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Recipe = require("./Models/recipe");
+const Product = require("./Models/Product");
 const User = require("./Models/users");
 const connectDB = require("./Models/database");
 
@@ -45,6 +46,8 @@ const seedRecipes = async () => {
       serving: 4,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef John",
+      createdAt: new Date().toISOString().split("T")[0],
     },
     {
       name: "Chicken Curry",
@@ -59,6 +62,8 @@ const seedRecipes = async () => {
       serving: 4,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef Jane",
+      createdAt: new Date().toISOString().split("T")[0],
     },
     {
       name: "Beef Stew",
@@ -73,6 +78,8 @@ const seedRecipes = async () => {
       serving: 6,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef John",
+      createdAt: new Date().toISOString().split("T")[0],
     },
     {
       name: "Vegetable Stir Fry",
@@ -86,6 +93,8 @@ const seedRecipes = async () => {
       serving: 4,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef Jane",
+      createdAt: new Date().toISOString().split("T")[0],
     },
     {
       name: "Pancakes",
@@ -99,6 +108,8 @@ const seedRecipes = async () => {
       serving: 4,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef John",
+      createdAt: new Date().toISOString().split("T")[0],
     },
     {
       name: "Caesar Salad",
@@ -112,6 +123,8 @@ const seedRecipes = async () => {
       serving: 2,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef Jane",
+      createdAt: new Date().toISOString().split("T")[0],
     },
     {
       name: "Grilled Cheese Sandwich",
@@ -126,6 +139,8 @@ const seedRecipes = async () => {
       serving: 1,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef John",
+      createdAt: new Date().toISOString().split("T")[0],
     },
     {
       name: "Tomato Soup",
@@ -140,6 +155,8 @@ const seedRecipes = async () => {
       serving: 4,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef Jane",
+      createdAt: new Date().toISOString().split("T")[0],
     },
     {
       name: "Chocolate Cake",
@@ -154,6 +171,8 @@ const seedRecipes = async () => {
       serving: 8,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef John",
+      createdAt: new Date().toISOString().split("T")[0],
     },
     {
       name: "Scrambled Eggs",
@@ -167,6 +186,98 @@ const seedRecipes = async () => {
       serving: 2,
       img: "./images/demo-recipes.png",
       userId: null, // Will be set later
+      author: "Chef Jane",
+      createdAt: new Date().toISOString().split("T")[0],
+    },
+    {
+      name: "Chicken Alfredo",
+      ingredients: [
+        { name: "Chicken Breast", quantity: "500g" },
+        { name: "Fettuccine", quantity: "200g" },
+        { name: "Alfredo Sauce", quantity: "1 cup" },
+      ],
+      instructions: "Cook chicken. Boil fettuccine. Mix with Alfredo sauce.",
+      duration: 30,
+      serving: 4,
+      img: "./images/demo-recipes.png",
+      userId: null, // Will be set later
+      author: "Chef John",
+      createdAt: new Date().toISOString().split("T")[0],
+    },
+    {
+      name: "Fish Tacos",
+      ingredients: [
+        { name: "Fish Fillets", quantity: "500g" },
+        { name: "Tortillas", quantity: "8" },
+        { name: "Cabbage", quantity: "1 cup" },
+      ],
+      instructions: "Cook fish. Assemble tacos with cabbage and tortillas.",
+      duration: 20,
+      serving: 4,
+      img: "./images/demo-recipes.png",
+      userId: null, // Will be set later
+      author: "Chef Jane",
+      createdAt: new Date().toISOString().split("T")[0],
+    },
+    {
+      name: "Mushroom Risotto",
+      ingredients: [
+        { name: "Arborio Rice", quantity: "1 cup" },
+        { name: "Mushrooms", quantity: "200g" },
+        { name: "Parmesan Cheese", quantity: "1/2 cup" },
+      ],
+      instructions: "Cook rice. Sauté mushrooms. Mix with Parmesan cheese.",
+      duration: 45,
+      serving: 4,
+      img: "./images/demo-recipes.png",
+      userId: null, // Will be set later
+      author: "Chef John",
+      createdAt: new Date().toISOString().split("T")[0],
+    },
+    {
+      name: "Lamb Chops",
+      ingredients: [
+        { name: "Lamb Chops", quantity: "4" },
+        { name: "Rosemary", quantity: "2 sprigs" },
+        { name: "Garlic", quantity: "2 cloves" },
+      ],
+      instructions: "Season lamb. Cook with rosemary and garlic.",
+      duration: 25,
+      serving: 4,
+      img: "./images/demo-recipes.png",
+      userId: null, // Will be set later
+      author: "Chef Jane",
+      createdAt: new Date().toISOString().split("T")[0],
+    },
+    {
+      name: "Apple Pie",
+      ingredients: [
+        { name: "Apples", quantity: "6" },
+        { name: "Pie Crust", quantity: "1" },
+        { name: "Cinnamon", quantity: "1 tsp" },
+      ],
+      instructions: "Prepare apples. Fill pie crust. Bake until golden.",
+      duration: 90,
+      serving: 8,
+      img: "./images/demo-recipes.png",
+      userId: null, // Will be set later
+      author: "Chef John",
+      createdAt: new Date().toISOString().split("T")[0],
+    },
+    {
+      name: "Greek Salad",
+      ingredients: [
+        { name: "Cucumber", quantity: "1" },
+        { name: "Tomatoes", quantity: "2" },
+        { name: "Feta Cheese", quantity: "1/2 cup" },
+      ],
+      instructions: "Chop vegetables. Mix with feta cheese and dressing.",
+      duration: 15,
+      serving: 4,
+      img: "./images/demo-recipes.png",
+      userId: null, // Will be set later
+      author: "Chef Jane",
+      createdAt: new Date().toISOString().split("T")[0],
     },
   ];
 
@@ -181,10 +292,125 @@ const seedRecipes = async () => {
   console.log("Recipes seeded");
 };
 
+const seedProducts = async () => {
+  const products = [
+    {
+      name: "Orange",
+      price: 2.5,
+      discountedPrice: 2.1,
+      store: "Prisma",
+      location: "Aisle 3",
+    },
+    {
+      name: "Apple",
+      price: 1.5,
+      discountedPrice: 1.2,
+      store: "K-Market",
+      location: "Aisle 1",
+    },
+    {
+      name: "Banana",
+      price: 1.2,
+      discountedPrice: 1.0,
+      store: "Lidl",
+      location: "Aisle 2",
+    },
+    {
+      name: "Grapes",
+      price: 3.0,
+      discountedPrice: 2.5,
+      store: "S-Market",
+      location: "Aisle 4",
+    },
+    {
+      name: "Milk",
+      price: 1.0,
+      discountedPrice: 0.8,
+      store: "Prisma",
+      location: "Aisle 5",
+    },
+    {
+      name: "Bread",
+      price: 2.0,
+      discountedPrice: 1.5,
+      store: "K-Market",
+      location: "Aisle 6",
+    },
+    {
+      name: "Butter",
+      price: 1.5,
+      discountedPrice: 1.2,
+      store: "Lidl",
+      location: "Aisle 7",
+    },
+    {
+      name: "Cheese",
+      price: 2.5,
+      discountedPrice: 2.0,
+      store: "S-Market",
+      location: "Aisle 8",
+    },
+    {
+      name: "Yogurt",
+      price: 1.0,
+      discountedPrice: 0.9,
+      store: "Prisma",
+      location: "Aisle 9",
+    },
+    {
+      name: "Chicken",
+      price: 5.0,
+      discountedPrice: 4.5,
+      store: "K-Market",
+      location: "Aisle 10",
+    },
+    {
+      name: "Beef",
+      price: 7.0,
+      discountedPrice: 6.0,
+      store: "Lidl",
+      location: "Aisle 11",
+    },
+    {
+      name: "Fish",
+      price: 6.0,
+      discountedPrice: 5.0,
+      store: "S-Market",
+      location: "Aisle 12",
+    },
+    {
+      name: "Rice",
+      price: 1.5,
+      discountedPrice: 1.2,
+      store: "Prisma",
+      location: "Aisle 13",
+    },
+    {
+      name: "Pasta",
+      price: 1.2,
+      discountedPrice: 1.0,
+      store: "K-Market",
+      location: "Aisle 14",
+    },
+    {
+      name: "Tomato Sauce",
+      price: 1.0,
+      discountedPrice: 0.8,
+      store: "Lidl",
+      location: "Aisle 15",
+    },
+  ];
+
+  await Product.deleteMany({});
+  await Product.insertMany(products);
+  console.log("Products seeded");
+};
+
 const seedDatabase = async () => {
   await connectDB();
   await seedUsers();
   await seedRecipes();
+  await seedProducts();
   mongoose.connection.close();
 };
 

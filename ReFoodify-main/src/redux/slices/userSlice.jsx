@@ -64,15 +64,6 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
-// {
-//     "_id": "66eac851ee80a6cf233e5256",
-//     "firstName": "Jane",
-//     "lastName": "Smith",
-//     "username": "user2",
-//     "role": "user",
-//     "email": "user2@example.com",
-//     "__v": 0
-// }
 
 export const updateUser = createAsyncThunk(
   "user/updateUser",
@@ -94,14 +85,47 @@ export const updateUser = createAsyncThunk(
 );
 
 
+export const refreshAccessToken = createAsyncThunk(
+  "user/refreshAccessToken",
+  async (_, { getState, rejectWithValue }) => {
+    const state = getState();
+    const refreshToken = state.user.refreshToken;
 
+    if (!refreshToken) {
+      return rejectWithValue("No refresh token found");
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/users/refresh-token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ refreshToken }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to refresh access token");
+      }
+      const result = await response.json();
+      // Dispatch action to update access token in Redux state
+      dispatch(setAccessToken(result.accessToken));
+      return result.accessToken;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    // accessToken: null,
-    // refreshToken: null,
+    accessToken: null,
+    refreshToken: null,
     loading: false,
     uerInfo: null,
     error: null,
@@ -111,11 +135,9 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
     setAccessToken: (state, action) => {
-      console.log("INN ACCESS TOKEN METHOD: ", action.payload);
-
       state.accessToken = action.payload;
-      console.log("AFTER ACCESS TOKEN METHOD: ", state.user.accessToken);
     },
+
     setRefreshToken: (state, action) => {
       state.refreshToken = action.payload;
     },
@@ -133,6 +155,18 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+        .addCase(refreshAccessToken.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(refreshAccessToken.fulfilled, (state, action) => {
+        state.loading = false;
+        state.accessToken = action.payload;
+      })
+      .addCase(refreshAccessToken.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;

@@ -1,7 +1,8 @@
-// eslint-disable react/prop-types 
+// eslint-disable react/prop-types
 import { useEffect, useState, useCallback, memo } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import { Dialog, PopoverGroup } from "@headlessui/react";
+import { useSelector } from "react-redux";
 import { Menu } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -14,11 +15,10 @@ import {
   InboxIcon,
 } from "@heroicons/react/24/outline";
 import ScrollIndicator from "./ScrollIndicator";
-
-// import { useUser } from "@/hooks/useUser";
 import useCart from "@/hooks/useCart";
 import PropTypes from "prop-types";
 import avatar from "./avatar.jpg";
+import { logout } from "@/redux/slices/userSlice";
 
 const navLinks = [
   {
@@ -59,8 +59,7 @@ const MobileMenu = memo(function MobileMenu({
   logout,
   mobileMenuOpen,
   setMobileMenuOpen,
-})
- {
+}) {
   const { getCartItemsCount } = useCart();
 
   return (
@@ -205,6 +204,10 @@ MobileMenu.propTypes = {
 };
 
 const DesktopMenu = memo(({ user, isActive, logout }) => {
+  console.log("JHEEEE");
+  console.log(user);
+  console.log(isActive);
+  console.log(logout);
   const { getCartItemsCount } = useCart();
 
   return (
@@ -303,6 +306,7 @@ DesktopMenu.propTypes = {
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const user = useSelector((state) => state.user);
   // const { user, logout } = useUser();
   const location = useLocation();
 
@@ -322,11 +326,11 @@ export default function Header() {
     [location.pathname]
   );
 
-    const handleLogout = () => {
-      // Define your logout logic here
-      console.log("User logged out");
-    };
-
+  const handleLogout = () => {
+    // Define your logout logic here
+    console.log("User logged out");
+    dispatch(logout());
+  };
 
   return (
     <header className={`bg-[#316251] drop-shadow-md`}>
@@ -343,15 +347,14 @@ export default function Header() {
             </span>
           </NavLink>
         </div>
-
         <MobileMenu
-          // user={user}
+          user={user}
           isActive={isActive}
           logout={handleLogout}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
         />
-        {/* <DesktopMenu user={user} isActive={isActive} logout={logout} /> */}
+        <DesktopMenu user={user} isActive={isActive} logout={handleLogout} />
       </nav>
     </header>
   );

@@ -136,11 +136,23 @@ const UpdateRecipe = () => {
     }));
   };
 
-  const handleUpdate = (e) => {
+  const handleUpdate =  (e) => {
     e.preventDefault();
     dispatch(updateRecipe({ id, ...formData }));
     message.success("Recipe updated successfully!"); // Show success toast
     navigate("/my-account/my-recipes");
+  //     try {
+  //   const response = await dispatch(updateRecipe({ id, ...formData })).unwrap();
+  //   if (response && response.message) {
+  //     message.success(response.message); // Show success toast with message from response
+  //   } else {
+  //     message.success("Recipe updated successfully!"); // Fallback message
+  //   }
+  //   navigate("/my-account/my-recipes");
+  // } catch (error) {
+  //   console.error("Error updating recipe:", error);
+  //   message.error("Failed to update recipe. Please try again.");
+  // }
   };
 
 

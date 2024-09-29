@@ -179,6 +179,22 @@ const recipeSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      // .addCase(updateRecipe.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(updateRecipe.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   const updatedRecipe = action.payload;
+      //   const index = state.recipes.findIndex((recipe) => recipe._id === updatedRecipe._id);
+      //   if (index !== -1) {
+      //     state.recipes[index] = updatedRecipe;
+      //   }
+      // })
+      // .addCase(updateRecipe.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload;
+      // })
       .addCase(fetchFilteredRecipes.fulfilled, (state, action) => {
         state.loading = false;
         state.recipes = action.payload; // Update the state with the fetched recipes
@@ -187,9 +203,9 @@ const recipeSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
+      
   },
 });
-
 
 
 export const {actions, reducer } = recipeSlice;

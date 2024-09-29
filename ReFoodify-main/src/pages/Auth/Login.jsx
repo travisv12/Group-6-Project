@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   login,
   setAccessToken,
+  setRefreshToken,
 } from "../../redux/slices/userSlice";
 
 import "./login.style.css";
@@ -30,6 +31,7 @@ const Login = () => {
     try {
       const result = await dispatch(login({ email, password })).unwrap();
       dispatch(setAccessToken(result.accessToken));
+      dispatch(setRefreshToken(result.refreshToken));
       navigate("/my-account/account-information");
     } catch (err) {
       console.error("Login failed:", err.message);

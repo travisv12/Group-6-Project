@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchUserRecipes } from "@/redux/slices/recipeSlice";
 import poached_eggs from "@/assets/poached_eggs.png"; // Fallback image
+import apiFetch from "../../services/api";
 
 import "./myRecipes.style.css";
 
@@ -30,7 +31,7 @@ const MyRecipes = () => {
   // Handle delete recipe
   const handleDelete = async (_id) => {
     try {
-      const response = await fetch(`/api/recipes/${_id}`, {
+      const response = await apiFetch(`/api/recipes/${_id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
