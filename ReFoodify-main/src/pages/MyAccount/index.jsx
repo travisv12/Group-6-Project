@@ -2,7 +2,6 @@ import AccountInformation from "@/components/MyAccounts/AccountInformation";
 import MyRecipes from "@/components/MyAccounts/MyRecipes";
 import PurchaseHistory from "@/components/MyAccounts/PurchaseHistory";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import Footer from "@/components/Footer";
 import "./index.style.css";
 
 import accountBg from "@/assets/account_bg.png";
@@ -60,7 +59,6 @@ const MyAccount = () => {
           </div>
         </section>
       </div>
-      <Footer />
     </div>
   );
 };

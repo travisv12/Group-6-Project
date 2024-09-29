@@ -1,5 +1,4 @@
 import "./vision.style.css";
-import Footer from "../../components/Footer";
 
 const Vision = () => {
   return (
@@ -42,7 +41,6 @@ const Vision = () => {
           {/* <OurTeam /> */}
         </div>
       </section>
-      <Footer />
     </div>
   );
 };

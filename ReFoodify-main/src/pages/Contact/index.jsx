@@ -1,6 +1,5 @@
 import "./contact.style.css";
 import { Link } from "react-router-dom";
-import Footer from "../../components/Footer";
 
 const Contact = () => {
   return (
@@ -151,7 +150,6 @@ const Contact = () => {
           </div>
         </div>
       </section>
-      <Footer />
     </div>
   );
 };

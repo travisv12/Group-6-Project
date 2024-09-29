@@ -16,9 +16,9 @@ const Cart = () => {
   } = useCartStore();
 
   const totalItems = getCartItemsCount();
-  const totalPrice = getCartTotal(); 
-  const totalDiscount = getDiscountAmount(); 
-  const rewardBonus = getRewardBonus(); 
+  const totalPrice = getCartTotal();
+  const totalDiscount = getDiscountAmount();
+  const rewardBonus = getRewardBonus();
 
   if (cart.length === 0) {
     return (
@@ -89,7 +89,9 @@ const Cart = () => {
           </div>
 
           <div className="cart-summary">
-            <h2 className="cart-summary-title">Order <em>Summary</em></h2>
+            <h2 className="cart-summary-title">
+              Order <em>Summary</em>
+            </h2>
             <div className="cart-summary-details">
               <div className="cart-summary-item">
                 <span>Items Total:</span>
