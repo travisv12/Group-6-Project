@@ -18,10 +18,10 @@ const getUserInfoController = async (req, res) => {
 // Handler for updating user information
 const updateUserController = async (req, res) => {
   const userId = req.user.id; // Get user ID from the authenticated user
-  const { firstName, lastName, username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
-    const message = await updateUser(userId, { firstName, lastName, username, email, password });
+    const message = await updateUser(userId, { username, email, password });
     res.status(200).send(message);
   } catch (err) {
     console.error(err.message);

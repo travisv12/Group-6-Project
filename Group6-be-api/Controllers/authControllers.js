@@ -7,18 +7,15 @@ const {
 
 // Handler for user signup
 const signupController = async (req, res) => {
-  const { firstName, lastName, username, password, role, email } = req.body;
+  const { username, password, email } = req.body;
 
   try {
-    const userId = await createUser({
-      firstName,
-      lastName,
+    const { userId, accessToken, refreshToken } = await createUser({
       username,
       password,
-      role,
       email,
     });
-    res.status(201).send({ userId });
+    res.status(201).send({ userId, accessToken, refreshToken });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -28,6 +25,7 @@ const signupController = async (req, res) => {
 // Handler for user login
 const loginController = async (req, res) => {
   const { email, password } = req.body;
+    
   try {
     const { userId, accessToken, refreshToken } = await loginUser({
       email,

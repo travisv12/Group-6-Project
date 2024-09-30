@@ -9,7 +9,6 @@ import { fetchProducts } from "../../redux/slices/productSlice";
 import { updateItemQuantity } from "../../redux/slices/cartSlice";
 import almond_milk from "@/assets/almond-milk.png";
 import "./index.style.css";
-import useCartStore from "@/hooks/useCartStore";
 
 const Shop = () => {
   const dispatch = useDispatch();
@@ -56,13 +55,13 @@ const Shop = () => {
     return parsedPrice;
   };
 
-  // Helper function to clean up price strings
-  const parsePrice = (priceString) => {
-    const cleanedPrice = priceString
-      .replace(/[^\d,.-]/g, "") // Remove non-numeric characters except comma, dot, and minus
-      .replace(",", "."); // Convert comma to dot if necessary
-    return parseFloat(cleanedPrice);
-  };
+  // // Helper function to clean up price strings
+  // const parsePrice = (priceString) => {
+  //   const cleanedPrice = priceString
+  //     .replace(/[^\d,.-]/g, "") // Remove non-numeric characters except comma, dot, and minus
+  //     .replace(",", "."); // Convert comma to dot if necessary
+  //   return parseFloat(cleanedPrice);
+  // };
 
   // Apply search and filters when state changes
   useEffect(() => {

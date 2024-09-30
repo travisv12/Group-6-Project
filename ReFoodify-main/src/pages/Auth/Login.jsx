@@ -39,8 +39,6 @@ const Login = () => {
   };
 
   return (
-
-    <div>
     <section
       className="login-section"
       style={{ backgroundImage: "url('/images/auth/auth.png')" }}
@@ -70,90 +68,65 @@ const Login = () => {
                 className="form-input"
                 required
               />
-
             </div>
-            <form onSubmit={handleSubmit} className="login-form">
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">
-                  Email
-                </label>
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                className="form-input"
+                required
+              />
+            </div>
+            <div className="form-remember">
+              <div className="form-remember-checkbox">
                 <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="form-input"
-                  required
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  className="form-checkbox"
                 />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  className="form-input"
-                  required
-                />
-              </div>
-              <div className="form-remember">
-                <div className="form-remember-checkbox">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="form-checkbox"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="form-remember-label ml-2"
-                  >
-                    Remember me
-                  </label>
-                </div>
-                <div className="form-forgot">
-                  <a href="#" className="form-forgot-link">
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-              {error && <p className="form-error">{error}</p>}
-              <div className="form-submit">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="form-button"
+                <label
+                  htmlFor="remember-me"
+                  className="form-remember-label ml-2"
                 >
-                  <p>{loading ? "Logging in..." : "Login"}</p>
+                  Remember me
+                </label>
+              </div>
+              <div className="form-forgot">
+                <a href="#" className="form-forgot-link">
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            {error && <p className="form-error">{error}</p>}
+            <div className="form-submit">
+              <button type="submit" disabled={loading} className="form-button">
+                {loading ? "Logging in..." : "Login"}
+              </button>
+            </div>
+            <div className="form-social">
+              <p className="form-social-text">Or login with</p>
+              <div className="form-social-buttons">
+                <button className="form-social-button facebook">
+                  Facebook
                 </button>
+                <button className="form-social-button google">Google</button>
               </div>
-              <div className="form-social">
-                <p className="form-social-text">Or login with</p>
-                <div className="form-social-buttons">
-                  <button className="form-social-button facebook">
-                    Facebook
-                  </button>
-                  <button className="form-social-button google">Google</button>
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <h1 className="login-heading">
-            Reduce Food <br />
-            Wastage for
-            <br /> Sustainable <br />
-            Living
-          </h1>
+            </div>
+          </form>
         </div>
-      </section>
-      
-    </div>
+
+        <h1 className="login-heading">
+          Reduce Food Wastage for Sustainable Living
+        </h1>
+      </div>
+    </section>
   );
 };
 

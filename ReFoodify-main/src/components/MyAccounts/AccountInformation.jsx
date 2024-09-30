@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { fetchUser, updateUser, setUserInfo, logout } from "@/redux/slices/userSlice";
+import {
+  fetchUser,
+  updateUser,
+  setUserInfo,
+  logout,
+} from "@/redux/slices/userSlice";
 import Avatar from "@/assets/genericAvatar.png";
 import MailIcon from "@/assets/mail.png";
 import Reward from "@/assets/reward.png";
 import { useNavigate } from "react-router-dom";
-
 
 import "./accountInformation.style.css"; // Vanilla CSS
 
@@ -16,7 +20,6 @@ const InfoItem = ({ title, value, editable, onChange, isEditing, onDone }) => {
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
-
 
   return (
     <div className="account-info-item">
@@ -64,7 +67,7 @@ InfoItem.propTypes = {
 
 const AccountInformation = () => {
   const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user.userInfo);
   const [editingField, setEditingField] = useState(null);
   const [updatedUserInfo, setUpdatedUserInfo] = useState({
@@ -117,33 +120,31 @@ const AccountInformation = () => {
     }
   }, [userInfo]);
 
-
   const handleEditClick = (field) => {
     setEditingField(field);
   };
 
-const handleDoneClick = async (field, newValue) => {
-  setUpdatedUserInfo((prevInfo) => ({
-    ...prevInfo,
-    [field]: newValue,
-  }));
-  setEditingField(null);
+  const handleDoneClick = async (field, newValue) => {
+    setUpdatedUserInfo((prevInfo) => ({
+      ...prevInfo,
+      [field]: newValue,
+    }));
+    setEditingField(null);
 
-  try {
-    const response = await dispatch(
-      updateUser({ ...updatedUserInfo, [field]: newValue })
-    ).unwrap();
-        console.log("Server response:", response);
-    console.log("User information updated successfully");
-  } catch (err) {
-    console.log("Update user information failed:", err.message);
-  }
-};
+    try {
+      const response = await dispatch(
+        updateUser({ ...updatedUserInfo, [field]: newValue })
+      ).unwrap();
+      console.log("Server response:", response);
+      console.log("User information updated successfully");
+    } catch (err) {
+      console.log("Update user information failed:", err.message);
+    }
+  };
 
-const handleRemoveAvatar = () => {
-  setAvatar(Avatar);
-};
-
+  const handleRemoveAvatar = () => {
+    setAvatar(Avatar);
+  };
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -167,7 +168,6 @@ const handleRemoveAvatar = () => {
     // Navigate to home page
     navigate("/");
   };
-  
 
   return (
     <div className="account-container-responsive">
@@ -299,13 +299,13 @@ const handleRemoveAvatar = () => {
             </div>
           </div>
 
-
-        {/* Log Out Button */}
-        <hr className="my-6 border-t-2 border-[#D9D9D9]" />
-        <div className="flex justify-center">
-          <button className="logout-button-responsive" onClick={handleLogout}>
-             Log Out
-          </button>
+          {/* Log Out Button */}
+          <hr className="my-6 border-t-2 border-[#D9D9D9]" />
+          <div className="flex justify-center">
+            <button className="logout-button-responsive" onClick={handleLogout}>
+              Log Out
+            </button>
+          </div>
         </div>
       </div>
     </div>

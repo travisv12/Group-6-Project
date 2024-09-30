@@ -35,6 +35,9 @@ const getUserRecipes = async (userId) => {
 };
 
 const filterRecipes = async (ingredients) => {
+    const lowerCaseIngredients = ingredients.map((ingredient) =>
+      ingredient.toLowerCase()
+    );
   const recipes = await Recipe.aggregate([
     {
       $addFields: {
@@ -43,7 +46,9 @@ const filterRecipes = async (ingredients) => {
             $filter: {
               input: "$ingredients",
               as: "ingredient",
-              cond: { $in: ["$$ingredient.name", ingredients] },
+              cond: {
+                $in: [{ $toLower: "$$ingredient.name" }, lowerCaseIngredients],
+              },
             },
           },
         },

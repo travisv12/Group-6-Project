@@ -8,8 +8,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
 const createUser = async ({
-  firstName,
-  lastName,
   username,
   password,
   role,
@@ -24,26 +22,45 @@ const createUser = async ({
   const hashedPassword = await bcrypt.hash(password, salt);
 
   user = new User({
-    firstName,
-    lastName,
     username,
     password: hashedPassword,
     role,
     email,
   });
   await user.save();
-  return user._id;
+
+  // return user._id;
+    const accessToken = jwt.sign(
+      { id: user._id, role: user.role },
+      JWT_SECRET,
+      {
+        expiresIn: "2h",
+      }
+    );
+      const refreshToken = jwt.sign(
+        { id: user._id, role: user.role },
+        REFRESH_TOKEN_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      const newRefreshToken = new RefreshToken({
+        token: refreshToken,
+        userId: user._id,
+      });
+      await newRefreshToken.save();
+
+      return { userId: user._id, accessToken, refreshToken };
 };
 
 const loginUser = async ({ email, password }) => {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("Invalid credentials");
+    throw new Error("Invalid Email credentials");
   }
-
+    
   const isMatch = await user.comparePassword(password);
   if (!isMatch) {
-    throw new Error("Invalid credentials");
+    throw new Error("Password donot match");
   }
 
   const accessToken = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
@@ -127,7 +144,7 @@ const getUserInfo = async (userId) => {
 
 const updateUser = async (
   userId,
-  { firstName, lastName, username, email, password }
+  { username, email, password }
 ) => {
   const user = await User.findById(userId);
   if (!user) {
@@ -135,8 +152,6 @@ const updateUser = async (
   }
 
   // Update user information
-  if (firstName) user.firstName = firstName;
-  if (lastName) user.lastName = lastName;
   if (username) user.username = username;
   if (email) user.email = email;
   if (password) {

@@ -64,11 +64,11 @@ const verifyRefreshToken = (req, res, next) => {
 
 // Middleware to validate SignIn request
 const validateLogin = (req, res, next) => {
-  const { firstName, lastName, username, password, role, email } = req.body;
-  if (!firstName || !lastName || !username || !password || !role || !email) {
+  const { username, password, email } = req.body;
+  if (!username || !password || !email) {
     return res
       .status(400)
-      .send("Username, password, email and role are required");
+      .send("Username, password and email are required");
   }
   next();
 };

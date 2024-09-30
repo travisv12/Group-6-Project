@@ -29,11 +29,6 @@ const Register = () => {
     }
   }, [userAccessToken]);
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     // setError("");
@@ -57,7 +52,6 @@ const Register = () => {
   // navigate("/");
 
   return (
-    <div>
     <section
       className="register-section"
       style={{ backgroundImage: "url('/images/auth/auth.png')" }}
@@ -152,27 +146,15 @@ const Register = () => {
                 </button>
                 <button className="form-social-button google">Google</button>
               </div>
-              <div className="form-social">
-                <p className="form-social-text">Or login with</p>
-                <div className="form-social-buttons">
-                  <button className="form-social-button facebook">
-                    Facebook
-                  </button>
-                  <button className="form-social-button google">Google</button>
-                </div>
-              </div>
-            </form>
-          </div>
-          <h1 className="register-heading">
-            Reduce Food
-            <br /> Wastage for
-            <br /> Sustainable <br />
-            Living
-          </h1>
+            </div>
+          </form>
         </div>
-      </section>
-      <Footer />
-    </div>
+
+        <h1 className="register-heading">
+          Reduce Food Wastage for Sustainable Living
+        </h1>
+      </div>
+    </section>
   );
 };
 

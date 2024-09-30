@@ -35,7 +35,8 @@ export default function Router() {
         },
         {
           path: "/recipes",
-          element: <ProtectedRoute element={<Recipes />} />,
+          // element: <ProtectedRoute element={<Recipes />} />,
+          element: <Recipes />,
         },
 
         {
@@ -48,7 +49,8 @@ export default function Router() {
         },
         {
           path: "/recipes/createRecipe",
-          element: <ProtectedRoute element={<CreateRecipe />} />,
+          // element: <ProtectedRoute element={<CreateRecipe />} />,
+          element: <CreateRecipe />,
         },
         {
           path: "/about",
@@ -68,7 +70,8 @@ export default function Router() {
         },
         {
           path: "/my-account",
-          element: <ProtectedRoute element={<MyAccount />} />,
+          // element: <ProtectedRoute element={<MyAccount />} />,
+          element: <MyAccount />,
           children: [
             {
               index: true,
