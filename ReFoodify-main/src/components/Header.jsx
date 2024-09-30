@@ -1,6 +1,8 @@
+// eslint-disable react/prop-types
 import { useEffect, useState, useCallback, memo } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import { Dialog, PopoverGroup } from "@headlessui/react";
+import { useSelector } from "react-redux";
 import { Menu } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -13,12 +15,11 @@ import {
   InboxIcon,
 } from "@heroicons/react/24/outline";
 import ScrollIndicator from "./ScrollIndicator";
-
-import { useUser } from "@/hooks/useUser";
 import useCart from "@/hooks/useCart";
 import PropTypes from "prop-types";
 import avatar from "./avatar.jpg";
 import useCartStore from "@/hooks/useCartStore";
+import { logout } from "@/redux/slices/userSlice";
 
 const navLinks = [
   {
@@ -61,7 +62,7 @@ const MobileMenu = memo(function MobileMenu({
   setMobileMenuOpen,
 }) {
   const { getCartItemsCount } = useCartStore();
-  const totalItems = getCartItemsCount()
+  const totalItems = getCartItemsCount();
 
   return (
     <>
@@ -208,6 +209,10 @@ MobileMenu.propTypes = {
 };
 
 const DesktopMenu = memo(({ user, isActive, logout }) => {
+  console.log("JHEEEE");
+  console.log(user);
+  console.log(isActive);
+  console.log(logout);
   const { getCartItemsCount } = useCart();
 
   return (
@@ -305,7 +310,8 @@ DesktopMenu.propTypes = {
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
-  const { user, logout } = useUser();
+  const user = useSelector((state) => state.user);
+  // const { user, logout } = useUser();
   const location = useLocation();
 
   useEffect(() => {
@@ -324,6 +330,12 @@ export default function Header() {
     [location.pathname]
   );
 
+  const handleLogout = () => {
+    // Define your logout logic here
+    console.log("User logged out");
+    dispatch(logout());
+  };
+
   return (
     <header className={`bg-[#316251] drop-shadow-md`}>
       {isSticky && <ScrollIndicator />}
@@ -339,15 +351,14 @@ export default function Header() {
             </span>
           </NavLink>
         </div>
-
         <MobileMenu
           user={user}
           isActive={isActive}
-          logout={logout}
+          logout={handleLogout}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
         />
-        <DesktopMenu user={user} isActive={isActive} logout={logout} />
+        <DesktopMenu user={user} isActive={isActive} logout={handleLogout} />
       </nav>
     </header>
   );

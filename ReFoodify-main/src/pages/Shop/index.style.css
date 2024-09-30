@@ -1,6 +1,5 @@
 .shop-container {
   width: 100%;
-  margin-top: 4.5rem;
 }
 
 .shop-header {
@@ -136,11 +135,7 @@
 .shop-list-grid {
   display: grid;
   gap: 1rem;
-
-  grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr));
-
-
-
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
 }
 
 .shop-list-item {
@@ -189,9 +184,12 @@
 }
 
 .shop-list-item-price {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1rem;
   color: #1f2937;
+}
+
+.shop-list-item-price-value {
+  font-weight: bold;
 }
 
 .shop-list-item-quantity {

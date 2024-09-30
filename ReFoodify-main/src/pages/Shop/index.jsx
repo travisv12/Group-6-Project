@@ -3,14 +3,28 @@ import { FiFilter } from "react-icons/fi";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { icons, shopData } from "@/data/products";
-import { MdLocationOn } from "react-icons/md";
+import useCart from "@/hooks/useCart";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../../redux/slices/productSlice";
+import { updateItemQuantity } from "../../redux/slices/cartSlice";
+import almond_milk from "@/assets/almond-milk.png";
 import "./index.style.css";
 import useCartStore from "@/hooks/useCartStore";
 
 const Shop = () => {
-  // Use global cart store methods
-  const { cart, addToCart, updateQuantity } = useCartStore();
-  const [products, setProducts] = useState(shopData);
+  const dispatch = useDispatch();
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    getCartTotal,
+    getCartItemsCount,
+  } = useCart();
+
+  const products = useSelector((state) => state.products.products);
+  const loading = useSelector((state) => state.products.loading);
+  const error = useSelector((state) => state.products.error);
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     minRating: 0,
@@ -21,8 +35,26 @@ const Shop = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [visibleProducts, setVisibleProducts] = useState(8);
 
-  // Get unique companies from shopData
-  const companies = [...new Set(shopData.map((item) => item.company))];
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  // Get unique companies from products
+  const companies = [...new Set(products.map((item) => item.store))];
+
+  // Helper function to clean up price strings
+  const parsePrice = (priceString) => {
+    if (priceString === undefined || priceString === null) {
+      console.log("Price string is undefined or null:", priceString);
+      return 0; // or any default value you prefer
+    }
+    const cleanedPrice = priceString
+      .toString()
+      .replace(/[^\d,.-]/g, "") // Remove non-numeric characters except comma, dot, and minus
+      .replace(",", "."); // Convert comma to dot if necessary
+    const parsedPrice = parseFloat(cleanedPrice);
+    return parsedPrice;
+  };
 
   // Helper function to clean up price strings
   const parsePrice = (priceString) => {
@@ -34,30 +66,33 @@ const Shop = () => {
 
   // Apply search and filters when state changes
   useEffect(() => {
-    let filteredProducts = shopData.filter((product) => {
-      const productPrice = parsePrice(product.salePrice);
-      return (
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        product.rating >= filters.minRating &&
-        productPrice >= filters.minPrice &&
-        productPrice <= filters.maxPrice &&
-        (filters.company === "" || product.company === filters.company)
-      );
-    });
-
-    // Apply sorting by price
-    if (sortOrder === "asc") {
-      filteredProducts.sort(
-        (a, b) => parsePrice(a.salePrice) - parsePrice(b.salePrice)
-      );
-    } else if (sortOrder === "desc") {
-      filteredProducts.sort(
-        (a, b) => parsePrice(b.salePrice) - parsePrice(a.salePrice)
-      );
-    }
-
-    setProducts(filteredProducts);
+    setCurrentPage(1); // Reset to first page when filters or sorting change
   }, [searchQuery, filters, sortOrder]);
+
+  const filteredProducts = products.filter((product) => {
+    const productPrice = parsePrice(product.discountedPrice);
+    const productRating = product.rating !== undefined ? product.rating : 5;
+
+    return (
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      productRating >= filters.minRating &&
+      productPrice >= filters.minPrice &&
+      productPrice <= filters.maxPrice &&
+      (filters.company === "" || product.store === filters.company)
+    );
+  });
+
+  // Apply sorting by price
+  const sortedProducts = [...filteredProducts];
+  if (sortOrder === "asc") {
+    sortedProducts.sort(
+      (a, b) => parsePrice(a.discountedPrice) - parsePrice(b.discountedPrice)
+    );
+  } else if (sortOrder === "desc") {
+    sortedProducts.sort(
+      (a, b) => parsePrice(b.discountedPrice) - parsePrice(a.discountedPrice)
+    );
+  }
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -66,13 +101,22 @@ const Shop = () => {
       [name]: value,
     }));
   };
-
   const handleSortChange = (order) => {
     setSortOrder(order);
   };
 
-  const handleShowMore = () => {
-    setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 8);
+  // Pagination logic
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = sortedProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const handlePagination = (pageNumber) => setCurrentPage(pageNumber);
+
+  const handleUpdateQuantity = (productId, quantity) => {
+    dispatch(updateItemQuantity({ productId, quantity }));
   };
 
   return (
@@ -116,7 +160,7 @@ const Shop = () => {
                   onClick={() => handleSortChange("asc")}
                 >
                   Price{" "}
-                  <FaArrowDown
+                  <FaArrowUp
                     size={18}
                     className="shop-filters-sort-icon inline"
                   />
@@ -128,7 +172,7 @@ const Shop = () => {
                   onClick={() => handleSortChange("desc")}
                 >
                   Price{" "}
-                  <FaArrowUp
+                  <FaArrowDown
                     size={18}
                     className="shop-filters-sort-icon inline"
                   />
@@ -139,76 +183,81 @@ const Shop = () => {
 
           {/* Shop List */}
           <div className="shop-list">
-            <div className="shop-list-grid">
-              {products.slice(0, visibleProducts).map((product, index) => (
-                <div key={index} className="shop-list-item">
-                  <div className="shop-list-item-image-container">
-                    <a href={product.link}>
-                      <img
-                        className="shop-list-item-image"
-                        src={product.image}
-                        alt={product.name}
-                      />
-                    </a>
-                  </div>
-                  <div className="shop-list-item-content">
-                    <Link
-                      to={`/recipes/details/${product?.id}`}
-                      className="shop-list-item-title"
-                    >
-                      {product.name}
-                    </Link>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
+            {!loading && !error && (
+              <div className="shop-list-grid">
+                {currentProducts.map((product, index) => (
+                  <div key={index} className="shop-list-item">
+                    <div className="shop-list-item-image-container">
+                      <a href={product.link}>
+                        <img
+                          className="shop-list-item-image"
+                          src={product.image || almond_milk}
+                          alt={product.name}
+                        />
+                      </a>
+                    </div>
+                    <div className="shop-list-item-content">
+                      <Link
+                        to={`/recipes/details/${product._id}`}
+                        className="shop-list-item-title"
+                      >
+                        {product.name}
+                      </Link>
 
-                    <div className="shop-list-item-details">
-                      <p className="shop-list-item-price">
-                        {product.salePrice}
-                      </p>
-                      <p className="shop-list-item-price">{product.company}</p>
-                      <p className="text-sm text-center">
-                        <MdLocationOn className="mr-2 inline" />
-                        {product.location}
-                      </p>
+                      <div className="shop-list-item-details">
+                        <p className="shop-list-item-price">
+                          Discount price:{" "}
+                          <span className="shop-list-item-price-value">
+                            ${product.discountedPrice}
+                          </span>
+                        </p>
+                        <p className="shop-list-item-actual-price">
+                          Actual Price: ${product.price}
+                        </p>
 
-                      <div className="shop-list-item-quantity">
+                        <div className="shop-list-item-quantity">
+                          <button
+                            type="button"
+                            className="shop-list-item-quantity-button"
+                            onClick={() =>
+                              handleUpdateQuantity(
+                                product._id,
+                                (cart.find((item) => item.id === product._id)
+                                  ?.quantity || 0) - 1
+                              )
+                            }
+                          >
+                            -
+                          </button>
+                          <span className="shop-list-item-quantity-value">
+                            {cart.find((item) => item.id === product._id)
+                              ?.quantity || 0}
+                          </span>
+                          <button
+                            type="button"
+                            className="shop-list-item-quantity-button"
+                            onClick={() => addToCart(product)}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                      <div className="shop-list-item-add-to-cart">
                         <button
+                          className="shop-list-item-add-to-cart-button"
                           type="button"
-                          className="shop-list-item-quantity-button"
-                          onClick={() =>
-                            updateQuantity(
-                              product.id,
-                              (cart.find((item) => item.id === product.id)
-                                ?.quantity || 0) - 1
-                            )
-                          }
-                        >
-                          -
-                        </button>
-                        <span className="shop-list-item-quantity-value">
-                          {cart.find((item) => item.id === product.id)
-                            ?.quantity || 0}
-                        </span>
-                        <button
-                          type="button"
-                          className="shop-list-item-quantity-button"
                           onClick={() => addToCart(product)}
                         >
-                          +
+                          Add to cart
                         </button>
                       </div>
                     </div>
-                    <div className="shop-list-item-add-to-cart">
-                      <button
-                        className="shop-list-item-add-to-cart-button"
-                        type="button"
-                        onClick={() => addToCart(product)}
-                      >
-                        Add to cart
-                      </button>
-                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             {/* Show More Button */}
             {visibleProducts < products.length && (

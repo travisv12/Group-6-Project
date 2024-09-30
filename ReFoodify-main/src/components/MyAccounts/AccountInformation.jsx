@@ -1,10 +1,12 @@
-import { useState } from "react";
-import { useUser } from "@/hooks/useUser";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-
+import { fetchUser, updateUser, setUserInfo, logout } from "@/redux/slices/userSlice";
 import Avatar from "@/assets/genericAvatar.png";
 import MailIcon from "@/assets/mail.png";
 import Reward from "@/assets/reward.png";
+import { useNavigate } from "react-router-dom";
+
 
 import "./accountInformation.style.css"; // Vanilla CSS
 
@@ -14,6 +16,7 @@ const InfoItem = ({ title, value, editable, onChange, isEditing, onDone }) => {
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
+
 
   return (
     <div className="account-info-item">
@@ -60,13 +63,15 @@ InfoItem.propTypes = {
 };
 
 const AccountInformation = () => {
-  const { user } = useUser();
+  const dispatch = useDispatch();
+    const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.user.userInfo);
   const [editingField, setEditingField] = useState(null);
   const [updatedUserInfo, setUpdatedUserInfo] = useState({
-    username: user?.username || "Mahnoor Fatima",
-    email: user?.email || "mahnoor.fatima@email.com",
-    social: user?.social || "mahnoorf",
-    points: user?.points || "5200 points",
+    username: userInfo?.username || "",
+    email: userInfo?.email || "",
+    social: userInfo?.username || "mahnoorf",
+    points: "5200 points",
   });
 
   // Handle Redeem Points and return True if successful
@@ -89,21 +94,56 @@ const AccountInformation = () => {
   };
   const [avatar, setAvatar] = useState(Avatar);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchUser()).unwrap();
+        dispatch(setUserInfo(response));
+      } catch (err) {
+        console.log("Fetch user data failed:", err.message);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (userInfo) {
+      setUpdatedUserInfo({
+        username: userInfo.username,
+        email: userInfo.email,
+        social: userInfo?.username || "mahnoorf",
+        points: "5200 points",
+      });
+    }
+  }, [userInfo]);
+
+
   const handleEditClick = (field) => {
     setEditingField(field);
   };
 
-  const handleDoneClick = (field, newValue) => {
-    setUpdatedUserInfo((prevInfo) => ({
-      ...prevInfo,
-      [field]: newValue,
-    }));
-    setEditingField(null);
-  };
+const handleDoneClick = async (field, newValue) => {
+  setUpdatedUserInfo((prevInfo) => ({
+    ...prevInfo,
+    [field]: newValue,
+  }));
+  setEditingField(null);
 
-  const handleRemoveAvatar = () => {
-    setAvatar(Avatar);
-  };
+  try {
+    const response = await dispatch(
+      updateUser({ ...updatedUserInfo, [field]: newValue })
+    ).unwrap();
+        console.log("Server response:", response);
+    console.log("User information updated successfully");
+  } catch (err) {
+    console.log("Update user information failed:", err.message);
+  }
+};
+
+const handleRemoveAvatar = () => {
+  setAvatar(Avatar);
+};
+
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -119,6 +159,15 @@ const AccountInformation = () => {
   const handleChangePhotoClick = () => {
     document.getElementById("avatarUpload").click();
   };
+
+  const handleLogout = () => {
+    // Dispatch action to clear tokens from Redux store
+    dispatch(logout());
+
+    // Navigate to home page
+    navigate("/");
+  };
+  
 
   return (
     <div className="account-container-responsive">
@@ -250,11 +299,13 @@ const AccountInformation = () => {
             </div>
           </div>
 
-          {/* Log Out Button */}
-          <hr className="my-6 border-t-2 border-[#D9D9D9]" />
-          <div className="flex justify-center">
-            <button className="logout-button-responsive">Log Out</button>
-          </div>
+
+        {/* Log Out Button */}
+        <hr className="my-6 border-t-2 border-[#D9D9D9]" />
+        <div className="flex justify-center">
+          <button className="logout-button-responsive" onClick={handleLogout}>
+             Log Out
+          </button>
         </div>
       </div>
     </div>

@@ -1,46 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Footer from "@/components/Footer";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  login,
+  setAccessToken,
+  setRefreshToken,
+} from "../../redux/slices/userSlice";
 
 import "./login.style.css";
-import { useUser } from "@/hooks/useUser";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { login, loading } = useUser();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const userAccessToken = useSelector((state) => state.user.accessToken);
+  const loading = useSelector((state) => state.user.loading);
+  const error = useSelector((state) => state.user.error);
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    if (userAccessToken) {
+      console.log("access token updated:", userAccessToken);
+    }
+  }, [userAccessToken]);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
-    const success = await login(email, password);
-    console.log("success:", success);
-    if (success) {
-      setError("");
-      navigate("/my-account"); // Redirect to dashboard on successful login
-    } else {
-      setError("Invalid email or password");
+    // setError("");
+    try {
+      const result = await dispatch(login({ email, password })).unwrap();
+      dispatch(setAccessToken(result.accessToken));
+      dispatch(setRefreshToken(result.refreshToken));
+      navigate("/my-account/account-information");
+    } catch (err) {
+      console.error("Login failed:", err.message);
     }
   };
 
   return (
+
     <div>
-      <section
-        className="login-section"
-        style={{ backgroundImage: "url('/images/auth/auth.png')" }}
-      >
-        <div className="login-grid">
-          <div className="login-form-container">
-            <h2 className="login-title">Welcome</h2>
-            <div className="login-links">
-              <Link className="login-link" to={"/login"}>
-                Login
-              </Link>
-              <Link className="login-link" to={"/register"}>
-                Sign Up
-              </Link>
+    <section
+      className="login-section"
+      style={{ backgroundImage: "url('/images/auth/auth.png')" }}
+    >
+      <div className="login-grid">
+        <div className="login-form-container">
+          <h2 className="login-title">Welcome</h2>
+          <div className="login-links">
+            <Link className="login-link" to={"/login"}>
+              Login
+            </Link>
+            <Link className="login-link" to={"/register"}>
+              Sign Up
+            </Link>
+          </div>
+          <form onSubmit={handleLogin} className="login-form">
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="form-input"
+                required
+              />
+
             </div>
             <form onSubmit={handleSubmit} className="login-form">
               <div className="form-group">
@@ -122,7 +152,7 @@ const Login = () => {
           </h1>
         </div>
       </section>
-      <Footer />
+      
     </div>
   );
 };

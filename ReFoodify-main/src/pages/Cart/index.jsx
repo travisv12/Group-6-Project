@@ -1,24 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import useCart from "@/hooks/useCart";
 import { Link } from "react-router-dom";
+import {
+  fetchCart,
+  removeItem,
+  updateItemQuantity,
+  checkout,
+} from "@/redux/slices/cartSlice";
 import "./index.style.css";
-import useCartStore from "@/hooks/useCartStore";
 
 const Cart = () => {
-  const {
-    cart,
-    removeFromCart,
-    updateQuantity,
-    clearCart,
-    getCartTotal,
-    getCartItemsCount,
-    getDiscountAmount,
-    getRewardBonus,
-  } = useCartStore();
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.items);
+  const cartTotal = useSelector((state) => state.cart.total);
 
-  const totalItems = getCartItemsCount();
-  const totalPrice = getCartTotal();
-  const totalDiscount = getDiscountAmount();
-  const rewardBonus = getRewardBonus();
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
+
+  const handleRemoveFromCart = (productId) => {
+    dispatch(removeItem(productId));
+  };
+
+  const handleUpdateQuantity = (productId, quantity) => {
+    dispatch(updateItemQuantity({ productId, quantity }));
+  };
+
+  const handleCheckout = () => {
+    dispatch(checkout(cart));
+  };
 
   if (cart.length === 0) {
     return (
@@ -63,7 +74,9 @@ const Cart = () => {
                 </div>
                 <div className="cart-item-quantity">
                   <button
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    onClick={() =>
+                      handleUpdateQuantity(item.id, item.quantity - 1)
+                    }
                     className="cart-item-quantity-button"
                   >
                     -
@@ -72,14 +85,16 @@ const Cart = () => {
                     {item.quantity}
                   </span>
                   <button
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    onClick={() =>
+                      handleUpdateQuantity(item.id, item.quantity + 1)
+                    }
                     className="cart-item-quantity-button"
                   >
                     +
                   </button>
                 </div>
                 <button
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => handleRemoveFromCart(item.id)}
                   className="cart-item-remove"
                 >
                   🗑️
@@ -112,9 +127,7 @@ const Cart = () => {
                 <span>{rewardBonus.toFixed(2)} €</span>
               </div>
             </div>
-            <button className="cart-summary-button" onClick={clearCart}>
-              Check out
-            </button>
+            <button className="cart-summary-button">Check out</button>
           </div>
         </div>
       </div>

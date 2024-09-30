@@ -1,69 +1,90 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
 import { v4 as uuidv4 } from "uuid";
 import recipeBg from "@/assets/recipe-detail-bg.png";
+import { createRecipe } from "@/redux/slices/recipeSlice";
 import "./createRecipe.style.css";
 
 const availableIngredients = [
-  "Fish", "Carrot", "Beetroot", "Potato", "Garlic", "Eggs", "Butter",
-  "Flour", "Chicken", "Tomato", "Paprika", "Parmesan Cheese", "Basil",
-  "Lemon", "Beef", "Vinegar", "Fish Sauce", "Pea"
+  "Fish",
+  "Carrot",
+  "Beetroot",
+  "Potato",
+  "Garlic",
+  "Eggs",
+  "Butter",
+  "Flour",
+  "Chicken",
+  "Tomato",
+  "Paprika",
+  "Parmesan Cheese",
+  "Basil",
+  "Lemon",
+  "Beef",
+  "Vinegar",
+  "Fish Sauce",
+  "Pea",
 ];
 
 const CreateRecipe = () => {
+  const dispatch = useDispatch();
+  const recipes = useSelector((state) => state.recipes.recipes);
+  const [filteredIngredients, setFilteredIngredients] =
+    useState(availableIngredients); // Filtered ingredients list
   const [formData, setFormData] = useState({
-    recipeName: "",
+    name: "",
     duration: "",
-    servings: "",
+    serving: "",
     image: "",
     ingredients: [],
     instructions: "",
   });
 
-  const [recipes, setRecipes] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredIngredients, setFilteredIngredients] = useState(availableIngredients);
-
-  useEffect(() => {
-    const savedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
-    setRecipes(savedRecipes);
-  }, []);
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleAddIngredient = (ingredient) => {
     if (!formData.ingredients.find((ing) => ing.name === ingredient)) {
-      setFormData((prevData) => ({
-        ...prevData,
-        ingredients: [...prevData.ingredients, { name: ingredient, amount: "" }],
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        ingredients: [
+          ...prevFormData.ingredients,
+          { name: ingredient, quantity: "" }, // Add ingredient with an empty amount
+        ],
       }));
       console.log(`Added ingredient: ${ingredient}`);
     }
   };
 
   const handleRemoveIngredient = (ingredientName) => {
-    setFormData((prevData) => {
-      const updatedIngredients = prevData.ingredients.filter((ing) => ing.name !== ingredientName);
-      console.log(`Removed ingredient: ${ingredientName}`);
-      return { ...prevData, ingredients: updatedIngredients };
-    });
-  };
-
-  const handleAmountChange = (e, ingredientName) => {
-    const { value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      ingredients: prevData.ingredients.map((ing) =>
-        ing.name === ingredientName ? { ...ing, amount: value } : ing
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ingredients: prevFormData.ingredients.filter(
+        (ing) => ing.name !== ingredientName
       ),
     }));
-    console.log(`Updated amount for ingredient "${ingredientName}": ${value}`);
   };
+
+  // Handle changing the amount of an ingredient
+  // const handleAmountChange = (e, ingredientName) => {
+  //   const { value } = e.target;
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     ingredients: prevFormData.ingredients.map((ing) =>
+  //       ing.name === ingredientName ? { ...ing, amount: value } : ing
+  //     ),
+  //   }));
+  // };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -79,17 +100,35 @@ const CreateRecipe = () => {
 
   const handleDeleteImage = () => {
     setImagePreview(null);
-    setFormData((prevData) => ({ ...prevData, image: "" }));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      image: "",
+    }));
   };
 
-  const handleSubmit = () => {
-    console.log('Button clicked'); // Debugging statement
-    if (!formData.recipeName || !formData.duration || !formData.servings || !formData.instructions) {
-      alert("Please fill out all required fields.");
+  const handleQuantityChange = (e, ingredientName) => {
+    const { value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ingredients: prevFormData.ingredients.map((ing) =>
+        ing.name === ingredientName ? { ...ing, quantity: value } : ing
+      ),
+    }));
+  };
+
+  // Save or update the recipe
+  const handleSubmit = async () => {
+    // Log the form data to debug
+    console.log("Form Data:", formData);
+    // Ensure required fields are present
+    if (
+      !formData.name ||
+      !formData.serving ||
+      formData.ingredients.some((ing) => !ing.quantity)
+    ) {
+      console.error("Missing required fields");
       return;
     }
-
-    console.log("Selected ingredients at submission:", formData.ingredients);
 
     const newRecipe = {
       ...formData,
@@ -97,29 +136,39 @@ const CreateRecipe = () => {
       createdAt: new Date().toLocaleString(),
     };
 
-    const updatedRecipes = [...recipes, newRecipe];
-    setRecipes(updatedRecipes);
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
+    try {
+      await dispatch(createRecipe(newRecipe)).unwrap(); // Dispatch the createRecipe thunk
+      console.log("Recipe saved to database", newRecipe);
 
-    console.log("New recipe created:", newRecipe);
-
-    setFormData({
-      recipeName: "",
-      duration: "",
-      servings: "",
-      image: "",
-      ingredients: [],
-      instructions: "",
-    });
-    setImagePreview(null);
+      // Reset form and image preview
+      setFormData({
+        name: "",
+        duration: "",
+        serving: "",
+        image: "",
+        ingredients: [],
+        instructions: "",
+      });
+      setImagePreview(null);
+    } catch (error) {
+      console.error("Failed to save recipe:", error);
+    }
   };
 
+  // Delete a recipe
+  // const handleDeleteRecipe = (index) => {
+  //   dispatch(deleteRecipe(index));
+  // };
+
+  // Handle ingredient search input change
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-    setFilteredIngredients(availableIngredients.filter((ingredient) =>
-      ingredient.toLowerCase().includes(term)
-    ));
+    setFilteredIngredients(
+      availableIngredients.filter((ingredient) =>
+        ingredient.toLowerCase().includes(term)
+      )
+    );
   };
 
   const handleDeleteRecipe = (index) => {
@@ -147,7 +196,8 @@ const CreateRecipe = () => {
         </div>
       </div>
 
-      <div className="background-section"
+      <div
+        className="background-section"
         style={{
           backgroundImage: `url(${recipeBg})`,
           backgroundRepeat: "no-repeat",
@@ -161,8 +211,8 @@ const CreateRecipe = () => {
               <label className="form-label">Recipe name:</label>
               <input
                 type="text"
-                name="recipeName"
-                value={formData.recipeName}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 className="input-field"
               />
@@ -181,8 +231,8 @@ const CreateRecipe = () => {
               <label className="form-label">Servings (person):</label>
               <input
                 type="text"
-                name="servings"
-                value={formData.servings}
+                name="serving"
+                value={formData.serving}
                 onChange={handleChange}
                 className="input-field"
               />
@@ -205,7 +255,11 @@ const CreateRecipe = () => {
             </div>
             {imagePreview && (
               <div className="image-preview">
-                <img src={imagePreview} alt="Preview" className="preview-image" />
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="preview-image"
+                />
               </div>
             )}
 
@@ -243,17 +297,27 @@ const CreateRecipe = () => {
                   </div>
                 </div>
                 <div className="ingredients-list">
-                  {formData.ingredients.length === 0 && <p>No ingredients selected.</p>}
+                  {formData.ingredients.length === 0 && (
+                    <p>No ingredients selected.</p>
+                  )}
                   {formData.ingredients.map((ingredient) => (
-                    <div key={ingredient.name} className="create-ingredient selected">
+                    <div
+                      key={ingredient.name}
+                      className="create-ingredient selected"
+                    >
                       <span>{ingredient.name}</span>
-                      <IconX className="icon-remove" onClick={() => handleRemoveIngredient(ingredient.name)} />
+                      <IconX
+                        className="icon-remove"
+                        onClick={() => handleRemoveIngredient(ingredient.name)}
+                      />
                       <input
                         type="text"
                         placeholder="Amount"
                         className="input-ingredient-amount"
-                        value={ingredient.amount}
-                        onChange={(e) => handleAmountChange(e, ingredient.name)}
+                        value={ingredient.quantity || ""}
+                        onChange={(e) =>
+                          handleQuantityChange(e, ingredient.name)
+                        }
                       />
                     </div>
                   ))}
@@ -274,10 +338,45 @@ const CreateRecipe = () => {
 
             {/* Submit Button */}
             <div className="create-recipe-container">
-           {/* Other sections here */}
+              {/* Other sections here */}
               <button className="btn-generate-recipe" onClick={handleSubmit}>
                 GENERATE A RECIPE
               </button>
+            </div>
+
+            {/* Saved Recipes */}
+            <div className="saved-recipes">
+              <h2 className="saved-recipes-title">Saved Recipes:</h2>
+              {recipes.length === 0 && <p>No recipes saved yet.</p>}
+              <ul className="saved-recipes-list">
+                {recipes.map((recipe, index) => (
+                  <li key={index} className="recipe-item">
+                    <div className="recipe-card">
+                      <h3 className="recipe-name">{recipe.name}</h3>
+                      <p>Recipe ID: {recipe.id}</p>
+                      <p>Created At: {recipe.createdAt}</p>
+                      <p>Duration: {recipe.duration} minutes</p>
+                      <p>Servings: {recipe.serving}</p>
+                      <p>Instructions: {recipe.instructions}</p>
+                      {recipe.image && (
+                        <img
+                          src={recipe.image}
+                          alt={recipe.name}
+                          className="recipe-image"
+                        />
+                      )}
+                      <div className="btn-delete-container">
+                        <button
+                          className="btn-delete-recipe"
+                          onClick={() => handleDeleteRecipe(index)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
