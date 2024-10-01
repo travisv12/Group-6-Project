@@ -2,8 +2,9 @@
 import { useEffect, useState, useCallback, memo } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import { Dialog, PopoverGroup } from "@headlessui/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Menu } from "@headlessui/react";
+import { getCartItemsCount } from "@/redux/slices/cartSlice";
 import {
   Bars3Icon,
   XMarkIcon,
@@ -60,7 +61,8 @@ const MobileMenu = memo(function MobileMenu({
   mobileMenuOpen,
   setMobileMenuOpen,
 }) {
-  const { getCartItemsCount } = useCart();
+  // const { getCartItemsCount } = useCart();
+    const itemCount = useSelector(getCartItemsCount);
 
   return (
     <>
@@ -166,7 +168,8 @@ const MobileMenu = memo(function MobileMenu({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
-                      {getCartItemsCount()}
+                      {/* {getCartItemsCount()} */}
+                      {itemCount}
                     </span>
                   </div>
                 </NavLink>
@@ -204,11 +207,8 @@ MobileMenu.propTypes = {
 };
 
 const DesktopMenu = memo(({ user, isActive, logout }) => {
-  console.log("JHEEEE");
-  console.log(user);
-  console.log(isActive);
-  console.log(logout);
-  const { getCartItemsCount } = useCart();
+   const itemCount = useSelector(getCartItemsCount);
+  // const { getCartItemsCount } = useCart();
 
   return (
     <>
@@ -233,7 +233,8 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
           <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
           <span>Cart</span>
           <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
-            {getCartItemsCount()}
+            {/* {getCartItemsCount()} */}
+            {itemCount}
           </span>
         </NavLink>
       </div>
@@ -308,7 +309,9 @@ export default function Header() {
   const [isSticky, setIsSticky] = useState(false);
   const user = useSelector((state) => state.user);
   // const { user, logout } = useUser();
-  const location = useLocation();
+    const dispatch = useDispatch();
+    const location = useLocation();
+
 
   useEffect(() => {
     const handleScroll = () => {

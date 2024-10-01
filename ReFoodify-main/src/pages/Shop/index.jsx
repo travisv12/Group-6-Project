@@ -3,24 +3,16 @@ import { FiFilter } from "react-icons/fi";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { icons, shopData } from "@/data/products";
-import useCart from "@/hooks/useCart";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/slices/productSlice";
-import { updateItemQuantity } from "../../redux/slices/cartSlice";
+import { addToCart, updateQuantity } from "../../redux/slices/cartSlice";
 import almond_milk from "@/assets/almond-milk.png";
+import Spinner from "@/components/Spinner";
 import "./index.style.css";
 
 const Shop = () => {
   const dispatch = useDispatch();
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    getCartTotal,
-    getCartItemsCount,
-  } = useCart();
-
+  const cart = useSelector((state) => state.cart.items);
   const products = useSelector((state) => state.products.products);
   const loading = useSelector((state) => state.products.loading);
   const error = useSelector((state) => state.products.error);
@@ -112,9 +104,47 @@ const handleFilterChange = (e) => {
 
   const handlePagination = (pageNumber) => setCurrentPage(pageNumber);
 
-    const handleUpdateQuantity = (productId, quantity) => {
-      dispatch(updateItemQuantity({ productId, quantity }));
+  // const handleUpdateQuantity = (productId, quantity) => {
+  //   dispatch(updateQuantity({ productId, quantity }));
+  // };
+
+  
+
+    const handleDecreaseQuantity = (product) => {
+      console.log("Decreasing quantity for product:", product);
+      const currentQuantity =
+        cart?.find((item) => item.id === product._id)?.quantity || 0;
+      if (currentQuantity > 0) {
+        dispatch(
+          updateQuantity({
+            productId: product._id,
+            quantity: currentQuantity - 1,
+          })
+        );
+      }
     };
+
+    const handleIncreaseQuantity = (product) => {
+      console.log("Increasing quantity for product:", product);
+        console.log("Dispatching addToCart action");
+   dispatch(
+     addToCart({
+       product: {
+         id: product._id,
+         name: product.name,
+         price: parsePrice(product.price),
+         discountedPrice: parsePrice(product.discountedPrice),
+         store: product.store,
+         image: product.image,
+         // Add any other necessary properties
+       },
+       quantity: 1,
+     })
+   );
+      console.log({dispatch})
+        console.log("Dispatched addToCart action");
+    };
+
 
   return (
     <div className="shop-container">
@@ -180,7 +210,7 @@ const handleFilterChange = (e) => {
           </div>
           {/* Shop List */}
           <div className="shop-list">
-            {loading && <p>Loading...</p>}
+            {loading && <Spinner loading={loading} />}
             {error && <p>Error: {error}</p>}
             {!loading && !error && (
               <div className="shop-list-grid">
@@ -218,24 +248,18 @@ const handleFilterChange = (e) => {
                           <button
                             type="button"
                             className="shop-list-item-quantity-button"
-                            onClick={() =>
-                              handleUpdateQuantity(
-                                product._id,
-                                (cart.find((item) => item.id === product._id)
-                                  ?.quantity || 0) - 1
-                              )
-                            }
+                            onClick={() => handleDecreaseQuantity(product)}
                           >
                             -
                           </button>
                           <span className="shop-list-item-quantity-value">
-                            {cart.find((item) => item.id === product._id)
+                            {cart?.find((item) => item.id === product._id)
                               ?.quantity || 0}
                           </span>
                           <button
                             type="button"
                             className="shop-list-item-quantity-button"
-                            onClick={() => addToCart(product)}
+                            onClick={() => handleIncreaseQuantity(product)}
                           >
                             +
                           </button>
