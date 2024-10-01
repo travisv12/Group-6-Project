@@ -1,4 +1,5 @@
 import ctaImage from "@/assets/cta.png";
+import { Link } from "react-router-dom";
 
 export default function CallToAction() {
   return (
@@ -39,18 +40,24 @@ export default function CallToAction() {
               shop.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-              <a
-                href="#"
+              <Link
+                to="/login"
+                title=""
                 className="rounded-md bg-white px-3.5 py-2.5 text-lg font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                role="button"
               >
-                Claim your points 🎉
-              </a>
-              <a
-                href="#"
+                <span> Claim your points 🎉</span>
+              </Link>
+              <Link
+                to="/learn-more"
+                title=""
                 className="text-lg font-semibold leading-6 text-white"
+                role="button"
               >
                 Learn more <span aria-hidden="true">→</span>
-              </a>
+              </Link>
+
+          
             </div>
           </div>
           <div className="relative mt-16 lg:mt-0 w-full lg:w-1/2 aspect-[2/1] lg:aspect-auto">

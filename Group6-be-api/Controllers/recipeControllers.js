@@ -5,6 +5,7 @@ const {
   getRecipeById,
   getUserRecipes,
   filterRecipes,
+  deleteRecipe,
 } = require("../Services/recipeService");
 
 
@@ -23,10 +24,12 @@ const filterRecipesController = async (req, res) => {
 
 // Handler for creating a new recipe
 const createRecipeController = async (req, res) => {
-  const recipeData = { ...req.body, userId: req.user.id };
+   const userId = req.user.id;
+   const author = req.user.username; // Assuming the user's name is stored in req.user.name
+   const recipeData = req.body;
 
   try {
-    const recipe = await createRecipe(recipeData);
+    const recipe = await createRecipe(recipeData, userId, author);
     res.status(201).json(recipe);
   } catch (err) {
     console.error(err.message);
@@ -76,10 +79,25 @@ const updateRecipeController = async (req, res) => {
   }
 };
 
+// Handler for deleting a recipe
+const deleteRecipeController = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const message = await deleteRecipe(id, userId);
+    res.status(200).send(message);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
 module.exports = {
   createRecipeController,
   updateRecipeController,
   getRecipeByIdController,
   getUserRecipesController,
   filterRecipesController,
+  deleteRecipeController,
 }

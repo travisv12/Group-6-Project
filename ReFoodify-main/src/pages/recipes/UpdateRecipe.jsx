@@ -5,6 +5,7 @@ import { message } from "antd"; // Import message from antd
 import recipeBg from "@/assets/recipe-detail-bg.png";
 import { updateRecipe } from "@/redux/slices/recipeSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { toast} from "react-toastify";
 import "./updateRecipe.style.css";
 
 // Available Ingredients (Mock data)
@@ -60,11 +61,10 @@ const UpdateRecipe = () => {
           image: selectedRecipe.img,
         });
         setImagePreview(selectedRecipe.img);
-                console.log("Image preview set to:", selectedRecipe.img); 
+        console.log("Image preview set to:", selectedRecipe.img);
       }
     }
   }, [id, recipes]);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,47 +86,47 @@ const UpdateRecipe = () => {
     }
   };
 
- const handleRemoveIngredient = (ingredientName) => {
-   setFormData((prevData) => ({
-     ...prevData,
-     ingredients: prevData.ingredients.filter(
-       (ing) => ing.name !== ingredientName
-     ),
-   }));
- };
+  const handleRemoveIngredient = (ingredientName) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      ingredients: prevData.ingredients.filter(
+        (ing) => ing.name !== ingredientName
+      ),
+    }));
+  };
 
-   const handleIngredientAmountChange = (name, amount) => {
-     setFormData((prevData) => ({
-       ...prevData,
-       ingredients: prevData.ingredients.map((ing) =>
-         ing.name === name ? { ...ing, amount } : ing
-       ),
-     }));
-   };
+  const handleIngredientAmountChange = (name, amount) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      ingredients: prevData.ingredients.map((ing) =>
+        ing.name === name ? { ...ing, amount } : ing
+      ),
+    }));
+  };
 
-     const handleSearchChange = (e) => {
-       const term = e.target.value.toLowerCase();
-       setSearchTerm(term);
-       const filtered = availableIngredients.filter((ingredient) =>
-         ingredient.toLowerCase().includes(term)
-       );
-       setFilteredIngredients(filtered);
-     };
+  const handleSearchChange = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    const filtered = availableIngredients.filter((ingredient) =>
+      ingredient.toLowerCase().includes(term)
+    );
+    setFilteredIngredients(filtered);
+  };
 
-       const handleFileChange = (e) => {
-         const file = e.target.files[0];
-         if (file) {
-           const reader = new FileReader();
-           reader.onloadend = () => {
-             setImagePreview(reader.result); // Show preview of image
-             setFormData((prevData) => ({
-               ...prevData,
-               image: reader.result, // Store image as base64
-             }));
-           };
-           reader.readAsDataURL(file);
-         }
-       };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result); // Show preview of image
+        setFormData((prevData) => ({
+          ...prevData,
+          image: reader.result, // Store image as base64
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleDeleteImage = () => {
     setImagePreview(null);
@@ -136,25 +136,25 @@ const UpdateRecipe = () => {
     }));
   };
 
-  const handleUpdate =  (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
     dispatch(updateRecipe({ id, ...formData }));
+    toast.success("Recipe updated successfully!"); // Show success toast
     message.success("Recipe updated successfully!"); // Show success toast
     navigate("/my-account/my-recipes");
-  //     try {
-  //   const response = await dispatch(updateRecipe({ id, ...formData })).unwrap();
-  //   if (response && response.message) {
-  //     message.success(response.message); // Show success toast with message from response
-  //   } else {
-  //     message.success("Recipe updated successfully!"); // Fallback message
-  //   }
-  //   navigate("/my-account/my-recipes");
-  // } catch (error) {
-  //   console.error("Error updating recipe:", error);
-  //   message.error("Failed to update recipe. Please try again.");
-  // }
+    //     try {
+    //   const response = await dispatch(updateRecipe({ id, ...formData })).unwrap();
+    //   if (response && response.message) {
+    //     message.success(response.message); // Show success toast with message from response
+    //   } else {
+    //     message.success("Recipe updated successfully!"); // Fallback message
+    //   }
+    //   navigate("/my-account/my-recipes");
+    // } catch (error) {
+    //   console.error("Error updating recipe:", error);
+    //   message.error("Failed to update recipe. Please try again.");
+    // }
   };
-
 
   return (
     <div>

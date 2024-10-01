@@ -1,8 +1,13 @@
 const Recipe = require("../Models/recipe");
 
 
-const createRecipe = async (recipeData) => {
-  const recipe = new Recipe(recipeData);
+
+const createRecipe = async (recipeData, userId, author) => {
+  const recipe = new Recipe({
+    ...recipeData,
+    userId,
+    author,
+  });
   await recipe.save();
   return recipe;
 };
@@ -21,6 +26,19 @@ const updateRecipe = async (id, userId, updateData) => {
   }
   return "Recipe updated successfully";
 };
+
+
+const deleteRecipe = async (id, userId) => {
+  const recipe = await Recipe.findOneAndDelete({ _id: id, userId });
+  if (!recipe) {
+    throw new Error(
+      "Recipe not found or you do not have permission to delete this recipe"
+    );
+  }
+  return "Recipe deleted successfully";
+};
+
+
 
 const getRecipeById = async (id, userId) => {
   const recipe = await Recipe.findOne({ _id: id, userId });
@@ -76,4 +94,5 @@ module.exports = {
   getRecipeById,
   getUserRecipes,
   filterRecipes,
+  deleteRecipe,
 };
