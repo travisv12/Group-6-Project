@@ -26,6 +26,10 @@ const UserSchema = new mongoose.Schema({
     default: "user",
   },
   email: { type: String, required: true, unique: true },
+  avatarUrl: {
+    type: String,
+    default: "/images/avatar.jpg",
+  },
 });
 
 // Hash the password before saving the user
@@ -40,7 +44,6 @@ const UserSchema = new mongoose.Schema({
 
 // Method to compare passwords
 UserSchema.methods.comparePassword = async function (enteredPassword) {
-
   return await bcrypt.compare(enteredPassword, this.password);
 };
 

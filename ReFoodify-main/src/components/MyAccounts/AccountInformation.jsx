@@ -6,8 +6,10 @@ import {
   updateUser,
   setUserInfo,
   logout,
+  updateUserAvatar,
 } from "@/redux/slices/userSlice";
 import Avatar from "@/assets/genericAvatar.png";
+// import Avatar from "../../../../Group6-be-api/images/avatar.jpg";
 import MailIcon from "@/assets/mail.png";
 import Reward from "@/assets/reward.png";
 import { useNavigate } from "react-router-dom";
@@ -143,17 +145,43 @@ const AccountInformation = () => {
   };
 
   const handleRemoveAvatar = () => {
-    setAvatar(Avatar);
+    // setAvatar(Avatar);
+    setAvatar("../../../../Group6-be-api/images/avatar.jpg");
   };
 
-  const handleAvatarChange = (e) => {
+  // const handleAvatarChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setAvatar(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
+  const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatar(reader.result);
-      };
-      reader.readAsDataURL(file);
+      console.log(file);
+      const formData = new FormData();
+      formData.append("file", file);
+      console.log("FORM DATA beginning: ", formData);
+
+      try {
+        const resultAction = await dispatch(updateUserAvatar(formData));
+        if (updateUserAvatar.fulfilled.match(resultAction)) {
+          const newAvatarUrl = resultAction.payload.avatarUrl;
+          setAvatar("../../../../Group6-be-api/" + newAvatarUrl);
+          console.log(newAvatarUrl);
+          setUpdatedUserInfo((prevInfo) => ({
+            ...prevInfo,
+            avatarUrl: newAvatarUrl,
+          }));
+        }
+      } catch (error) {
+        console.error("Error uploading avatar:", error);
+      }
     }
   };
 
@@ -175,7 +203,8 @@ const AccountInformation = () => {
         {/* Profile Photo and Actions */}
         <div className="profile-photo-section-responsive">
           <img
-            src={avatar}
+            // src={avatar}
+            src="../../../public/avatars/avatar.jpg"
             alt={`${updatedUserInfo.username}'s avatar`}
             className="profile-photo-responsive"
           />
@@ -194,6 +223,7 @@ const AccountInformation = () => {
             </button>
             <input
               type="file"
+              name="file"
               id="avatarUpload"
               accept="image/*"
               className="hidden-input-responsive"

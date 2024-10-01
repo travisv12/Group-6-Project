@@ -1,10 +1,30 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+export const updateUserAvatar = createAsyncThunk(
+  "user/updateAvatar",
+  async (formData, { rejectWithValue }) => {
+    console.log("FORM DATA: ", formData);
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/users/upload-avatar",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) throw new Error("Avatar upload failed");
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 // Async thunk for login
 export const login = createAsyncThunk(
   "user/login",
   async ({ email, password }) => {
-    const response = await fetch(" http://localhost:3001/api/users/login", {
+    const response = await fetch("http://localhost:3001/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +84,6 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
-
 export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (userInfo, { getState }) => {
@@ -83,7 +102,6 @@ export const updateUser = createAsyncThunk(
     return data;
   }
 );
-
 
 export const refreshAccessToken = createAsyncThunk(
   "user/refreshAccessToken",
@@ -120,7 +138,6 @@ export const refreshAccessToken = createAsyncThunk(
   }
 );
 
-
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -129,6 +146,7 @@ const userSlice = createSlice({
     loading: false,
     uerInfo: null,
     error: null,
+    avatarUrl: "/images/avatar.jpg",
   },
   reducers: {
     setUser: (state, action) => {
@@ -155,7 +173,7 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-        .addCase(refreshAccessToken.pending, (state) => {
+      .addCase(refreshAccessToken.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -213,10 +231,21 @@ const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(updateUserAvatar.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserAvatar.fulfilled, (state, action) => {
+        state.avatarUrl = action.payload.avatarUrl;
+      })
+      .addCase(updateUserAvatar.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
-export const {  setAccessToken, setRefreshToken, setUser, setUserInfo, logout } =
+export const { setAccessToken, setRefreshToken, setUser, setUserInfo, logout } =
   userSlice.actions;
 export default userSlice.reducer;

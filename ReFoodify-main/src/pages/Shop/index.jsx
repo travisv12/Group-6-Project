@@ -32,7 +32,8 @@ const Shop = () => {
     company: "",
   });
   const [sortOrder, setSortOrder] = useState("");
-  const [visibleProducts, setVisibleProducts] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -54,14 +55,6 @@ const Shop = () => {
     const parsedPrice = parseFloat(cleanedPrice);
     return parsedPrice;
   };
-
-  // // Helper function to clean up price strings
-  // const parsePrice = (priceString) => {
-  //   const cleanedPrice = priceString
-  //     .replace(/[^\d,.-]/g, "") // Remove non-numeric characters except comma, dot, and minus
-  //     .replace(",", "."); // Convert comma to dot if necessary
-  //   return parseFloat(cleanedPrice);
-  // };
 
   // Apply search and filters when state changes
   useEffect(() => {
@@ -151,6 +144,7 @@ const Shop = () => {
               ))}
             </select>
             <div className="shop-filters-sort">
+              {/* <p className="shop-filters-sort-title">Sort by Price:</p> */}
               <div className="shop-filters-sort-buttons">
                 <button
                   className={`shop-filters-sort-button ${
@@ -179,7 +173,6 @@ const Shop = () => {
               </div>
             </div>
           </div>
-
           {/* Shop List */}
           <div className="shop-list">
             {loading && <p>Loading...</p>}
@@ -258,20 +251,30 @@ const Shop = () => {
               </div>
             )}
 
-            {/* Show More Button */}
-            {visibleProducts < products.length && (
-              <div className="w-full flex items-center justify-center gap-3 p-5">
+            {/* Pagination */}
+            <div className="shop-pagination">
+              {[
+                ...Array(Math.ceil(products.length / productsPerPage)).keys(),
+              ].map((number) => (
                 <button
-                  onClick={handleShowMore}
-                  className="p-3 rounded shadow bg-yellow-400 w-fit"
+                  key={number + 1}
+                  onClick={() => handlePagination(number + 1)}
+                  className={`shop-pagination-button ${
+                    currentPage === number + 1 ? "active" : ""
+                  }`}
                 >
-                  Show More
+                  {number + 1}
                 </button>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
         </div>
       </div>
+      {/* You can add a cart summary here
+      <div className="shop-cart-summary">
+        <p>Total Items in Cart: {getCartItemsCount()}</p>
+        <p>Total Price: ${getCartTotal().toFixed(2)}</p>
+      </div> */}
     </div>
   );
 };
