@@ -1,31 +1,28 @@
-import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import useCart from "@/hooks/useCart";
-import { Link } from "react-router-dom";
+import {removeFromCart, updateQuantity, getCartTotal} from "@/redux/slices/cartSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./index.style.css";
 
 const Cart = () => {
     const dispatch = useDispatch();
+      const navigate = useNavigate();
     const cart = useSelector((state) => state.cart.items);
-    const cartTotal = useSelector((state) => state.cart.total);
+     const cartTotal = useSelector(getCartTotal);
 
-      useEffect(() => {
-        dispatch(fetchCart());
-      }, [dispatch]);
-
-       const handleRemoveFromCart = (productId) => {
-         dispatch(removeItem(productId));
-       };
+  const handleRemoveFromCart = (productId) => {
+    dispatch(removeFromCart(productId));
+  };
        
        
   const handleUpdateQuantity = (productId, quantity) => {
-    dispatch(updateItemQuantity({ productId, quantity }));
+    dispatch(updateQuantity({ productId, quantity }));
   };
 
-    const handleCheckout = () => {
-      dispatch(checkout(cart));
-    };
+   const handleCheckout = () => {
+    //  dispatch(checkout(cart));
+     navigate("/payment");
+   };
 
   if (cart.length === 0) {
     return (
@@ -104,7 +101,7 @@ const Cart = () => {
             <div className="cart-summary-details">
               <div className="cart-summary-item">
                 <span>Items Total:</span>
-                <span>{getCartTotal().toFixed(2)} €</span>
+                <span>{cartTotal.toFixed(2)} €</span>
               </div>
               <div className="cart-summary-item">
                 <span>Items Discount:</span>
@@ -112,10 +109,12 @@ const Cart = () => {
               </div>
               <div className="cart-summary-total">
                 <span>Estimated Total</span>
-                <span>{(getCartTotal() - 16.8).toFixed(2)} €</span>
+                <span>{(cartTotal - 16.8).toFixed(2)} €</span>
               </div>
             </div>
-            <button className="cart-summary-button">Check out</button>
+            <button className="cart-summary-button" onClick={handleCheckout}>
+              Check out
+            </button>
           </div>
         </div>
       </div>

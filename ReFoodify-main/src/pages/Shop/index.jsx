@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { icons, shopData } from "@/data/products";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/slices/productSlice";
-import { addToCart, updateQuantity } from "../../redux/slices/cartSlice";
+import { addToCart, updateQuantity} from "../../redux/slices/cartSlice";
 import almond_milk from "@/assets/almond-milk.png";
 import Spinner from "@/components/Spinner";
 import "./index.style.css";
@@ -53,11 +53,9 @@ const Shop = () => {
     setCurrentPage(1); // Reset to first page when filters or sorting change
   }, [searchQuery, filters, sortOrder]);
 
-
   const filteredProducts = products.filter((product) => {
     const productPrice = parsePrice(product.discountedPrice);
     const productRating = product.rating !== undefined ? product.rating : 5;
-
 
     return (
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -67,7 +65,6 @@ const Shop = () => {
       (filters.company === "" || product.store === filters.company)
     );
   });
-
 
   // Apply sorting by price
   const sortedProducts = [...filteredProducts];
@@ -81,14 +78,13 @@ const Shop = () => {
     );
   }
 
-
-const handleFilterChange = (e) => {
-  const { name, value } = e.target;
-  setFilters((prevFilters) => ({
-    ...prevFilters,
-    [name]: value,
-  }));
-};
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
   const handleSortChange = (order) => {
     setSortOrder(order);
   };
@@ -101,50 +97,40 @@ const handleFilterChange = (e) => {
     indexOfLastProduct
   );
 
-
   const handlePagination = (pageNumber) => setCurrentPage(pageNumber);
 
-  // const handleUpdateQuantity = (productId, quantity) => {
-  //   dispatch(updateQuantity({ productId, quantity }));
-  // };
+  // decrease quanity logic for cart icon
+  const handleDecreaseQuantity = (product) => {
+    console.log("Decreasing quantity for product:", product);
+    const currentQuantity =
+      cart?.find((item) => item.id === product._id)?.quantity || 0;
+    if (currentQuantity > 0) {
+      dispatch(
+        updateQuantity({
+          productId: product._id,
+          quantity: currentQuantity - 1,
+        })
+      );
+    }
+  };
 
-  
-
-    const handleDecreaseQuantity = (product) => {
-      console.log("Decreasing quantity for product:", product);
-      const currentQuantity =
-        cart?.find((item) => item.id === product._id)?.quantity || 0;
-      if (currentQuantity > 0) {
-        dispatch(
-          updateQuantity({
-            productId: product._id,
-            quantity: currentQuantity - 1,
-          })
-        );
-      }
-    };
-
-    const handleIncreaseQuantity = (product) => {
-      console.log("Increasing quantity for product:", product);
-        console.log("Dispatching addToCart action");
-   dispatch(
-     addToCart({
-       product: {
-         id: product._id,
-         name: product.name,
-         price: parsePrice(product.price),
-         discountedPrice: parsePrice(product.discountedPrice),
-         store: product.store,
-         image: product.image,
-         // Add any other necessary properties
-       },
-       quantity: 1,
-     })
-   );
-      console.log({dispatch})
-        console.log("Dispatched addToCart action");
-    };
-
+// increase quanity logic for cart icon
+  const handleIncreaseQuantity = (product) => {
+    dispatch(
+      addToCart({
+        product: {
+          id: product._id,
+          name: product.name,
+          price: parsePrice(product.price),
+          discountedPrice: parsePrice(product.discountedPrice),
+          store: product.store,
+          image: product.image,
+        },
+        quantity: 1,
+      })
+    );
+    console.log({ dispatch });
+  };
 
   return (
     <div className="shop-container">
@@ -301,8 +287,8 @@ const handleFilterChange = (e) => {
       </div>
       {/* You can add a cart summary here
       <div className="shop-cart-summary">
-        <p>Total Items in Cart: {getCartItemsCount()}</p>
-        <p>Total Price: ${getCartTotal().toFixed(2)}</p>
+        <p>Total Items in Cart: {itemCount}</p>
+        <p>Total Price: ${totalPrice.toFixed(2)}</p>
       </div> */}
     </div>
   );

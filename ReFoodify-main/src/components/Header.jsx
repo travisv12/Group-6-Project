@@ -16,7 +16,6 @@ import {
   InboxIcon,
 } from "@heroicons/react/24/outline";
 import ScrollIndicator from "./ScrollIndicator";
-import useCart from "@/hooks/useCart";
 import PropTypes from "prop-types";
 import avatar from "./avatar.jpg";
 import { logout } from "@/redux/slices/userSlice";
@@ -61,8 +60,8 @@ const MobileMenu = memo(function MobileMenu({
   mobileMenuOpen,
   setMobileMenuOpen,
 }) {
-  // const { getCartItemsCount } = useCart();
-    const itemCount = useSelector(getCartItemsCount);
+
+  const itemCount = useSelector(getCartItemsCount);
 
   return (
     <>
@@ -168,8 +167,8 @@ const MobileMenu = memo(function MobileMenu({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
-                      {/* {getCartItemsCount()} */}
                       {itemCount}
+                      console.log("Hello" : itemCount);
                     </span>
                   </div>
                 </NavLink>
@@ -233,7 +232,7 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
           <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
           <span>Cart</span>
           <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
-            {/* {getCartItemsCount()} */}
+
             {itemCount}
           </span>
         </NavLink>
@@ -308,9 +307,12 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const user = useSelector((state) => state.user);
-  // const { user, logout } = useUser();
+
+  const itemCount = useSelector(getCartItemsCount);
+    // const [cartItemCount, setCartItemCount] = useState(0);
     const dispatch = useDispatch();
     const location = useLocation();
+
 
 
   useEffect(() => {
@@ -356,8 +358,14 @@ export default function Header() {
           logout={handleLogout}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
+       
         />
-        <DesktopMenu user={user} isActive={isActive} logout={handleLogout} />
+        <DesktopMenu
+          user={user}
+          isActive={isActive}
+          logout={handleLogout}
+      
+        />
       </nav>
     </header>
   );

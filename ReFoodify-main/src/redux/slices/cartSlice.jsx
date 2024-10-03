@@ -7,27 +7,19 @@ const cartSlice = createSlice({
   },
   reducers: {
     addToCart: (state, action) => {
-      console.log("Adding to cart:", action.payload);
       const { product, quantity = 1 } = action.payload;
-      if (state.items) {
-        console.log("State items before adding:", state.items);
-        const existingItem = state.items.find((item) => item.id === product.id);
-        if (existingItem) {
-          console.log("Existing item found:", existingItem);
-          existingItem.quantity += quantity;
-        } else {
-          state.items.push({ ...product, quantity });
-        }
+      const existingItem = state.items.find((item) => item.id === product.id);
+      if (existingItem) {
+        existingItem.quantity += quantity;
       } else {
-        state.items = [{ ...product, quantity }];
+        state.items.push({ ...product, quantity });
       }
-      localStorage.setItem("cart", JSON.stringify(state.items));
+      console.log("Item added to cart:", state.items); // Optional: Add logging for debugging
     },
 
     removeFromCart: (state, action) => {
       const productId = action.payload;
       state.items = state.items.filter((item) => item.id !== productId);
-      localStorage.setItem("cart", JSON.stringify(state.items));
     },
     updateQuantity: (state, action) => {
       const { productId, quantity } = action.payload;
@@ -39,11 +31,9 @@ const cartSlice = createSlice({
           console.log("Item removed from cart:", item);
         }
       }
-      localStorage.setItem("cart", JSON.stringify(state.items));
     },
     clearCart: (state) => {
       state.items = [];
-      localStorage.setItem("cart", JSON.stringify(state.items));
     },
   },
 });
@@ -52,16 +42,19 @@ export const { addToCart, removeFromCart, updateQuantity, clearCart } =
   cartSlice.actions;
 
 export const getCartTotal = (state) => {
-  return state.items.reduce((total, item) => {
+  return state.cart.items.reduce((total, item) => {
     const price = parseFloat(item.discountedPrice);
     return total + price * item.quantity;
   }, 0);
 };
 
 export const getCartItemsCount = (state) => {
-  if (!state.items || state.items.length === 0) {
+    const cartItems = state.cart.items;
+  if (!cartItems || cartItems.length === 0) {
     return 0;
   }
-  return state.items.reduce((count, item) => count + item.quantity, 0);
+  const itemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+  return itemCount;
 };
+
 export default cartSlice.reducer;

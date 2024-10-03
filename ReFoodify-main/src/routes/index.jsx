@@ -18,6 +18,8 @@ import AccountInformation from "@/components/MyAccounts/AccountInformation";
 import MyRecipes from "@/components/MyAccounts/MyRecipes";
 import PurchaseHistory from "@/components/MyAccounts/PurchaseHistory";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import ThankYou from "@/pages/ThankYou";
+import PaymentForm from "@/components/paymentForm";
 
 export default function Router() {
   const isAuthenticated = useSelector((state) => !!state.user.accessToken);
@@ -100,6 +102,15 @@ export default function Router() {
           path: "/login",
           element: isAuthenticated ? <Navigate to="/my-account" /> : <Login />,
         },
+              // element: <ProtectedRoute element={<MyAccount />} />,
+        {
+          path: "/thank-you",
+          element: <ProtectedRoute element= {<ThankYou />} />, 
+           }, 
+      {
+        path: "/payment",
+        element: <ProtectedRoute element={<PaymentForm />} />,
+      }
       ],
     },
   ]);
