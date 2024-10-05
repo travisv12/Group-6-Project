@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FiFilter } from "react-icons/fi";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { icons, shopData } from "@/data/products";
+// import { icons, shopData } from "@/data/products";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/slices/productSlice";
 import { addToCart, updateQuantity} from "../../redux/slices/cartSlice";
