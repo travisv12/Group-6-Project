@@ -86,14 +86,11 @@ const Recipes = () => {
 
   // Handle generating recipes
   const handleGenerateRecipes = () => {
-    //   dispatch(fetchFilteredRecipes(formData.ingredients));
-    //   console.log("Form data", formData);
-    // };
     if (!isAuthenticated) {
       toast.error("You need to login");
       return;
     }
-    dispatch(fetchFilteredRecipes(formData.ingredients));
+    dispatch(fetchFilteredRecipes(formData.ingredients, true));
     console.log("Form data", formData);
   };
 
