@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import avatar from "./avatar.jpg";
 import useCartStore from "@/hooks/useCartStore";
 import { logout } from "@/redux/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const navLinks = [
   {
@@ -77,7 +78,7 @@ const MobileMenu = memo(function MobileMenu({
             className="h-6 w-6 text-white stroke-2"
           />
         </button>
-        {user && (
+        {user.accessToken && (
           <Menu as="div" className="relative z-20 inline-block text-left">
             <Menu.Button className="flex items-center gap-2">
               <img
@@ -176,7 +177,7 @@ const MobileMenu = memo(function MobileMenu({
                   </div>
                 </NavLink>
               </div>
-              {!user && (
+              {!user.accessToken && (
                 <div className="py-6">
                   <NavLink
                     to="/login"
@@ -240,7 +241,7 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
             {itemCount}
           </span>
         </NavLink>
-        {user ? (
+        {user.accessToken ? (
           <Menu as="div" className="relative z-20 inline-block text-left">
             <Menu.Button className="flex items-center gap-2">
               <img
@@ -284,9 +285,13 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
         ) : (
           <NavLink
             to="/login"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className="font-medium leading-6 text-white flex justify-center items-center"
+            style={{ fontSize: "17px" }}
           >
-            Log in <span aria-hidden="true">→</span>
+            Log in{" "}
+            <span aria-hidden="true" className="ml-1">
+              →
+            </span>
           </NavLink>
         )}
       </div>
@@ -307,6 +312,8 @@ DesktopMenu.propTypes = {
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const navigate = useNavigate();
+
   const user = useSelector((state) => state.user);
 
   const itemCount = useSelector(getCartItemsCount);
@@ -334,6 +341,7 @@ export default function Header() {
     // Define your logout logic here
     console.log("User logged out");
     dispatch(logout());
+    navigate("/");
   };
 
   return (

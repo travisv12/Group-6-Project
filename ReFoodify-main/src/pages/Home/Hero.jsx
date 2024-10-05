@@ -7,7 +7,7 @@ const Hero = () => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   return (
     <>
-      <div className="hero-container">
+      {/* <div className="hero-container">
         <div className="hero-gradient">
           <section className="hero-section">
             <div className="hero-grid">
@@ -53,7 +53,7 @@ const Hero = () => {
             </div>
           </section>
         </div>
-      </div>
+      </div> */}
 
       <div className="sustainability-wrapper">
         {" "}

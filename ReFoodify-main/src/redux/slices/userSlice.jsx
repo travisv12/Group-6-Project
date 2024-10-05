@@ -98,7 +98,7 @@ export const updateUser = createAsyncThunk(
       body: JSON.stringify(userInfo),
     });
 
-    const data = await response.text();
+    const data = await response.json();
     return data;
   }
 );
@@ -144,7 +144,7 @@ const userSlice = createSlice({
     accessToken: null,
     refreshToken: null,
     loading: false,
-    uerInfo: null,
+    userInfo: null,
     error: null,
     avatarUrl: "/images/avatar.jpg",
   },
@@ -166,6 +166,8 @@ const userSlice = createSlice({
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;
+      state.userInfo = null;
+      state.error = null;
       localStorage.removeItem("user");
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");

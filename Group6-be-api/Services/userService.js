@@ -7,12 +7,7 @@ require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
-const createUser = async ({
-  username,
-  password,
-  role,
-  email,
-}) => {
+const createUser = async ({ username, password, role, email }) => {
   let user = await User.findOne({ username });
   if (user) {
     throw new Error("User already exists");
@@ -30,26 +25,26 @@ const createUser = async ({
   await user.save();
 
   // return user._id;
-    const accessToken = jwt.sign(
-      { id: user._id, username: user.username, role: user.role },
-      JWT_SECRET,
-      {
-        expiresIn: "2h",
-      }
-    );
-      const refreshToken = jwt.sign(
-        { id: user._id, username: user.username, role: user.role },
-        REFRESH_TOKEN_SECRET,
-        { expiresIn: "7d" }
-      );
+  const accessToken = jwt.sign(
+    { id: user._id, username: user.username, role: user.role },
+    JWT_SECRET,
+    {
+      expiresIn: "2h",
+    }
+  );
+  const refreshToken = jwt.sign(
+    { id: user._id, username: user.username, role: user.role },
+    REFRESH_TOKEN_SECRET,
+    { expiresIn: "7d" }
+  );
 
-      const newRefreshToken = new RefreshToken({
-        token: refreshToken,
-        userId: user._id,
-      });
-      await newRefreshToken.save();
+  const newRefreshToken = new RefreshToken({
+    token: refreshToken,
+    userId: user._id,
+  });
+  await newRefreshToken.save();
 
-      return { userId: user._id, accessToken, refreshToken };
+  return { userId: user._id, accessToken, refreshToken };
 };
 
 const loginUser = async ({ email, password }) => {
@@ -57,7 +52,7 @@ const loginUser = async ({ email, password }) => {
   if (!user) {
     throw new Error("Invalid Email credentials");
   }
-    
+
   const isMatch = await user.comparePassword(password);
   if (!isMatch) {
     throw new Error("Password donot match");
@@ -86,57 +81,53 @@ const loginUser = async ({ email, password }) => {
   return { userId: user._id, accessToken, refreshToken };
 };
 
+const refreshTokenService = async (token) => {
+  const storedToken = await RefreshToken.findOne({ token });
+  if (!storedToken) {
+    throw new Error("Invalid refresh token");
+  }
 
+  const decodedToken = jwt.decode(storedToken.token);
 
- const refreshTokenService = async (token) => {
-   const storedToken = await RefreshToken.findOne({ token });
-   if (!storedToken) {
-     throw new Error("Invalid refresh token");
-   }
+  try {
+    await new Promise((resolve, reject) => {
+      jwt.verify(token, REFRESH_TOKEN_SECRET, (err) => {
+        if (err) {
+          return reject(new Error("Invalid refresh token"));
+        }
+        resolve();
+      });
+    });
 
-   const decodedToken = jwt.decode(storedToken.token);
+    await RefreshToken.deleteOne({ token: storedToken.token });
 
-   try {
-     await new Promise((resolve, reject) => {
-       jwt.verify(token, REFRESH_TOKEN_SECRET, (err) => {
-         if (err) {
-           return reject(new Error("Invalid refresh token"));
-         }
-         resolve();
-       });
-     });
+    const accessToken = jwt.sign(
+      { id: decodedToken.id, role: decodedToken.role },
+      JWT_SECRET,
+      { expiresIn: "2h" }
+    );
 
-     await RefreshToken.deleteOne({ token: storedToken.token });
+    const newRefreshToken = jwt.sign(
+      { id: decodedToken.id, role: decodedToken.role },
+      REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
 
-     const accessToken = jwt.sign(
-       { id: decodedToken.id, role: decodedToken.role },
-       JWT_SECRET,
-       { expiresIn: "2h" }
-     );
+    const newRefreshTokenDoc = new RefreshToken({
+      token: newRefreshToken,
+      userId: decodedToken.id,
+    });
+    await newRefreshTokenDoc.save();
 
-     const newRefreshToken = jwt.sign(
-       { id: decodedToken.id, role: decodedToken.role },
-       REFRESH_TOKEN_SECRET,
-       { expiresIn: "7d" }
-     );
-
-     const newRefreshTokenDoc = new RefreshToken({
-       token: newRefreshToken,
-       userId: decodedToken.id,
-     });
-     await newRefreshTokenDoc.save();
-
-     return {
-       userId: decodedToken.id,
-       accessToken,
-       refreshToken: newRefreshToken,
-     };
-   } catch (err) {
-     throw new Error("Invalid refresh token");
-   }
- };
-
-
+    return {
+      userId: decodedToken.id,
+      accessToken,
+      refreshToken: newRefreshToken,
+    };
+  } catch (err) {
+    throw new Error("Invalid refresh token");
+  }
+};
 
 const getUserInfo = async (userId) => {
   const user = await User.findById(userId).select("-password"); // Exclude password from the response
@@ -146,10 +137,7 @@ const getUserInfo = async (userId) => {
   return user;
 };
 
-const updateUser = async (
-  userId,
-  { username, email, password }
-) => {
+const updateUser = async (userId, { username, email, password }) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new Error("User not found");
@@ -164,7 +152,7 @@ const updateUser = async (
   }
 
   await user.save();
-  return "User information updated successfully";
+  return user;
 };
 
 const logoutUser = async (token) => {
