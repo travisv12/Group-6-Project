@@ -31,14 +31,14 @@ const createUser = async ({
 
   // return user._id;
     const accessToken = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: user._id, username: user.username, role: user.role },
       JWT_SECRET,
       {
         expiresIn: "2h",
       }
     );
       const refreshToken = jwt.sign(
-        { id: user._id, role: user.role },
+        { id: user._id, username: user.username, role: user.role },
         REFRESH_TOKEN_SECRET,
         { expiresIn: "7d" }
       );
@@ -63,12 +63,16 @@ const loginUser = async ({ email, password }) => {
     throw new Error("Password donot match");
   }
 
-  const accessToken = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
-    expiresIn: "2h",
-  });
+  const accessToken = jwt.sign(
+    { id: user._id, username: user.username, role: user.role },
+    JWT_SECRET,
+    {
+      expiresIn: "2h",
+    }
+  );
 
   const refreshToken = jwt.sign(
-    { id: user._id, role: user.role },
+    { id: user._id, username: user.username, role: user.role },
     REFRESH_TOKEN_SECRET,
     { expiresIn: "7d" }
   );

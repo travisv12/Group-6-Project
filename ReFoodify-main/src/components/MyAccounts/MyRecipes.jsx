@@ -1,16 +1,19 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchUserRecipes } from "@/redux/slices/recipeSlice";
+import { fetchUserRecipes, deleteRecipe } from "@/redux/slices/recipeSlice";
 import poached_eggs from "@/assets/poached_eggs.png"; // Fallback image
+import { toast } from "react-toastify";
+import Spinner from "@/components/Spinner";
 import apiFetch from "../../services/api";
+
 
 import "./myRecipes.style.css";
 
 const MyRecipes = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const recipes = useSelector((state) => state.recipes.recipes);
+  const recipes = useSelector((state) => state.recipes.userRecipes);
   const loading = useSelector((state) => state.recipes.loading);
   const error = useSelector((state) => state.recipes.error);
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -31,15 +34,10 @@ const MyRecipes = () => {
   // Handle delete recipe
   const handleDelete = async (_id) => {
     try {
-      const response = await apiFetch(`/api/recipes/${_id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        throw new Error("Failed to delete recipe");
-      }
-      dispatch(fetchUserRecipes(userInfo._id)); // Refetch recipes after deletion
+      await dispatch(deleteRecipe(_id)).unwrap();
+      toast.success("Recipe deleted successfully!");
     } catch (error) {
-      console.error("Error deleting recipe:", error);
+      toast.error("Failed to delete recipe.");
     }
   };
 
@@ -51,7 +49,7 @@ const MyRecipes = () => {
         </h1>
 
         {loading ? (
-          <p>Loading...</p>
+          <Spinner loading={loading} />
         ) : error ? (
           <p className="recipes-no-data-unique">Error: {error}</p>
         ) : recipes.length === 0 ? (

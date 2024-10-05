@@ -2,8 +2,9 @@
 import { useEffect, useState, useCallback, memo } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import { Dialog, PopoverGroup } from "@headlessui/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Menu } from "@headlessui/react";
+import { getCartItemsCount } from "@/redux/slices/cartSlice";
 import {
   Bars3Icon,
   XMarkIcon,
@@ -15,7 +16,6 @@ import {
   InboxIcon,
 } from "@heroicons/react/24/outline";
 import ScrollIndicator from "./ScrollIndicator";
-import useCart from "@/hooks/useCart";
 import PropTypes from "prop-types";
 import avatar from "./avatar.jpg";
 import useCartStore from "@/hooks/useCartStore";
@@ -61,8 +61,7 @@ const MobileMenu = memo(function MobileMenu({
   mobileMenuOpen,
   setMobileMenuOpen,
 }) {
-  const { getCartItemsCount } = useCartStore();
-  const totalItems = getCartItemsCount();
+  const itemCount = useSelector(getCartItemsCount);
 
   return (
     <>
@@ -171,7 +170,8 @@ const MobileMenu = memo(function MobileMenu({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
-                      {totalItems}
+                      {itemCount}
+                      console.log("Hello" : itemCount);
                     </span>
                   </div>
                 </NavLink>
@@ -209,11 +209,8 @@ MobileMenu.propTypes = {
 };
 
 const DesktopMenu = memo(({ user, isActive, logout }) => {
-  console.log("JHEEEE");
-  console.log(user);
-  console.log(isActive);
-  console.log(logout);
-  const { getCartItemsCount } = useCart();
+  const itemCount = useSelector(getCartItemsCount);
+  // const { getCartItemsCount } = useCart();
 
   return (
     <>
@@ -240,7 +237,7 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
           <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
           <span></span>
           <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
-            {getCartItemsCount()}
+            {itemCount}
           </span>
         </NavLink>
         {user ? (
@@ -311,7 +308,10 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const user = useSelector((state) => state.user);
-  // const { user, logout } = useUser();
+
+  const itemCount = useSelector(getCartItemsCount);
+  // const [cartItemCount, setCartItemCount] = useState(0);
+  const dispatch = useDispatch();
   const location = useLocation();
 
   useEffect(() => {

@@ -7,6 +7,7 @@ const {
   updateRecipeController,
   getUserRecipesController,
   getRecipeByIdController,
+  deleteRecipeController,
 } = require("../Controllers/recipeControllers");
 
 const router = express.Router();
@@ -22,6 +23,9 @@ router.get("/user/recipe/:id", authenticateJWT, getRecipeByIdController);
 
 // Route for updating a recipe (protected)
 router.put("/user/recipe/update/:id", authenticateJWT, updateRecipeController);
+
+// Route for deleting a recipe (protected)
+router.delete("/user/recipe/delete/:id", authenticateJWT, deleteRecipeController);
 
 // Route for filtering recipes based on ingredients
 router.post("/recipes/search", authenticateJWT, filterRecipesController);

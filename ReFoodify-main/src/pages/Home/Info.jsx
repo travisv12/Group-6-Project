@@ -1,6 +1,7 @@
 import React from "react";
 import "./info.style.css";
 import infoImage from "@/assets/info-img.jpg";
+import { Link } from "react-router-dom";
 
 const Info = () => {
   return (
@@ -24,7 +25,14 @@ const Info = () => {
             </p>
           </div>
           <div className="points-button-container">
-            <button className="points-button">DISCOVER RECIPES</button>
+            <Link
+              to="/recipes"
+              title=""
+              className="points-button"
+              role="button"
+            >
+              <span>DISCOVER RECIPES</span>
+            </Link>
           </div>
         </div>
       </div>

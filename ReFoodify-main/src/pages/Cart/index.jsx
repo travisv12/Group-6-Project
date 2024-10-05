@@ -1,34 +1,30 @@
-import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import useCart from "@/hooks/useCart";
-import { Link } from "react-router-dom";
 import {
-  fetchCart,
-  removeItem,
-  updateItemQuantity,
-  checkout,
+  removeFromCart,
+  updateQuantity,
+  getCartTotal,
 } from "@/redux/slices/cartSlice";
+import { Link, useNavigate } from "react-router-dom";
+
 import "./index.style.css";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.items);
-  const cartTotal = useSelector((state) => state.cart.total);
-
-  useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
+  const cartTotal = useSelector(getCartTotal);
 
   const handleRemoveFromCart = (productId) => {
-    dispatch(removeItem(productId));
+    dispatch(removeFromCart(productId));
   };
 
   const handleUpdateQuantity = (productId, quantity) => {
-    dispatch(updateItemQuantity({ productId, quantity }));
+    dispatch(updateQuantity({ productId, quantity }));
   };
 
   const handleCheckout = () => {
-    dispatch(checkout(cart));
+    //  dispatch(checkout(cart));
+    navigate("/payment");
   };
 
   if (cart.length === 0) {
@@ -110,7 +106,7 @@ const Cart = () => {
             <div className="cart-summary-details">
               <div className="cart-summary-item">
                 <span>Items Total:</span>
-                <span>{totalItems} €</span>
+                <span>{cartTotal.toFixed(2)} €</span>
               </div>
               <div className="cart-summary-item">
                 <span>Items Discount:</span>
@@ -119,15 +115,13 @@ const Cart = () => {
                 </span>
               </div>
               <div className="cart-summary-total">
-                <span>Estimated Total:</span>
-                <span>{totalPrice.toFixed(2)} €</span>
-              </div>
-              <div className="cart-summary-reward">
-                <span>Reward Bonus:</span>
-                <span>{rewardBonus.toFixed(2)} €</span>
+                <span>Estimated Total</span>
+                <span>{(cartTotal - 16.8).toFixed(2)} €</span>
               </div>
             </div>
-            <button className="cart-summary-button">Check out</button>
+            <button className="cart-summary-button" onClick={handleCheckout}>
+              Check out
+            </button>
           </div>
         </div>
       </div>

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IconSearch, IconX } from "@tabler/icons-react";
 import recipeBg from "@/assets/recipes_bg.png";
 import meetStew from "@/assets/meet_stew.png";
 import share_recipe_2 from "@/assets/share-recipe-2.png";
 import { fetchFilteredRecipes } from "../../redux/slices/recipeSlice";
+import { toast } from "react-toastify";
 import "./index.style.css";
 // Default image if there's no image
 
@@ -32,9 +33,11 @@ const allIngredients = [
 
 const Recipes = () => {
   const dispatch = useDispatch();
+    const navigate = useNavigate();
   const recipes = useSelector((state) => state.recipes.recipes);
   const loading = useSelector((state) => state.recipes.loading);
   const error = useSelector((state) => state.recipes.error);
+    const isAuthenticated = useSelector((state) => !!state.user.accessToken);
   const [formData, setFormData] = useState({
     recipeName: "",
     duration: "",
@@ -83,7 +86,11 @@ const Recipes = () => {
 
   // Handle generating recipes
   const handleGenerateRecipes = () => {
-    dispatch(fetchFilteredRecipes(formData.ingredients));
+    if (!isAuthenticated) {
+      toast.error("You need to login");
+      return;
+    }
+    dispatch(fetchFilteredRecipes(formData.ingredients, true));
     console.log("Form data", formData);
   };
 
@@ -93,6 +100,14 @@ const Recipes = () => {
       handleAddIngredient(searchTerm.trim());
       setSearchTerm("");
     }
+  };
+
+  const handleShareRecipe = () => {
+    if (!isAuthenticated) {
+      toast.error("You need to login");
+      return;
+    }
+    navigate("/recipes/createRecipe");
   };
 
   return (
@@ -217,10 +232,15 @@ const Recipes = () => {
               SHARE YOUR RECIPE <br /> WITH US
             </h1>
 
-            <div className="main-btn-share">
+            {/* <div className="main-btn-share">
               <a href="/recipes/createRecipe">
                 <button className="btn-share-recipe">SHARE NOW</button>
               </a>
+            </div> */}
+            <div className="main-btn-share">
+              <button className="btn-share-recipe" onClick={handleShareRecipe}>
+                SHARE NOW
+              </button>
             </div>
           </div>
         </div>

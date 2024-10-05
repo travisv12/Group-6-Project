@@ -5,6 +5,7 @@ import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
 import { v4 as uuidv4 } from "uuid";
 import recipeBg from "@/assets/recipe-detail-bg.png";
 import { createRecipe } from "@/redux/slices/recipeSlice";
+import {toast} from "react-toastify";
 import "./createRecipe.style.css";
 
 const availableIngredients = [
@@ -127,6 +128,7 @@ const CreateRecipe = () => {
       formData.ingredients.some((ing) => !ing.quantity)
     ) {
       console.error("Missing required fields");
+          toast.error("Please fill in all required fields.");
       return;
     }
 
@@ -139,6 +141,7 @@ const CreateRecipe = () => {
     try {
       await dispatch(createRecipe(newRecipe)).unwrap(); // Dispatch the createRecipe thunk
       console.log("Recipe saved to database", newRecipe);
+      toast.success("Recipe saved successfully!");
 
       // Reset form and image preview
       setFormData({
@@ -152,6 +155,7 @@ const CreateRecipe = () => {
       setImagePreview(null);
     } catch (error) {
       console.error("Failed to save recipe:", error);
+      toast.error("Failed to save recipe. Please try again.");
     }
   };
 

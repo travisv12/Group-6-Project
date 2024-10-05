@@ -87,7 +87,7 @@ const RecipeDetails = () => {
               {recipe.ingredients.map((ingredient, index) => (
                 <li key={index} className="ingredient-item">
                   <div className="ingredient-name">{ingredient.name}</div>
-                  <div className="ingredient-amount">{ingredient.amount}</div>
+                  <div className="ingredient-amount">{ingredient.quantity}</div>
                 </li>
               ))}
             </ul>

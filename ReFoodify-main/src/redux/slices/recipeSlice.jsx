@@ -67,6 +67,39 @@ export const updateRecipe = createAsyncThunk(
   }
 );
 
+// Thunk for deleting a recipe
+export const deleteRecipe = createAsyncThunk(
+  'recipes/deleteRecipe',
+  async (id, { getState, rejectWithValue }) => {
+    const state = getState();
+    const accessToken = state.user.accessToken;
+
+    if (!accessToken) {
+      return rejectWithValue("No access token found");
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/user/recipe/delete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to delete recipe');
+      }
+
+      return id; // Return the deleted recipe ID
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // Thunk to fetch filtered recipes based on ingredients
 export const fetchFilteredRecipes = createAsyncThunk(
   "recipes/fetchFilteredRecipes",
@@ -142,6 +175,7 @@ const recipeSlice = createSlice({
   initialState: {
     loading: false,
     recipes: [],
+    userRecipes: [],
     error: null,
   },
   reducers: {
@@ -157,7 +191,7 @@ const recipeSlice = createSlice({
       })
       .addCase(fetchUserRecipes.fulfilled, (state, action) => {
         state.loading = false;
-        state.recipes = action.payload;
+        state.userRecipes = action.payload;
       })
       .addCase(fetchUserRecipes.rejected, (state, action) => {
         state.loading = false;
@@ -195,6 +229,23 @@ const recipeSlice = createSlice({
       //   state.loading = false;
       //   state.error = action.payload;
       // })
+      .addCase(deleteRecipe.pending, (state) => {
+        state.status = "loading";
+        state.loading = true; // Set loading to true
+        state.error = null; // Clear any previous errors
+      })
+      .addCase(deleteRecipe.fulfilled, (state, action) => {
+         state.loading = false;
+        state.userRecipes = state.userRecipes.filter(
+          (recipe) => recipe._id !== action.payload
+        );
+        state.status = "succeeded";
+      })
+      .addCase(deleteRecipe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+             state.status = "failed";
+      })
       .addCase(fetchFilteredRecipes.fulfilled, (state, action) => {
         state.loading = false;
         state.recipes = action.payload; // Update the state with the fetched recipes
@@ -203,7 +254,6 @@ const recipeSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
-      
   },
 });
 

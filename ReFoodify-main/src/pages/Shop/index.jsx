@@ -2,25 +2,17 @@ import React, { useState, useEffect } from "react";
 import { FiFilter } from "react-icons/fi";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { icons, shopData } from "@/data/products";
-import useCart from "@/hooks/useCart";
+// import { icons, shopData } from "@/data/products";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/slices/productSlice";
-import { updateItemQuantity } from "../../redux/slices/cartSlice";
+import { addToCart, updateQuantity } from "../../redux/slices/cartSlice";
 import almond_milk from "@/assets/almond-milk.png";
+import Spinner from "@/components/Spinner";
 import "./index.style.css";
 
 const Shop = () => {
   const dispatch = useDispatch();
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    getCartTotal,
-    getCartItemsCount,
-  } = useCart();
-
+  const cart = useSelector((state) => state.cart.items);
   const products = useSelector((state) => state.products.products);
   const loading = useSelector((state) => state.products.loading);
   const error = useSelector((state) => state.products.error);
@@ -107,8 +99,37 @@ const Shop = () => {
 
   const handlePagination = (pageNumber) => setCurrentPage(pageNumber);
 
-  const handleUpdateQuantity = (productId, quantity) => {
-    dispatch(updateItemQuantity({ productId, quantity }));
+  // decrease quanity logic for cart icon
+  const handleDecreaseQuantity = (product) => {
+    console.log("Decreasing quantity for product:", product);
+    const currentQuantity =
+      cart?.find((item) => item.id === product._id)?.quantity || 0;
+    if (currentQuantity > 0) {
+      dispatch(
+        updateQuantity({
+          productId: product._id,
+          quantity: currentQuantity - 1,
+        })
+      );
+    }
+  };
+
+  // increase quanity logic for cart icon
+  const handleIncreaseQuantity = (product) => {
+    dispatch(
+      addToCart({
+        product: {
+          id: product._id,
+          name: product.name,
+          price: parsePrice(product.price),
+          discountedPrice: parsePrice(product.discountedPrice),
+          store: product.store,
+          image: product.image,
+        },
+        quantity: 1,
+      })
+    );
+    console.log({ dispatch });
   };
 
   return (
@@ -175,7 +196,7 @@ const Shop = () => {
           </div>
           {/* Shop List */}
           <div className="shop-list">
-            {loading && <p>Loading...</p>}
+            {loading && <Spinner loading={loading} />}
             {error && <p>Error: {error}</p>}
             {!loading && !error && (
               <div className="shop-list-grid">
@@ -213,24 +234,18 @@ const Shop = () => {
                           <button
                             type="button"
                             className="shop-list-item-quantity-button"
-                            onClick={() =>
-                              handleUpdateQuantity(
-                                product._id,
-                                (cart.find((item) => item.id === product._id)
-                                  ?.quantity || 0) - 1
-                              )
-                            }
+                            onClick={() => handleDecreaseQuantity(product)}
                           >
                             -
                           </button>
                           <span className="shop-list-item-quantity-value">
-                            {cart.find((item) => item.id === product._id)
+                            {cart?.find((item) => item.id === product._id)
                               ?.quantity || 0}
                           </span>
                           <button
                             type="button"
                             className="shop-list-item-quantity-button"
-                            onClick={() => addToCart(product)}
+                            onClick={() => handleIncreaseQuantity(product)}
                           >
                             +
                           </button>
@@ -272,8 +287,8 @@ const Shop = () => {
       </div>
       {/* You can add a cart summary here
       <div className="shop-cart-summary">
-        <p>Total Items in Cart: {getCartItemsCount()}</p>
-        <p>Total Price: ${getCartTotal().toFixed(2)}</p>
+        <p>Total Items in Cart: {itemCount}</p>
+        <p>Total Price: ${totalPrice.toFixed(2)}</p>
       </div> */}
     </div>
   );
