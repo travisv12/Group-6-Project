@@ -37,7 +37,7 @@ export default function Router() {
         },
         {
           path: "/recipes",
-          element: <ProtectedRoute element={<Recipes />} />,
+          element: <Recipes />,
         },
 
         {
@@ -102,8 +102,7 @@ export default function Router() {
           path: "/login",
           element: isAuthenticated ? <Navigate to="/my-account" /> : <Login />,
         },
-              // element: <ProtectedRoute element={<MyAccount />} />,
-        {
+      {
           path: "/thank-you",
           element: <ProtectedRoute element= {<ThankYou />} />, 
            }, 

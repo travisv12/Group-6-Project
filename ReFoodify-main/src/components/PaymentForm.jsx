@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { clearCart } from "@/redux/slices/cartSlice";
 import { useDispatch } from "react-redux";
 import "./PaymentForm.style.css";
+import { toast } from "react-toastify";
 
 const PaymentForm = () => {
   const [cardNumber, setCardNumber] = useState("");
@@ -24,6 +25,7 @@ const PaymentForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
       dispatch(clearCart());
+      toast.success("Payment successful!");
       navigate("/thank-you");
   };
 
