@@ -85,22 +85,21 @@ const AccountInformation = () => {
 
   // Handle Redeem Points and return True if successful
   const [redeemMessage, setRedeemMessage] = useState("");
-  const handleRedeem = () => {
-    const currentPoints = parseInt(updatedUserInfo.points);
-    if (currentPoints >= 5000) {
-      const remainingPoints = currentPoints - 5000;
-      setUpdatedUserInfo((prevInfo) => ({
-        ...prevInfo,
-        points: `${remainingPoints} points`,
-      }));
-      setRedeemMessage("Redeem successful");
-      console.log("Remaining points:", remainingPoints);
-      return true;
-    } else {
-      setRedeemMessage("Points not enough");
-      return false;
-    }
-  };
+  // const handleRedeem = () => {
+  //   const currentPoints = parseInt(updatedUserInfo.points);
+  //   if (currentPoints >= 5000) {
+  //     const remainingPoints = currentPoints - 5000;
+  //     setUpdatedUserInfo((prevInfo) => ({
+  //       ...prevInfo,
+  //       points: `${remainingPoints} points`,
+  //     setRedeemMessage("Redeem successful");
+  //     console.log("Remaining points:", remainingPoints);
+  //     return true;
+  //   } else {
+  //     setRedeemMessage("Points not enough");
+  //     return false;
+  //   }
+  // };
   const [avatar, setAvatar] = useState(userInfo?.avatarUrl || Avatar);
 
   useEffect(() => {
@@ -344,7 +343,7 @@ const AccountInformation = () => {
               <div>
                 <h2 className="account-info-title">My Reward Points</h2>
                 <p className="account-info-value">
-                  {userInfo.rewardPoints} points
+                  {/* {userInfo.rewardPoints} points */}
                 </p>
               </div>
             </div>

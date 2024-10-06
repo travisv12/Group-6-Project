@@ -12,6 +12,7 @@ export const login = createAsyncThunk(
       },
       body: JSON.stringify({ email, password }),
     });
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
