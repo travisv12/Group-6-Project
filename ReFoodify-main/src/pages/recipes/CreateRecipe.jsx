@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
 import { v4 as uuidv4 } from "uuid";
 import recipeBg from "@/assets/recipe-detail-bg.png";
-import { createRecipe } from "@/redux/slices/recipeSlice";
-import {toast} from "react-toastify";
+import { createRecipe, updateRecipeImage } from "@/redux/slices/recipeSlice";
+import { toast } from "react-toastify";
 import "./createRecipe.style.css";
 
 const availableIngredients = [
@@ -38,7 +38,7 @@ const CreateRecipe = () => {
     name: "",
     duration: "",
     serving: "",
-    image: "",
+    img: "",
     ingredients: [],
     instructions: "",
   });
@@ -87,15 +87,31 @@ const CreateRecipe = () => {
   //   }));
   // };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      const imageformData = new FormData();
+      imageformData.append("file", file);
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
-        setFormData((prevData) => ({ ...prevData, image: reader.result }));
+        // setFormData((prevData) => ({ ...prevData, image: reader.result }));
       };
       reader.readAsDataURL(file);
+      try {
+        const resultAction = await dispatch(updateRecipeImage(imageformData));
+        if (resultAction) {
+          const imageUrl = resultAction.payload.imageUrl.toString();
+          setFormData((prevData) => ({ ...prevData, img: imageUrl }));
+          // setFormData((prevData) => {
+          //   const newData = { ...prevData, image: imageUrl };
+          //   console.log("FORM DATA WITH PICTURE:", newData);
+          // });
+        }
+      } catch (error) {
+        console.error("Error uploading avatar:", error);
+      }
     }
   };
 
@@ -103,7 +119,7 @@ const CreateRecipe = () => {
     setImagePreview(null);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      image: "",
+      img: "",
     }));
   };
 
@@ -128,7 +144,7 @@ const CreateRecipe = () => {
       formData.ingredients.some((ing) => !ing.quantity)
     ) {
       console.error("Missing required fields");
-          toast.error("Please fill in all required fields.");
+      toast.error("Please fill in all required fields.");
       return;
     }
 
@@ -148,7 +164,7 @@ const CreateRecipe = () => {
         name: "",
         duration: "",
         serving: "",
-        image: "",
+        img: "",
         ingredients: [],
         instructions: "",
       });

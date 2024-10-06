@@ -1,5 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+export const updateRecipeImage = createAsyncThunk(
+  "recipes/updateRecipeImage",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) throw new Error("Avatar upload failed");
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // Thunk to fetch user's recipes
 export const fetchUserRecipes = createAsyncThunk(
   "recipes/fetchUserRecipes",
@@ -7,9 +24,9 @@ export const fetchUserRecipes = createAsyncThunk(
     const state = getState();
     const accessToken = state.user.accessToken;
 
-      if (!accessToken) {
-        return rejectWithValue("No access token found");
-      }
+    if (!accessToken) {
+      return rejectWithValue("No access token found");
+    }
 
     try {
       const response = await fetch("http://localhost:3001/api/user/recipes", {
@@ -69,7 +86,7 @@ export const updateRecipe = createAsyncThunk(
 
 // Thunk for deleting a recipe
 export const deleteRecipe = createAsyncThunk(
-  'recipes/deleteRecipe',
+  "recipes/deleteRecipe",
   async (id, { getState, rejectWithValue }) => {
     const state = getState();
     const accessToken = state.user.accessToken;
@@ -90,7 +107,7 @@ export const deleteRecipe = createAsyncThunk(
       );
 
       if (!response.ok) {
-        throw new Error('Failed to delete recipe');
+        throw new Error("Failed to delete recipe");
       }
 
       return id; // Return the deleted recipe ID
@@ -112,17 +129,14 @@ export const fetchFilteredRecipes = createAsyncThunk(
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:3001/api/recipes/search",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({ ingredients }),
-        }
-      );
+      const response = await fetch("http://localhost:3001/api/recipes/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ ingredients }),
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch recipes");
       }
@@ -137,27 +151,27 @@ export const fetchFilteredRecipes = createAsyncThunk(
 
 // Thunk to create a new recipe
 export const createRecipe = createAsyncThunk(
-  'recipes/createRecipe',
+  "recipes/createRecipe",
   async (recipeData, { getState, rejectWithValue }) => {
     const state = getState();
     const accessToken = state.user.accessToken;
 
     if (!accessToken) {
-      return rejectWithValue('No access token found');
+      return rejectWithValue("No access token found");
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/add', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/api/add", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(recipeData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create recipe');
+        throw new Error("Failed to create recipe");
       }
 
       const data = await response.json();
@@ -167,8 +181,6 @@ export const createRecipe = createAsyncThunk(
     }
   }
 );
-
-
 
 const recipeSlice = createSlice({
   name: "recipes",
@@ -235,7 +247,7 @@ const recipeSlice = createSlice({
         state.error = null; // Clear any previous errors
       })
       .addCase(deleteRecipe.fulfilled, (state, action) => {
-         state.loading = false;
+        state.loading = false;
         state.userRecipes = state.userRecipes.filter(
           (recipe) => recipe._id !== action.payload
         );
@@ -244,7 +256,7 @@ const recipeSlice = createSlice({
       .addCase(deleteRecipe.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-             state.status = "failed";
+        state.status = "failed";
       })
       .addCase(fetchFilteredRecipes.fulfilled, (state, action) => {
         state.loading = false;
@@ -257,8 +269,7 @@ const recipeSlice = createSlice({
   },
 });
 
-
-export const {actions, reducer } = recipeSlice;
+export const { actions, reducer } = recipeSlice;
 // export const { deleteRecipe } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

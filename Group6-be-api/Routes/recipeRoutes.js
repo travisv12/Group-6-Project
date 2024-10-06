@@ -1,5 +1,17 @@
 const express = require("express");
 const { authenticateJWT } = require("../Middleware/auth");
+const multer = require("multer");
+const path = require("path");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../ReFoodify-main/public/foodimage/");
+  },
+  filename: function (req, file, cb) {
+    console.log(file);
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage: storage });
 
 const {
   filterRecipesController,
@@ -11,6 +23,10 @@ const {
 } = require("../Controllers/recipeControllers");
 
 const router = express.Router();
+
+router.post("/upload-image", upload.single("file"), (req, res) => {
+  res.json({ imageUrl: `../../public/foodimage/${req.file.filename}` });
+});
 
 // Route for adding a recipe (protected)
 router.post("/add", authenticateJWT, createRecipeController);
@@ -25,7 +41,11 @@ router.get("/user/recipe/:id", authenticateJWT, getRecipeByIdController);
 router.put("/user/recipe/update/:id", authenticateJWT, updateRecipeController);
 
 // Route for deleting a recipe (protected)
-router.delete("/user/recipe/delete/:id", authenticateJWT, deleteRecipeController);
+router.delete(
+  "/user/recipe/delete/:id",
+  authenticateJWT,
+  deleteRecipeController
+);
 
 // Route for filtering recipes based on ingredients
 router.post("/recipes/search", authenticateJWT, filterRecipesController);
