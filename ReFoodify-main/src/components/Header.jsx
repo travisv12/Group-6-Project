@@ -17,7 +17,8 @@ import {
 } from "@heroicons/react/24/outline";
 import ScrollIndicator from "./ScrollIndicator";
 import PropTypes from "prop-types";
-import avatar from "./avatar.jpg";
+// import avatar from "./avatar.jpg";
+import avatar from "@/assets/genericAvatar.png";
 import useCartStore from "@/hooks/useCartStore";
 import { logout } from "@/redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -82,9 +83,9 @@ const MobileMenu = memo(function MobileMenu({
           <Menu as="div" className="relative z-20 inline-block text-left">
             <Menu.Button className="flex items-center gap-2">
               <img
-                src={avatar || user?.photo}
+                src={user.avatarUrl || avatar}
                 alt={user?.username}
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full object-cover"
               />
             </Menu.Button>
             <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
@@ -245,9 +246,10 @@ const DesktopMenu = memo(({ user, isActive, logout }) => {
           <Menu as="div" className="relative z-20 inline-block text-left">
             <Menu.Button className="flex items-center gap-2">
               <img
-                src={avatar || user?.photo}
+                // src={avatar || user?.photo}
+                src={user.avatarUrl || avatar}
                 alt={user?.username}
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full object-cover"
               />
               <span className="text-white font-bold">{user.username}</span>
             </Menu.Button>

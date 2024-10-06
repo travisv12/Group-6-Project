@@ -1,25 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { set } from "react-hook-form";
 
-export const updateUserAvatar = createAsyncThunk(
-  "user/updateAvatar",
-  async (formData, { rejectWithValue }) => {
-    console.log("FORM DATA: ", formData);
-    try {
-      const response = await fetch(
-        "http://localhost:3001/api/users/upload-avatar",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      if (!response.ok) throw new Error("Avatar upload failed");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
 // Async thunk for login
 export const login = createAsyncThunk(
   "user/login",
@@ -79,7 +60,6 @@ export const fetchUser = createAsyncThunk(
     }
 
     const data = await response.json();
-    console.log("RESPONSE JSON DATA: ", data);
     return data;
   }
 );
@@ -100,6 +80,27 @@ export const updateUser = createAsyncThunk(
 
     const data = await response.json();
     return data;
+  }
+);
+
+export const updateUserAvatar = createAsyncThunk(
+  "user/updateAvatar",
+  async (formData, { rejectWithValue }) => {
+    console.log("FORM DATA: ", formData);
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/users/upload-avatar",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) throw new Error("Avatar upload failed");
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -146,7 +147,7 @@ const userSlice = createSlice({
     loading: false,
     userInfo: null,
     error: null,
-    avatarUrl: "/images/avatar.jpg",
+    avatarUrl: null,
   },
   reducers: {
     setUser: (state, action) => {
@@ -162,12 +163,18 @@ const userSlice = createSlice({
     setUserInfo: (state, action) => {
       state.userInfo = action.payload;
     },
+    setAvatarUrl: (state, action) => {
+      state.avatarUrl = action.payload;
+      // state.avatarUrl = action.payload.avatarUrl;
+    },
     logout: (state) => {
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;
       state.userInfo = null;
       state.error = null;
+      state.avatarUrl = null;
+      state.loading = false;
       localStorage.removeItem("user");
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
@@ -248,6 +255,12 @@ const userSlice = createSlice({
   },
 });
 
-export const { setAccessToken, setRefreshToken, setUser, setUserInfo, logout } =
-  userSlice.actions;
+export const {
+  setAccessToken,
+  setAvatarUrl,
+  setRefreshToken,
+  setUser,
+  setUserInfo,
+  logout,
+} = userSlice.actions;
 export default userSlice.reducer;

@@ -32,7 +32,8 @@ const Login = () => {
       const result = await dispatch(login({ email, password })).unwrap();
       dispatch(setAccessToken(result.accessToken));
       dispatch(setRefreshToken(result.refreshToken));
-      navigate("/my-account/account-information");
+      // navigate("/my-account/account-information");
+      navigate("/");
     } catch (err) {
       console.error("Login failed:", err.message);
     }

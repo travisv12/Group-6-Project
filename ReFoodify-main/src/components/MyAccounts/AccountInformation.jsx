@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import {
+  setAvatarUrl,
   fetchUser,
   updateUser,
   setUserInfo,
@@ -71,12 +72,14 @@ const AccountInformation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user.userInfo);
+  const user = useSelector((state) => state.user);
   const [editingField, setEditingField] = useState(null);
   const [updatedUserInfo, setUpdatedUserInfo] = useState({
     username: userInfo?.username || "",
     email: userInfo?.email || "",
     social: userInfo?.username || "mahnoorf",
     points: "5200 points",
+    avatarUrl: userInfo?.avatarUrl,
   });
 
   // Handle Redeem Points and return True if successful
@@ -97,7 +100,7 @@ const AccountInformation = () => {
       return false;
     }
   };
-  const [avatar, setAvatar] = useState(Avatar);
+  const [avatar, setAvatar] = useState(userInfo?.avatarUrl || Avatar);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,8 +119,9 @@ const AccountInformation = () => {
       setUpdatedUserInfo({
         username: userInfo.username,
         email: userInfo.email,
-        social: userInfo?.username || "mahnoorf",
+        social: userInfo?.username,
         points: "5200 points",
+        avatarUrl: userInfo?.avatarUrl,
       });
     }
   }, [userInfo]);
@@ -144,35 +148,49 @@ const AccountInformation = () => {
     }
   };
 
-  const handleRemoveAvatar = () => {
-    // setAvatar(Avatar);
-    setAvatar("../../../../Group6-be-api/images/avatar.jpg");
-  };
+  const handleRemoveAvatar = async () => {
+    const defaultAvatarUrl = "../../../public/avatars/avatar.jpg";
 
-  // const handleAvatarChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setAvatar(reader.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
+    try {
+      const response = await dispatch(
+        updateUser({ ...userInfo, avatarUrl: defaultAvatarUrl })
+      ).unwrap();
+
+      if (response) {
+        setAvatar(defaultAvatarUrl);
+        setUpdatedUserInfo((prevInfo) => ({
+          ...prevInfo,
+          avatarUrl: defaultAvatarUrl,
+        }));
+
+        dispatch(
+          setUserInfo({
+            ...userInfo,
+            avatarUrl: defaultAvatarUrl,
+          })
+        );
+        dispatch(setAvatarUrl(defaultAvatarUrl));
+        // dispatch(setUser({ avatarUrl: defaultAvatarUrl }));
+
+        console.log("Avatar removed successfully");
+      }
+    } catch (error) {
+      console.error("Error removing avatar:", error);
+    }
+  };
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log(file);
       const formData = new FormData();
       formData.append("file", file);
-      console.log("FORM DATA beginning: ", formData);
+      formData.append("userId", userInfo._id);
 
       try {
         const resultAction = await dispatch(updateUserAvatar(formData));
         if (updateUserAvatar.fulfilled.match(resultAction)) {
           const newAvatarUrl = resultAction.payload.avatarUrl;
-          setAvatar("../../../../Group6-be-api/" + newAvatarUrl);
+          setAvatar(newAvatarUrl);
           console.log(newAvatarUrl);
           setUpdatedUserInfo((prevInfo) => ({
             ...prevInfo,
@@ -204,7 +222,7 @@ const AccountInformation = () => {
         <div className="profile-photo-section-responsive">
           <img
             // src={avatar}
-            src="../../../public/avatars/avatar.jpg"
+            src={user.avatarUrl || avatar}
             alt={`${updatedUserInfo.username}'s avatar`}
             className="profile-photo-responsive"
           />

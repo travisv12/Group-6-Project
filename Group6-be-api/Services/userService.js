@@ -137,7 +137,7 @@ const getUserInfo = async (userId) => {
   return user;
 };
 
-const updateUser = async (userId, { username, email, password }) => {
+const updateUser = async (userId, { username, email, password, avatarUrl }) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new Error("User not found");
@@ -146,6 +146,7 @@ const updateUser = async (userId, { username, email, password }) => {
   // Update user information
   if (username) user.username = username;
   if (email) user.email = email;
+  if (avatarUrl) user.avatarUrl = avatarUrl;
   if (password) {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);

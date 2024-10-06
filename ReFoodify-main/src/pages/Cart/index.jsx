@@ -111,7 +111,7 @@ const Cart = () => {
               <div className="cart-summary-item">
                 <span>Items Discount:</span>
                 <span className="cart-summary-discount">
-                  -{totalDiscount.toFixed(2)} €
+                  {/* -{totalDiscount.toFixed(2)} € */}- 5 €
                 </span>
               </div>
               <div className="cart-summary-total">

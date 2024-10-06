@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     console.log(file);
-    cb(null, file.originalname);
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 const upload = multer({ storage: storage });
@@ -32,21 +32,30 @@ const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post("/upload-avatar", upload.single("file"), async (req, res) => {
-  console.log(req.file);
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
   }
-
   const avatarUrl = `../../../public/avatars/${req.file.filename}`;
+  const userId = req.body.userId;
 
-  // Update user's avatar URL in the database
   try {
-    await User.findByIdAndUpdate(req.user.id, { avatarUrl: avatarUrl });
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { avatarUrl: avatarUrl },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.json({ avatarUrl: avatarUrl });
   } catch (error) {
+    console.error("Error updating avatar:", error);
     res.status(500).json({ message: "Error updating avatar" });
   }
 });
+// router.post("/upload-avatar", upload.single("file"), (req, res) => {
+//   res.json({ avatarURL: `../../public/images/${req.file.filename}` });
+// });
 
 // Route for user sign-up
 router.post("/signup", validateLogin, signupController);

@@ -43,7 +43,7 @@ const Register = () => {
       dispatch(setUser(result.userId));
       dispatch(setAccessToken(result.accessToken));
       dispatch(setRefreshToken(result.refreshToken));
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       console.error("SignUp failed:", err.message);
     }
