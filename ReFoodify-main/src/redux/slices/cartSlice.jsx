@@ -4,6 +4,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
+    appliedDiscount: 0,
   },
   reducers: {
     addToCart: (state, action) => {
@@ -32,20 +33,39 @@ const cartSlice = createSlice({
         }
       }
     },
+
+    applyDiscount: (state, action) => {
+      state.appliedDiscount = action.payload;
+    },
+
     clearCart: (state) => {
       state.items = [];
     },
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } =
+export const { addToCart, removeFromCart, updateQuantity, clearCart, appliedDiscount } =
   cartSlice.actions;
 
+// export const getCartTotal = (state) => {
+//   return state.cart.items.reduce((total, item) => {
+//     const price = parseFloat(item.discountedPrice || item.price);
+//     return total + price * item.quantity;
+//   }, 0);
+// };
+
 export const getCartTotal = (state) => {
-  return state.cart.items.reduce((total, item) => {
-    const price = parseFloat(item.discountedPrice);
+  const itemsTotal = state.cart.items.reduce((total, item) => {
+    const price = parseFloat(item.discountedPrice || item.price);
+    if (isNaN(price)) {
+      console.warn(`Invalid price for item: ${item.name}`);
+      return total;
+    }
     return total + price * item.quantity;
   }, 0);
+
+  const appliedDiscount = parseFloat(state.cart.appliedDiscount) || 0;
+  return Math.max(0, itemsTotal - appliedDiscount);
 };
 
 export const getCartItemsCount = (state) => {

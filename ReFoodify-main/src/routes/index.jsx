@@ -20,6 +20,7 @@ import PurchaseHistory from "@/components/MyAccounts/PurchaseHistory";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ThankYou from "@/pages/ThankYou";
 import PaymentForm from "@/components/paymentForm";
+import UserOrders from "@/components/userOrder";
 
 export default function Router() {
   const isAuthenticated = useSelector((state) => !!state.user.accessToken);
@@ -92,6 +93,11 @@ export default function Router() {
             },
           ],
         },
+        {
+          path: "/order/:orderId",
+          element: <ProtectedRoute element={<UserOrders />} />,
+        },
+
         {
           path: "/register",
           element: isAuthenticated ? (

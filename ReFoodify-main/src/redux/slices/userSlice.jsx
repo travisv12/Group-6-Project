@@ -69,6 +69,7 @@ export const updateUser = createAsyncThunk(
   async (userInfo, { getState }) => {
     const state = getState();
     const accessToken = state.user.accessToken;
+    console.log("Updating user. New user info:", userInfo);
     const response = await fetch("http://localhost:3001/api/users/update", {
       method: "PUT",
       headers: {
@@ -78,7 +79,8 @@ export const updateUser = createAsyncThunk(
       body: JSON.stringify(userInfo),
     });
 
-    const data = await response.json();
+    const data = await response.text();
+    console.log("Response from server:", data);
     return data;
   }
 );

@@ -1,66 +1,75 @@
-// controllers/orderController.js
-const orderService = require("../Services/orderService");
+const {
+  checkout,
+  getUserOrders,
+  getOrderById,
+  // getUserRewardPoints,
+} = require("../Services/orderService");
 
-const getOrder = async (req, res) => {
+const checkoutController = async (req, res) => {
+  const userId = req.user.id;
+  const { cart, cartTotal, earnedPoints } = req.body;
+
+  // Transform cart items to match the expected structure
+  const items = cart.map((item) => ({
+    productId: item.id,
+    quantity: item.quantity || 1, // Assuming quantity is 1 if not provided
+  }));
+
+  try {
+    const newOrder = await checkout(userId, { items, cartTotal }, earnedPoints);
+    res.status(201).json(newOrder);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getUserOrdersController = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const order = await orderService.getOrderByUserId(userId);
+    const orders = await getUserOrders(userId);
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getOrderDetailsController = async (req, res) => {
+  const userId = req.user.id;
+  const { orderId } = req.params;
+
+  try {
+    const order = await getOrderById(userId, orderId);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
     res.status(200).json(order);
   } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-const addItem = async (req, res) => {
-  const { productId, quantity } = req.body;
-  const userId = req.user.id;
-
-
-  try {
-    const order = await orderService.addItemToOrder(userId, productId, quantity);
-    res.status(200).json(order);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
 
-const removeItem = async (req, res) => {
-  const { productId } = req.params;
+const getUserRewardPointsController = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const order = await orderService.removeItemFromOrder(userId, productId);
-    res.status(200).json(order);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-const updateQuantity = async (req, res) => {
-  const { productId } = req.params;
-  const { quantity } = req.body;
-  const userId = req.user.id;
-
-  try {
-    const order = await orderService.updateItemQuantity(
-      userId,
-      productId,
-      quantity
+    const { rewardPoints } = await getUserRewardPoints(
+      userId
     );
-    res.status(200).json(order);
+    res.status(200).json({ rewardPoints });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
 module.exports = {
-  getOrder,
-  addItem,
-  removeItem,
-  updateQuantity,
+  checkoutController,
+  getUserOrdersController,
+  getOrderDetailsController,
+  getUserRewardPointsController,
 };

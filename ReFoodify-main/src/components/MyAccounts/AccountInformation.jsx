@@ -117,6 +117,26 @@ const AccountInformation = () => {
     fetchData();
   }, [dispatch]);
 
+  // const handleRedeemPoints = async () => {
+  //   if (userInfo.rewardPoints >= 5000) {
+  //     try {
+  //       const response = await dispatch(
+  //         updateUser({
+  //           ...userInfo,
+  //           rewardPoints: userInfo.rewardPoints - 5000,
+  //           discount: 5,
+  //         })
+  //       ).unwrap();
+  //       dispatch(setUserInfo(response));
+  //       alert("You've redeemed a 5€ discount!");
+  //     } catch (err) {
+  //       console.log("Redeem points failed:", err.message);
+  //     }
+  //   } else {
+  //     alert("You need at least 5000 points to redeem a discount.");
+  //   }
+  // };
+
   useEffect(() => {
     if (userInfo) {
       setUpdatedUserInfo({
@@ -323,31 +343,17 @@ const AccountInformation = () => {
               />
               <div>
                 <h2 className="account-info-title">My Reward Points</h2>
-                <p className="account-info-value">{updatedUserInfo.points}</p>
-                <p className="text-sm text-gray-600 mt-1">
-                  Redeem 5000 points to receive -5€ off next purchase
+                <p className="account-info-value">
+                  {userInfo.rewardPoints} points
                 </p>
               </div>
             </div>
-            <div className="flex flex-col items-end">
-              <button
-                className="action-button-small-responsive"
-                onClick={handleRedeem}
-              >
-                Redeem
-              </button>
-              {redeemMessage && (
-                <p
-                  className={`text-sm mt-2 ${
-                    redeemMessage === "Redeem successful"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {redeemMessage}
-                </p>
-              )}
-            </div>
+            {/* <button
+              className="action-button-small-responsive"
+              onClick={handleRedeemPoints}
+            >
+              Redeem
+            </button> */}
           </div>
 
           {/* Log Out Button */}
