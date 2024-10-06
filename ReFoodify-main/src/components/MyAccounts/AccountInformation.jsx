@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
+// import {
+//   setAvatarUrl,
+//   setUser,
+//   fetchUser,
+//   updateUser,
+//   setUserInfo,
+//   logout,
+//   updateUserAvatar,
+// } from "@/redux/slices/userSlice";
 import {
-  setAvatarUrl,
-  setUser,
   fetchUser,
   updateUser,
-  setUserInfo,
   logout,
   updateUserAvatar,
-} from "@/redux/slices/userSlice";
+} from "@/redux/user/actions";
 import Avatar from "@/assets/genericAvatar.png";
 // import Avatar from "../../../../Group6-be-api/images/avatar.jpg";
 import MailIcon from "@/assets/mail.png";
@@ -106,15 +112,15 @@ const AccountInformation = () => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchUser()).unwrap();
-        console.log("User data fetched successfully:", response);
-        dispatch(setUserInfo(response));
-        dispatch(setAvatarUrl(response.avatarUrl));
+        // console.log("User data fetched successfully:", response);
+        // dispatch(setUserInfo(response));
+        // dispatch(setAvatarUrl(response.avatarUrl));
       } catch (err) {
         console.log("Fetch user data failed:", err.message);
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   // const handleRedeemPoints = async () => {
   //   if (userInfo.rewardPoints >= 5000) {
@@ -211,13 +217,13 @@ const AccountInformation = () => {
       try {
         const resultAction = await dispatch(updateUserAvatar(formData));
         if (updateUserAvatar.fulfilled.match(resultAction)) {
-          const newAvatarUrl = resultAction.payload.avatarUrl;
-          setAvatar(newAvatarUrl);
-          console.log(newAvatarUrl);
-          setUpdatedUserInfo((prevInfo) => ({
-            ...prevInfo,
-            avatarUrl: newAvatarUrl,
-          }));
+        const newAvatarUrl = resultAction.payload.avatarUrl;
+        setAvatar(newAvatarUrl);
+        console.log(newAvatarUrl);
+        setUpdatedUserInfo((prevInfo) => ({
+          ...prevInfo,
+          avatarUrl: newAvatarUrl,
+        }));
         }
       } catch (error) {
         console.error("Error uploading avatar:", error);

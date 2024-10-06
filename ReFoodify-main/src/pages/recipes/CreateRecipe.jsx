@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
 import { v4 as uuidv4 } from "uuid";
 import recipeBg from "@/assets/recipe-detail-bg.png";
-import { createRecipe } from "@/redux/slices/recipeSlice";
-import {toast} from "react-toastify";
+import { createRecipe } from "@/redux/recipe/actions";
+import { toast } from "react-toastify";
 import "./createRecipe.style.css";
 
 const availableIngredients = [
@@ -128,7 +128,7 @@ const CreateRecipe = () => {
       formData.ingredients.some((ing) => !ing.quantity)
     ) {
       console.error("Missing required fields");
-          toast.error("Please fill in all required fields.");
+      toast.error("Please fill in all required fields.");
       return;
     }
 

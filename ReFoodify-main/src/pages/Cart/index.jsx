@@ -1,26 +1,30 @@
 import { useSelector, useDispatch } from "react-redux";
-import {removeFromCart, updateQuantity, getCartTotal, appliedDiscount} from "@/redux/slices/cartSlice";
+import {
+  removeFromCart,
+  updateQuantity,
+  getCartTotal,
+  appliedDiscount,
+} from "@/redux/slices/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
-import {checkout}  from "@/redux/slices/orderSlice";
-import { updateUser, setUserInfo } from "@/redux/slices/userSlice";
+import { checkout } from "@/redux/slices/orderSlice";
+import { updateUser } from "@/redux/user/actions";
 import React, { useState } from "react";
-import {toast} from "react-toastify";
-
+import { toast } from "react-toastify";
 
 import "./index.style.css";
 
 const Cart = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const cart = useSelector((state) => state.cart.items);
-      const [appliedDiscount, setAppliedDiscount] = useState(0);
-        const userInfo = useSelector((state) => state.user.userInfo);
-    const cartTotal = useSelector(getCartTotal) || 0;
-       const totalDiscount = cart.reduce((sum, item) => {
-         const originalPrice = parseFloat(item.price);
-         const discountedPrice = parseFloat(item.discountedPrice);
-         return sum + (originalPrice - discountedPrice) * item.quantity;
-       }, 0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const cart = useSelector((state) => state.cart.items);
+  const [appliedDiscount, setAppliedDiscount] = useState(0);
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const cartTotal = useSelector(getCartTotal) || 0;
+  const totalDiscount = cart.reduce((sum, item) => {
+    const originalPrice = parseFloat(item.price);
+    const discountedPrice = parseFloat(item.discountedPrice);
+    return sum + (originalPrice - discountedPrice) * item.quantity;
+  }, 0);
 
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
@@ -30,49 +34,49 @@ const Cart = () => {
     dispatch(updateQuantity({ productId, quantity }));
   };
 
-const handleRedeemPoints = async () => {
-  if (userInfo.rewardPoints >= 5000) {
-    const discount = 5;
-    try {
-      const updatedUserInfo = await dispatch(
-        updateUser({
-          ...userInfo,
-          rewardPoints: userInfo.rewardPoints - 5000,
-        })
-      ).unwrap();
+  const handleRedeemPoints = async () => {
+    if (userInfo.rewardPoints >= 5000) {
+      const discount = 5;
+      try {
+        const updatedUserInfo = await dispatch(
+          updateUser({
+            ...userInfo,
+            rewardPoints: userInfo.rewardPoints - 5000,
+          })
+        ).unwrap();
 
-      dispatch(setUserInfo(updatedUserInfo));
-      dispatch(applyDiscount(discount));
-      setAppliedDiscount((prevDiscount) => prevDiscount + discount);
-      toast.success(`You've redeemed a ${discount}€ discount!`);
-    } catch (err) {
-      console.error("Redeem points failed:", err.message);
-      toast.error("Failed to redeem points. Please try again.");
+        // dispatch(setUserInfo(updatedUserInfo));
+        // dispatch(applyDiscount(discount));
+        setAppliedDiscount((prevDiscount) => prevDiscount + discount);
+        toast.success(`You've redeemed a ${discount}€ discount!`);
+      } catch (err) {
+        console.error("Redeem points failed:", err.message);
+        toast.error("Failed to redeem points. Please try again.");
+      }
+    } else {
+      toast.warning("You need at least 5000 points to redeem a discount.");
     }
-  } else {
-    toast.warning("You need at least 5000 points to redeem a discount.");
-  }
-};
-
-const handleCheckout = () => {
-    const discountedTotal = (cartTotal - totalDiscount).toFixed(2);
-  const checkoutData = {
-    cart: cart,
-    cartTotal: discountedTotal,
   };
 
-  console.log("Checkout data:", checkoutData);
+  const handleCheckout = () => {
+    const discountedTotal = (cartTotal - totalDiscount).toFixed(2);
+    const checkoutData = {
+      cart: cart,
+      cartTotal: discountedTotal,
+    };
 
-  dispatch(checkout(checkoutData))
-    .unwrap()
-    .then((response) => {
-      console.log("Checkout successful:", response);
-      navigate("/payment", { state: checkoutData });
-    })
-    .catch((error) => {
-      console.error("Checkout failed:", error);
-    });
-};
+    console.log("Checkout data:", checkoutData);
+
+    dispatch(checkout(checkoutData))
+      .unwrap()
+      .then((response) => {
+        console.log("Checkout successful:", response);
+        navigate("/payment", { state: checkoutData });
+      })
+      .catch((error) => {
+        console.error("Checkout failed:", error);
+      });
+  };
 
   if (cart.length === 0) {
     return (

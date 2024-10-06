@@ -5,7 +5,7 @@ import { IconSearch, IconX } from "@tabler/icons-react";
 import recipeBg from "@/assets/recipes_bg.png";
 import meetStew from "@/assets/meet_stew.png";
 import share_recipe_2 from "@/assets/share-recipe-2.png";
-import { fetchFilteredRecipes } from "../../redux/slices/recipeSlice";
+import { fetchFilteredRecipes } from "../../redux/recipe/actions";
 import { toast } from "react-toastify";
 import "./index.style.css";
 // Default image if there's no image
@@ -33,15 +33,15 @@ const allIngredients = [
 
 const Recipes = () => {
   const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const recipes = useSelector((state) => state.recipes.recipes);
   const loading = useSelector((state) => state.recipes.loading);
   const error = useSelector((state) => state.recipes.error);
-    const isAuthenticated = useSelector((state) => !!state.user.accessToken);
+  const isAuthenticated = useSelector((state) => !!state.user.accessToken);
   const [formData, setFormData] = useState({
     recipeName: "",
     duration: "",
-    servings: "",
+    serving: "",
     image: "",
     ingredients: [],
     instructions: "",
@@ -206,7 +206,7 @@ const Recipes = () => {
                   </div>
                   <div className="mian-recipe-details">
                     <p>Duration: {recipes[0].duration} mins</p>
-                    <p>Servings: {recipes[0].servings} people</p>
+                    <p>Serving: {recipes[0].serving} people</p>
                   </div>
                   <Link to={`/recipes/details/${recipes[0]._id}`}>
                     <button className="btn-checkout-recipe">
@@ -266,7 +266,7 @@ const Recipes = () => {
                       </div>
                       <div className="mian-recipe-details">
                         <p>Duration: {recipe.duration} mins</p>
-                        <p>Servings: {recipe.servings} people</p>
+                        <p>Serving: {recipe.serving} people</p>
                       </div>
                       <Link to={`/recipes/details/${recipe._id}`}>
                         <button className="btn-checkout-recipe">

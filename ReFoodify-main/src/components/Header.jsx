@@ -19,7 +19,7 @@ import ScrollIndicator from "./ScrollIndicator";
 import PropTypes from "prop-types";
 // import avatar from "./avatar.jpg";
 import avatar from "@/assets/genericAvatar.png";
-import { logout } from "@/redux/slices/userSlice";
+import { logout } from "@/redux/user/actions";
 import { useNavigate } from "react-router-dom";
 
 const navLinks = [

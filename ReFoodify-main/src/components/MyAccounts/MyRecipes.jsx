@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchUserRecipes, deleteRecipe } from "@/redux/slices/recipeSlice";
+import { fetchUserRecipes, deleteRecipe } from "@/redux/recipe/actions";
 import poached_eggs from "@/assets/poached_eggs.png"; // Fallback image
 import { toast } from "react-toastify";
 import Spinner from "@/components/Spinner";
-import apiFetch from "../../services/api";
-
 
 import "./myRecipes.style.css";
 
@@ -23,7 +21,7 @@ const MyRecipes = () => {
     if (userInfo) {
       dispatch(fetchUserRecipes());
     }
-  }, [dispatch, userInfo]);
+  }, []);
 
   // Handle edit button click, navigate to update page with recipe ID in the URL
   const handleEdit = (_id) => {
