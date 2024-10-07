@@ -59,8 +59,8 @@ const RecipeDetails = () => {
           <div>
             <h1 className="recipe-detail-title">{recipe.name}</h1>
             <div className="recipe-meta">
-              <p className="-ml-8">Duration: {recipe.duration}</p>
-              <p>Serving: {recipe.servings} people</p>
+              <p className="-ml-8">Duration: {recipe.duration} minutes</p>
+              <p>Serving: {recipe.serving} people</p>
             </div>
           </div>
           <div className="recipe-author">

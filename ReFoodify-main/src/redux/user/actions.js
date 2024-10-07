@@ -6,7 +6,7 @@ import {
   UPDATE_USER,
   REFRESH_ACCESS_TOKEN,
   LOGOUT,
-  UPDATE_AVATAR,
+  UPDATE_AVATAR
 } from "./actionTypes";
 import axiosInstance from "../axiosInstance";
 

@@ -85,27 +85,10 @@ const AccountInformation = () => {
     username: userInfo?.username || "",
     email: userInfo?.email || "",
     social: userInfo?.username || "mahnoorf",
-    points: "5200 points",
+    points: userInfo?.rewardPoints || 0,
     avatarUrl: userInfo?.avatarUrl,
   });
 
-  // Handle Redeem Points and return True if successful
-  const [redeemMessage, setRedeemMessage] = useState("");
-  // const handleRedeem = () => {
-  //   const currentPoints = parseInt(updatedUserInfo.points);
-  //   if (currentPoints >= 5000) {
-  //     const remainingPoints = currentPoints - 5000;
-  //     setUpdatedUserInfo((prevInfo) => ({
-  //       ...prevInfo,
-  //       points: `${remainingPoints} points`,
-  //     setRedeemMessage("Redeem successful");
-  //     console.log("Remaining points:", remainingPoints);
-  //     return true;
-  //   } else {
-  //     setRedeemMessage("Points not enough");
-  //     return false;
-  //   }
-  // };
   const [avatar, setAvatar] = useState(userInfo?.avatarUrl || Avatar);
 
   useEffect(() => {
@@ -122,33 +105,13 @@ const AccountInformation = () => {
     fetchData();
   }, []);
 
-  // const handleRedeemPoints = async () => {
-  //   if (userInfo.rewardPoints >= 5000) {
-  //     try {
-  //       const response = await dispatch(
-  //         updateUser({
-  //           ...userInfo,
-  //           rewardPoints: userInfo.rewardPoints - 5000,
-  //           discount: 5,
-  //         })
-  //       ).unwrap();
-  //       dispatch(setUserInfo(response));
-  //       alert("You've redeemed a 5€ discount!");
-  //     } catch (err) {
-  //       console.log("Redeem points failed:", err.message);
-  //     }
-  //   } else {
-  //     alert("You need at least 5000 points to redeem a discount.");
-  //   }
-  // };
-
   useEffect(() => {
     if (userInfo) {
       setUpdatedUserInfo({
         username: userInfo.username,
         email: userInfo.email,
         social: userInfo?.username,
-        points: "5200 points",
+        points: userInfo?.rewardPoints,
         avatarUrl: userInfo?.avatarUrl,
       });
     }
@@ -242,6 +205,8 @@ const AccountInformation = () => {
     // Navigate to home page
     navigate("/");
   };
+
+  
 
   return (
     <div className="account-container-responsive">
@@ -349,7 +314,7 @@ const AccountInformation = () => {
               <div>
                 <h2 className="account-info-title">My Reward Points</h2>
                 <p className="account-info-value">
-                  {/* {userInfo.rewardPoints} points */}
+                  {userInfo ? `${userInfo.rewardPoints} points` : "Loading..."}
                 </p>
               </div>
             </div>

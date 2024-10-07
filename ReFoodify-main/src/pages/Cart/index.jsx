@@ -2,53 +2,109 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   removeFromCart,
   updateQuantity,
-  getCartTotal,
-  appliedDiscount,
+  // getCartTotal,
+  // applyDiscount,
 } from "@/redux/slices/cartSlice";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { checkout } from "@/redux/slices/orderSlice";
 import { updateUser } from "@/redux/user/actions";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-
 import "./index.style.css";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.items);
-  const [appliedDiscount, setAppliedDiscount] = useState(0);
+  // const appliedDiscount = useSelector((state) => state.cart.appliedDiscount) || 0;
   const userInfo = useSelector((state) => state.user.userInfo);
-  const cartTotal = useSelector(getCartTotal) || 0;
+  const [cartTotal, setCartTotal] = useState(0);
+
   const totalDiscount = cart.reduce((sum, item) => {
     const originalPrice = parseFloat(item.price);
     const discountedPrice = parseFloat(item.discountedPrice);
     return sum + (originalPrice - discountedPrice) * item.quantity;
   }, 0);
 
+  console.log("Cart items:", cart);
+  console.log("Cart total:", cartTotal);
+  console.log("Total discount:", totalDiscount);
+
+  const [updatedUserInfo, setUpdatedUserInfo] = useState({
+    points: userInfo?.rewardPoints || 0,
+  });
+  const [estimatedTotal, setEstimateTotal] = useState(0);
+
+
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
+    setCartTotal(calculateCartTotal());
+  };
+
+  const calculateCartTotal = () => {
+    const itemsTotal = cart.reduce((total, item) => {
+      const price = parseFloat( item.price);
+      console.log(
+        `Item: ${item.name}, Price: ${price}, Quantity: ${item.quantity}`
+      );
+      if (isNaN(price)) {
+        console.warn(`Invalid price for item: ${item.name}`);
+        return total;
+      }
+      return total + price * item.quantity;
+    }, 0);
+
+    console.log(`Items Total in get CArt total: ${itemsTotal}`);
+
+    // const appliedDiscountValue = parseFloat(appliedDiscount) || 0;
+    // console.log("CHECKING FOR appliec discount : ", appliedDiscountValue);
+    console.log(
+      "CHECKING FOR MAX: ",
+      Math.max(0, itemsTotal)
+    );
+    return Math.max(0, itemsTotal);
   };
 
   const handleUpdateQuantity = (productId, quantity) => {
     dispatch(updateQuantity({ productId, quantity }));
+    setCartTotal(calculateCartTotal());
   };
+
+  useEffect(() => {
+    setCartTotal(calculateCartTotal());
+    console.log("Cart total IN USE EFFECT:", cartTotal);
+  }, []);
+
+    useEffect(() => {
+      setEstimateTotal(
+        (cartTotal - totalDiscount).toFixed(2)
+      );
+    }, [cartTotal, totalDiscount]);
 
   const handleRedeemPoints = async () => {
     if (userInfo.rewardPoints >= 5000) {
-      const discount = 5;
+   const discount = 5;
+
       try {
-        const updatedUserInfo = await dispatch(
+        const updatedUser = await dispatch(
           updateUser({
             ...userInfo,
             rewardPoints: userInfo.rewardPoints - 5000,
           })
         ).unwrap();
+        console.log("Updated user:", updatedUser);
 
-        // dispatch(setUserInfo(updatedUserInfo));
-        // dispatch(applyDiscount(discount));
-        setAppliedDiscount((prevDiscount) => prevDiscount + discount);
+        setUpdatedUserInfo((prevInfo) => ({
+          ...prevInfo,
+          points: updatedUser.rewardPoints,
+        }));
+
         toast.success(`You've redeemed a ${discount}€ discount!`);
+
+        // Subtract the discount from the estimated total
+        setEstimateTotal((prevTotal) => (prevTotal - discount).toFixed(2));
+
       } catch (err) {
         console.error("Redeem points failed:", err.message);
         toast.error("Failed to redeem points. Please try again.");
@@ -59,23 +115,25 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
+    console.log("Checking out...");
     const discountedTotal = (cartTotal - totalDiscount).toFixed(2);
     const checkoutData = {
       cart: cart,
-      cartTotal: discountedTotal,
+      cartTotal: discountedTotal, // Use the calculated discounted total
     };
 
     console.log("Checkout data:", checkoutData);
+     navigate("/payment", { state: checkoutData });
 
-    dispatch(checkout(checkoutData))
-      .unwrap()
-      .then((response) => {
-        console.log("Checkout successful:", response);
-        navigate("/payment", { state: checkoutData });
-      })
-      .catch((error) => {
-        console.error("Checkout failed:", error);
-      });
+    // dispatch(checkout(checkoutData))
+    //   .unwrap()
+    //   .then((response) => {
+    //     console.log("Checkout successful:", response);
+    //     navigate("/payment", { state: checkoutData });
+    //   })
+    //   .catch((error) => {
+    //     console.error("Checkout failed:", error);
+    //   });
   };
 
   if (cart.length === 0) {
@@ -93,6 +151,9 @@ const Cart = () => {
     );
   }
 
+  //  setEstimateTotal((cartTotal - totalDiscount - appliedDiscount).toFixed(2));
+
+  
   return (
     <div className="cart-container">
       <div className="cart-content">
@@ -157,7 +218,7 @@ const Cart = () => {
             <div className="cart-summary-details">
               <div className="cart-summary-item">
                 <span>Items Total:</span>
-                <span>{cartTotal.toFixed(2)} €</span>
+                <span>{cartTotal} €</span>
               </div>
               <div className="cart-summary-item">
                 <span>Items Discount:</span>
@@ -167,10 +228,7 @@ const Cart = () => {
               </div>
               <div className="cart-summary-total">
                 <span>Estimated Total</span>
-                {/* <span>{(cartTotal - 16.8).toFixed(2)} €</span> */}
-                <span>
-                  {(cartTotal - totalDiscount - appliedDiscount).toFixed(2)} €
-                </span>
+                {estimatedTotal} €
               </div>
             </div>
             <button

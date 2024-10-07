@@ -16,7 +16,7 @@ const getUserInfoController = async (req, res) => {
 // Handler for updating user information
 const updateUserController = async (req, res) => {
   const userId = req.user.id; // Get user ID from the authenticated user
-  const { username, email, password, avatarUrl } = req.body;
+  const { username, email, password, avatarUrl, rewardPoints } = req.body;
 
   try {
     const message = await updateUser(userId, {
@@ -24,6 +24,7 @@ const updateUserController = async (req, res) => {
       email,
       password,
       avatarUrl,
+      rewardPoints
     });
     res.status(200).send(message);
   } catch (err) {

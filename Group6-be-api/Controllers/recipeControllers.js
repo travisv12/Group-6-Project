@@ -11,10 +11,10 @@ const {
 
 // Handler for filtering recipes by ingredients
 const filterRecipesController = async (req, res) => {
-  const { ingredients, searchAll } = req.body;
+  const { ingredients } = req.body;
 
   try {
-    const recipes = await filterRecipes(ingredients, searchAll);
+    const recipes = await filterRecipes(ingredients);
     res.status(200).json(recipes);
   } catch (err) {
     console.error(err.message);

@@ -15,7 +15,7 @@ export const checkout = createAsyncThunk(
         (total, item) => total + item.price * item.quantity,
         0
     );
-    const earnedPoints = Math.floor(cartTotal * 200);
+    const earnedPoints = Math.floor(cartTotal * 150);
      const orderData = {
        ...checkoutData,
        items: cartItems,

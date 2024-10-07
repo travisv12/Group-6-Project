@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { clearCart } from "@/redux/slices/cartSlice";
 import { useDispatch } from "react-redux";
+import { checkout } from "@/redux/slices/orderSlice";
 import "./PaymentForm.style.css";
 import { toast } from "react-toastify";
 
@@ -12,21 +13,47 @@ const PaymentForm = () => {
   const [cvv, setCvv] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { cart = [], cartTotal = 0 } = location.state || {};
 
   const formatCardNumber = (value) => {
     return value.replace(/\D/g, "").replace(/(\d{4})(?=\d)/g, "$1-");
   };
+
+    const formatExpiryDate = (value) => {
+      return value
+        .replace(/\D/g, "")
+        .replace(/(\d{2})(\d{2})/, "$1/$2")
+        .slice(0, 5);
+    };
 
   const handleCardNumberChange = (e) => {
     const formattedValue = formatCardNumber(e.target.value);
     setCardNumber(formattedValue);
   };
 
+   const handleExpiryDateChange = (e) => {
+     const formattedValue = formatExpiryDate(e.target.value);
+     setExpiryDate(formattedValue);
+   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-      dispatch(clearCart());
-      toast.success("Payment successful!");
-      navigate("/thank-you");
+     const checkoutData = {
+       cart,
+       cartTotal,
+     };
+    dispatch(checkout(checkoutData))
+      .unwrap()
+      .then((response) => {
+        console.log("Checkout successful:", response);
+        // navigate("/payment", { state: checkoutData });
+      })
+      .catch((error) => {
+        console.error("Checkout failed:", error);
+      });
+    dispatch(clearCart());
+    toast.success("Payment successful!");
+    navigate("/thank-you");
   };
 
   return (
@@ -43,6 +70,7 @@ const PaymentForm = () => {
               onChange={handleCardNumberChange}
               required
               maxLength="19"
+              placeholder="XXXX-XXXX-XXXX-XXXX"
             />
           </div>
           <div className="form-group">
@@ -61,8 +89,10 @@ const PaymentForm = () => {
               type="text"
               id="expiryDate"
               value={expiryDate}
-              onChange={(e) => setExpiryDate(e.target.value)}
+              onChange={handleExpiryDateChange}
               required
+              maxLength="5"
+              placeholder="MM/YY"
             />
           </div>
           <div className="form-group">

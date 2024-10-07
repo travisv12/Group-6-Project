@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
 import { v4 as uuidv4 } from "uuid";
 import recipeBg from "@/assets/recipe-detail-bg.png";
-import { createRecipe } from "@/redux/recipe/actions";
+import {
+  createRecipe,
+  deleteRecipe,
+  fetchUserRecipes,
+} from "@/redux/recipe/actions";
 import { toast } from "react-toastify";
 import "./createRecipe.style.css";
 
@@ -32,6 +36,7 @@ const availableIngredients = [
 const CreateRecipe = () => {
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipes.recipes);
+  const userRecipes = useSelector((state) => state.recipes.userRecipes);
   const [filteredIngredients, setFilteredIngredients] =
     useState(availableIngredients); // Filtered ingredients list
   const [formData, setFormData] = useState({
@@ -45,6 +50,10 @@ const CreateRecipe = () => {
 
   const [imagePreview, setImagePreview] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // New state for search term
+
+  useEffect(() => {
+    dispatch(fetchUserRecipes());
+  }, [userRecipes]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -153,16 +162,12 @@ const CreateRecipe = () => {
         instructions: "",
       });
       setImagePreview(null);
+      dispatch(fetchUserRecipes());
     } catch (error) {
       console.error("Failed to save recipe:", error);
       toast.error("Failed to save recipe. Please try again.");
     }
   };
-
-  // Delete a recipe
-  // const handleDeleteRecipe = (index) => {
-  //   dispatch(deleteRecipe(index));
-  // };
 
   // Handle ingredient search input change
   const handleSearchChange = (e) => {
@@ -175,11 +180,16 @@ const CreateRecipe = () => {
     );
   };
 
-  const handleDeleteRecipe = (index) => {
-    const updatedRecipes = recipes.filter((_, i) => i !== index);
-    setRecipes(updatedRecipes);
-    localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
-    console.log(`Deleted recipe at index: ${index}`);
+  // Handle delete recipe
+  const handleDeleteRecipe = async (_id) => {
+    try {
+      console.log(`Deleting recipe with ID: ${_id}`);
+      await dispatch(deleteRecipe(_id)).unwrap();
+      toast.success("Recipe deleted successfully!");
+      dispatch(fetchUserRecipes());
+    } catch (error) {
+      toast.error("Failed to delete recipe.");
+    }
   };
 
   return (
@@ -351,9 +361,9 @@ const CreateRecipe = () => {
             {/* Saved Recipes */}
             <div className="saved-recipes">
               <h2 className="saved-recipes-title">Saved Recipes:</h2>
-              {recipes.length === 0 && <p>No recipes saved yet.</p>}
+              {userRecipes.length === 0 && <p>No recipes saved yet.</p>}
               <ul className="saved-recipes-list">
-                {recipes.map((recipe, index) => (
+                {userRecipes.map((recipe, index) => (
                   <li key={index} className="recipe-item">
                     <div className="recipe-card">
                       <h3 className="recipe-name">{recipe.name}</h3>
@@ -372,7 +382,7 @@ const CreateRecipe = () => {
                       <div className="btn-delete-container">
                         <button
                           className="btn-delete-recipe"
-                          onClick={() => handleDeleteRecipe(index)}
+                          onClick={() => handleDeleteRecipe(recipe._id)}
                         >
                           Delete
                         </button>

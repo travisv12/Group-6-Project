@@ -137,7 +137,7 @@ const getUserInfo = async (userId) => {
   return user;
 };
 
-const updateUser = async (userId, { username, email, password, avatarUrl }) => {
+const updateUser = async (userId, { username, email, password, avatarUrl, rewardPoints }) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new Error("User not found");
@@ -151,6 +151,10 @@ const updateUser = async (userId, { username, email, password, avatarUrl }) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
   }
+
+   if (rewardPoints !== undefined) {
+     user.rewardPoints = rewardPoints; // Update reward points if provided
+   }
 
   await user.save();
   return user;

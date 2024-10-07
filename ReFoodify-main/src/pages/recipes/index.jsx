@@ -6,7 +6,9 @@ import recipeBg from "@/assets/recipes_bg.png";
 import meetStew from "@/assets/meet_stew.png";
 import share_recipe_2 from "@/assets/share-recipe-2.png";
 import { fetchFilteredRecipes } from "../../redux/recipe/actions";
+import Spinner from "@/components/Spinner";
 import { toast } from "react-toastify";
+
 import "./index.style.css";
 // Default image if there's no image
 
@@ -184,7 +186,13 @@ const Recipes = () => {
             onClick={handleGenerateRecipes}
             disabled={loading}
           >
-            {loading ? "Generating..." : "GENERATE A RECIPE"}
+            {loading ? (
+              <>
+                <Spinner /> Generating...
+              </>
+            ) : (
+              "GENERATE A RECIPE"
+            )}
           </button>
         </div>
 
