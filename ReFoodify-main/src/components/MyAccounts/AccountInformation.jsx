@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
+// import {
+//   setAvatarUrl,
+//   setUser,
+//   fetchUser,
+//   updateUser,
+//   setUserInfo,
+//   logout,
+//   updateUserAvatar,
+// } from "@/redux/slices/userSlice";
 import {
-  setAvatarUrl,
-  setUser,
   fetchUser,
   updateUser,
-  setUserInfo,
   logout,
   updateUserAvatar,
-} from "@/redux/slices/userSlice";
+} from "@/redux/user/actions";
 import Avatar from "@/assets/genericAvatar.png";
 // import Avatar from "../../../../Group6-be-api/images/avatar.jpg";
 import MailIcon from "@/assets/mail.png";
@@ -79,43 +85,25 @@ const AccountInformation = () => {
     username: userInfo?.username || "",
     email: userInfo?.email || "",
     social: userInfo?.username || "mahnoorf",
-    points: "5200 points",
+    points: userInfo?.rewardPoints || 0,
     avatarUrl: userInfo?.avatarUrl,
   });
 
-  // Handle Redeem Points and return True if successful
-  const [redeemMessage, setRedeemMessage] = useState("");
-  const handleRedeem = () => {
-    const currentPoints = parseInt(updatedUserInfo.points);
-    if (currentPoints >= 5000) {
-      const remainingPoints = currentPoints - 5000;
-      setUpdatedUserInfo((prevInfo) => ({
-        ...prevInfo,
-        points: `${remainingPoints} points`,
-      }));
-      setRedeemMessage("Redeem successful");
-      console.log("Remaining points:", remainingPoints);
-      return true;
-    } else {
-      setRedeemMessage("Points not enough");
-      return false;
-    }
-  };
   const [avatar, setAvatar] = useState(userInfo?.avatarUrl || Avatar);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchUser()).unwrap();
-        console.log("User data fetched successfully:", response);
-        dispatch(setUserInfo(response));
-        dispatch(setAvatarUrl(response.avatarUrl));
+        // console.log("User data fetched successfully:", response);
+        // dispatch(setUserInfo(response));
+        // dispatch(setAvatarUrl(response.avatarUrl));
       } catch (err) {
         console.log("Fetch user data failed:", err.message);
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (userInfo) {
@@ -123,7 +111,7 @@ const AccountInformation = () => {
         username: userInfo.username,
         email: userInfo.email,
         social: userInfo?.username,
-        points: "5200 points",
+        points: userInfo?.rewardPoints,
         avatarUrl: userInfo?.avatarUrl,
       });
     }
@@ -192,13 +180,13 @@ const AccountInformation = () => {
       try {
         const resultAction = await dispatch(updateUserAvatar(formData));
         if (updateUserAvatar.fulfilled.match(resultAction)) {
-          const newAvatarUrl = resultAction.payload.avatarUrl;
-          setAvatar(newAvatarUrl);
-          console.log(newAvatarUrl);
-          setUpdatedUserInfo((prevInfo) => ({
-            ...prevInfo,
-            avatarUrl: newAvatarUrl,
-          }));
+        const newAvatarUrl = resultAction.payload.avatarUrl;
+        setAvatar(newAvatarUrl);
+        console.log(newAvatarUrl);
+        setUpdatedUserInfo((prevInfo) => ({
+          ...prevInfo,
+          avatarUrl: newAvatarUrl,
+        }));
         }
       } catch (error) {
         console.error("Error uploading avatar:", error);
@@ -217,6 +205,8 @@ const AccountInformation = () => {
     // Navigate to home page
     navigate("/");
   };
+
+  
 
   return (
     <div className="account-container-responsive">
@@ -323,31 +313,17 @@ const AccountInformation = () => {
               />
               <div>
                 <h2 className="account-info-title">My Reward Points</h2>
-                <p className="account-info-value">{updatedUserInfo.points}</p>
-                <p className="text-sm text-gray-600 mt-1">
-                  Redeem 5000 points to receive -5€ off next purchase
+                <p className="account-info-value">
+                  {userInfo ? `${userInfo.rewardPoints} points` : "Loading..."}
                 </p>
               </div>
             </div>
-            <div className="flex flex-col items-end">
-              <button
-                className="action-button-small-responsive"
-                onClick={handleRedeem}
-              >
-                Redeem
-              </button>
-              {redeemMessage && (
-                <p
-                  className={`text-sm mt-2 ${
-                    redeemMessage === "Redeem successful"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {redeemMessage}
-                </p>
-              )}
-            </div>
+            {/* <button
+              className="action-button-small-responsive"
+              onClick={handleRedeemPoints}
+            >
+              Redeem
+            </button> */}
           </div>
 
           {/* Log Out Button */}

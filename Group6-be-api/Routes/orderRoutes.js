@@ -1,20 +1,26 @@
 // routes/cartRoutes.js
 const express = require("express");
 const router = express.Router();
-const orderController = require("../Controllers/orderControllers");
+const {
+  checkoutController,
+  getUserOrdersController,
+  getOrderDetailsController,
+  getUserRewardPointsController,
+} = require("../Controllers/orderControllers");
 const { authenticateJWT } = require("../Middleware/auth");
 
 
-// Route to get the cart items for the authenticated user
-router.get("/cart", authenticateJWT, orderController.getOrder);
+// Checkout route
+router.post('/checkout', authenticateJWT, checkoutController);
 
-// Route to add an item to the cart
-router.post("/cart", authenticateJWT, orderController.addItem);
+// Get user orders route
+router.get('/my-purchases/:userId', authenticateJWT, getUserOrdersController);
 
-// Route to remove an item from the cart
-router.delete("/cart/:productId", authenticateJWT, orderController.removeItem);
+// Get order details by order ID route
+router.get('/order/:orderId', authenticateJWT, getOrderDetailsController);
 
-// Route to update the quantity of an item in the cart
-router.put("/cart/:productId", authenticateJWT, orderController.updateQuantity);
+
+// Get user reward points route
+router.get('/reward-points', authenticateJWT, getUserRewardPointsController);
 
 module.exports = router;

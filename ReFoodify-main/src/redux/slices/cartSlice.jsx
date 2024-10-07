@@ -1,9 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
+    appliedDiscount: 0,
+
   },
   reducers: {
     addToCart: (state, action) => {
@@ -32,24 +34,80 @@ const cartSlice = createSlice({
         }
       }
     },
+
+    // applyDiscount: (state, action) => {
+    //   state.appliedDiscount = action.payload;
+    // },
+
     clearCart: (state) => {
       state.items = [];
+      state.appliedDiscount = 0;
     },
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  updateQuantity,
+  clearCart,
+  applyDiscount,
+} = cartSlice.actions;
 
-export const getCartTotal = (state) => {
-  return state.cart.items.reduce((total, item) => {
-    const price = parseFloat(item.discountedPrice);
-    return total + price * item.quantity;
-  }, 0);
-};
+// export const getCartTotal = (state) => {
+//   return state.cart.items.reduce((total, item) => {
+//     const price = parseFloat(item.discountedPrice || item.price);
+//     return total + price * item.quantity;
+//   }, 0);
+// };
+
+// export const getCartTotal = (state) => {
+//   const itemsTotal = state.cart.items.reduce((total, item) => {
+//     const price = parseFloat(item.discountedPrice || item.price);
+//     console.log(
+//       `Item: ${item.name}, Price: ${price}, Quantity: ${item.quantity}`
+//     );
+//     if (isNaN(price)) {
+//       console.warn(`Invalid price for item: ${item.name}`);
+//       return total;
+//     }
+//     return total + price * item.quantity;
+//   }, 0);
+
+//   console.log(`Items Total in get CArt total: ${itemsTotal}`);
+//   const appliedDiscount = parseFloat(state.cart.appliedDiscount) || 0;
+//   console.log("CHECKING FOR MAX: ", Math.max(0, itemsTotal - appliedDiscount));
+//   return Math.max(0, itemsTotal - appliedDiscount);
+// };
+
+// export const getCartTotal = createAsyncThunk(
+//   "cart/getCartTotal",
+//   async ({ getState, rejectWithValue }) => {
+//     const state = getState();
+//     const itemsTotal = state.cart.items.reduce((total, item) => {
+//       const price = parseFloat(item.discountedPrice || item.price);
+//       console.log(
+//         `Item: ${item.name}, Price: ${price}, Quantity: ${item.quantity}`
+//       );
+//       if (isNaN(price)) {
+//         console.warn(`Invalid price for item: ${item.name}`);
+//         return total;
+//       }
+//       return total + price * item.quantity;
+//     }, 0);
+
+//     console.log(`Items Total in get CArt total: ${itemsTotal}`);
+//     const appliedDiscount = parseFloat(state.cart.appliedDiscount) || 0;
+//     console.log(
+//       "CHECKING FOR MAX: ",
+//       Math.max(0, itemsTotal - appliedDiscount)
+//     );
+//     return Math.max(0, itemsTotal - appliedDiscount);
+//   }
+// );
 
 export const getCartItemsCount = (state) => {
-    const cartItems = state.cart.items;
+  const cartItems = state.cart.items;
   if (!cartItems || cartItems.length === 0) {
     return 0;
   }

@@ -30,8 +30,8 @@ app.use("/api", recipeRoutes);
 // Use the product routes
 app.use("/api", productRoutes);
 
-// Use the cart routes
-app.use("/api", orderRoutes);
+// Use the order routes
+app.use("/api/orders", orderRoutes);
 
 // Use the invalid path handler for undefined routes
 app.use("*", invalidPathHandler);

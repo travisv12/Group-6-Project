@@ -1,64 +1,62 @@
-// services/orderService.js
 const Order = require("../Models/order");
-const Product = require("../Models/Product");
+const User = require("../Models/users");
 
-const getOrderByUserId = async (userId) => {
-  return await Order.findOne({ userId }).populate("items.productId");
+
+
+  const checkout = async (userId, checkoutData, earnedPoints) => {
+    const { items, cartTotal } = checkoutData;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Update user's reward points
+    user.rewardPoints += earnedPoints;
+    await user.save();
+
+    // Create new order
+    const newOrder = new Order({
+      userId,
+      items,
+      totalPrice: parseFloat(cartTotal),
+      earnedPoints,
+    });
+
+    await newOrder.save();
+    return newOrder;
+  };
+
+const getUserOrders = async (userId) => {
+  const orders = await Order.find({ userId }).populate("items.productId");
+  return orders;
 };
 
-const addItemToOrder = async (userId, productId, quantity) => {
-  let order = await Order.findOne({ userId });
+const getOrderById = async (userId, orderId) => {
+  const order = await Order.findOne({ _id: orderId, userId })
+    .populate("items.productId")
+    .select("+earnedPoints"); // Explicitly include earnedPoints in the query result
 
-  if (!order) {
-    order = new Order({ userId, items: [] });
-  }
-
-  const product = await Product.findById(productId);
-  if (!product) {
-    throw new Error("Product not found");
-  }
-
-  const orderItem = order.items.find((item) => item.productId.equals(productId));
-  if (orderItem) {
-    orderItem.quantity += quantity;
-  } else {
-    order.items.push({ productId, quantity });
-  }
-
-  await order.save();
   return order;
 };
 
-const removeItemFromOrder = async (userId, productId) => {
-  const order = await Order.findOne({ userId });
-  if (!order) {
-    throw new Error("Order not found");
-  }
 
-  order.items = order.items.filter((item) => !item.productId.equals(productId));
-  await order.save();
-  return order;
-};
+// const getUserRewardPoints = async (userId) => {
+//   const user = await User.findById(userId);
+//   if (!user) {
+//     throw new Error("User not found");
+//   }
+//   return {
+//     rewardPoints: user.rewardPoints,
+//   };
+// };
 
-const updateItemQuantity = async (userId, productId, quantity) => {
-  const order = await Order.findOne({ userId });
-  if (!order) {
-    throw new Error("Order not found");
-  }
-
-  const orderItem = order.items.find((item) => item.productId.equals(productId));
-  if (!orderItem) {
-    throw new Error("Item not found in the order");
-  }
-
-  orderItem.quantity = quantity;
-  await order.save();
-  return order;
-};
 
 module.exports = {
-  getOrderByUserId,
-  addItemToOrder,
-  removeItemFromOrder,
-  updateItemQuantity,
+  checkout,
+  getUserOrders,
+  getOrderById,
+  // getUserRewardPoints,
 };
+
+

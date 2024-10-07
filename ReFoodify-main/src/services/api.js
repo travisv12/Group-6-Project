@@ -1,6 +1,5 @@
-
 import { store } from "../redux/store";
-import { refreshAccessToken, logout } from "../redux/slices/userSlice";
+import { refreshAccessToken, logout } from "../redux/user/actions";
 
 const apiFetch = async (url, options = {}) => {
   const state = store.getState();

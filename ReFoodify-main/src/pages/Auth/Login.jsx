@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  login,
-  setAccessToken,
-  setRefreshToken,
-} from "../../redux/slices/userSlice";
+import { login } from "../../redux/user/actions";
 
 import "./login.style.css";
 
@@ -30,8 +26,8 @@ const Login = () => {
     // setError("");
     try {
       const result = await dispatch(login({ email, password })).unwrap();
-      dispatch(setAccessToken(result.accessToken));
-      dispatch(setRefreshToken(result.refreshToken));
+      // dispatch(setAccessToken(result.accessToken));
+      // dispatch(setRefreshToken(result.refreshToken));
       // navigate("/my-account/account-information");
       navigate("/");
     } catch (err) {

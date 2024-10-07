@@ -1,0 +1,58 @@
+.user-orders-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.user-orders-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.order-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #c6b219ac;
+}
+
+.order-id {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  font: bold;
+}
+
+.order-date,
+.order-total {
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.order-items {
+  margin-top: 10px;
+}
+
+.order-item {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.order-item p {
+  margin: 5px 0;
+}
+
+.reward-points-display {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #090c0a;
+  margin-top: 10px;
+  padding: 5px;
+  background-color: #78a87c;
+  border-radius: 5px;
+}
+
+.points-value {
+  color: #2E7D32;
+}

@@ -44,18 +44,23 @@ const getRecipeById = async (id, userId) => {
 };
 
 const getUserRecipes = async (userId) => {
-  const recipes = await Recipe.find({ userId });
+  const recipes = await Recipe.find({ userId }).sort({ createdAt: -1 });
   return recipes;
 };
 
 const filterRecipes = async (ingredients) => {
+  console.log("Input Ingredients:", ingredients);
+
   const lowerCaseIngredients = ingredients.map((ingredient) =>
     ingredient.toLowerCase()
   );
+
+  console.log("Lowercase Ingredients:", lowerCaseIngredients);
+
   const recipes = await Recipe.aggregate([
     {
       $addFields: {
-        matchingIngredientsCount: {
+        exactMatchCount: {
           $size: {
             $filter: {
               input: "$ingredients",
@@ -65,6 +70,30 @@ const filterRecipes = async (ingredients) => {
               },
             },
           },
+        },
+        nearMatchCount: {
+          $size: {
+            $filter: {
+              input: "$ingredients",
+              as: "ingredient",
+              cond: {
+                $or: lowerCaseIngredients.map((ing) => ({
+                  $regexMatch: {
+                    input: { $toLower: "$$ingredient.name" },
+                    regex: ing,
+                    options: "i",
+                  },
+                })),
+              },
+            },
+          },
+        },
+      },
+    },
+    {
+      $addFields: {
+        matchingIngredientsCount: {
+          $add: ["$exactMatchCount", "$nearMatchCount"],
         },
       },
     },
@@ -76,12 +105,28 @@ const filterRecipes = async (ingredients) => {
     {
       $sort: {
         matchingIngredientsCount: -1,
+        exactMatchCount: -1, // Prioritize exact matches
       },
     },
   ]);
+  // Detailed logging for each recipe
+  recipes.forEach((recipe) => {
+    console.log(`Recipe: ${recipe.name}`);
+    console.log(`Exact Match Count: ${recipe.exactMatchCount}`);
+    console.log(`Near Match Count: ${recipe.nearMatchCount}`);
+    console.log(
+      `Matching Ingredients Count: ${recipe.matchingIngredientsCount}`
+    );
+    recipe.ingredients.forEach((ingredient) => {
+      console.log(`Ingredient: ${ingredient.name}`);
+    });
+  });
+  console.log("Filtered Recipes:", recipes);
 
   return recipes;
 };
+
+
 
 module.exports = {
   createRecipe,

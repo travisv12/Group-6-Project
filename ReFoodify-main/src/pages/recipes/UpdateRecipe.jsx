@@ -3,10 +3,10 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
 import { message } from "antd"; // Import message from antd
 import recipeBg from "@/assets/recipe-detail-bg.png";
-import { updateRecipe, fetchUserRecipes } from "@/redux/slices/recipeSlice";
+import { updateRecipe, fetchUserRecipes } from "@/redux/recipe/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "@/components/Spinner";
-import { toast} from "react-toastify";
+import { toast } from "react-toastify";
 import "./updateRecipe.style.css";
 
 // Available Ingredients (Mock data)
@@ -40,7 +40,7 @@ const UpdateRecipe = () => {
   const [formData, setFormData] = useState({
     recipeName: "",
     duration: "",
-    servings: "",
+    serving: "",
     image: "",
     ingredients: [], // Assumed to be an array of objects with name and amount
     instructions: "",
@@ -65,7 +65,7 @@ const UpdateRecipe = () => {
           ingredients: selectedRecipe.ingredients || [],
           instructions: selectedRecipe.instructions,
           duration: selectedRecipe.duration,
-          servings: selectedRecipe.serving,
+          serving: selectedRecipe.serving,
           image: selectedRecipe.img,
         });
         setImagePreview(selectedRecipe.img);
@@ -91,7 +91,7 @@ const UpdateRecipe = () => {
         ingredients: [
           ...prevData.ingredients,
           { name: ingredient, amount: "" },
-        ], 
+        ],
       }));
     }
   };
@@ -215,8 +215,8 @@ const UpdateRecipe = () => {
                     <label className="form-label">Servings (person):</label>
                     <input
                       type="text"
-                      name="servings"
-                      value={formData.servings}
+                      name="serving"
+                      value={formData.serving}
                       onChange={handleChange}
                       className="input-field"
                     />
