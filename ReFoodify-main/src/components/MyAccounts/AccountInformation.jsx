@@ -84,7 +84,7 @@ const AccountInformation = () => {
 
   const fetchData = async () => {
     try {
-      const response = await dispatch(fetchUser()).unwrap();
+       dispatch(fetchUser()).unwrap();
     } catch (err) {
       console.log("Fetch user data failed:", err.message);
     }
@@ -94,7 +94,7 @@ const AccountInformation = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchUser()).unwrap();
+         await dispatch(fetchUser()).unwrap();
       } catch (err) {
         console.log("Fetch user data failed:", err.message);
       }
