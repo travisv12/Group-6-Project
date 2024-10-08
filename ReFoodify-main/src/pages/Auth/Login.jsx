@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../redux/user/actions";
+import { login, fetchUser } from "../../redux/user/actions";
 
 import "./login.style.css";
 
@@ -26,6 +26,7 @@ const Login = () => {
     // setError("");
     try {
       const result = await dispatch(login({ email, password })).unwrap();
+      await dispatch(fetchUser());
       // dispatch(setAccessToken(result.accessToken));
       // dispatch(setRefreshToken(result.refreshToken));
       // navigate("/my-account/account-information");

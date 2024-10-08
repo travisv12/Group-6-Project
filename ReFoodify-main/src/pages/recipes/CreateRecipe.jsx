@@ -6,9 +6,11 @@ import { v4 as uuidv4 } from "uuid";
 import recipeBg from "@/assets/recipe-detail-bg.png";
 // import { updateRecipeImage } from "@/redux/slices/recipeSlice";
 import {
+  updateRecipeImage,
   createRecipe,
   deleteRecipe,
   fetchUserRecipes,
+  fetchAllRecipes,
 } from "@/redux/recipe/actions";
 import { toast } from "react-toastify";
 import "./createRecipe.style.css";
@@ -48,13 +50,16 @@ const CreateRecipe = () => {
     ingredients: [],
     instructions: "",
   });
-
+  const [trigger, setTrigger] = useState(0);
   const [imagePreview, setImagePreview] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // New state for search term
 
   useEffect(() => {
     dispatch(fetchUserRecipes());
-  }, [userRecipes]);
+  }, [trigger]);
+  useEffect(() => {
+    dispatch(fetchAllRecipes());
+  }, [trigger]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -145,6 +150,7 @@ const CreateRecipe = () => {
 
   // Save or update the recipe
   const handleSubmit = async () => {
+    setTrigger((prev) => prev + 1);
     // Log the form data to debug
     console.log("Form Data:", formData);
     // Ensure required fields are present
@@ -199,6 +205,7 @@ const CreateRecipe = () => {
 
   // Handle delete recipe
   const handleDeleteRecipe = async (_id) => {
+    setTrigger((prev) => prev + 1);
     try {
       console.log(`Deleting recipe with ID: ${_id}`);
       await dispatch(deleteRecipe(_id)).unwrap();
@@ -371,7 +378,7 @@ const CreateRecipe = () => {
             <div className="create-recipe-container">
               {/* Other sections here */}
               <button className="btn-generate-recipe" onClick={handleSubmit}>
-                GENERATE A RECIPE
+                POST RECIPE
               </button>
             </div>
 
@@ -384,14 +391,13 @@ const CreateRecipe = () => {
                   <li key={index} className="recipe-item">
                     <div className="recipe-card">
                       <h3 className="recipe-name">{recipe.name}</h3>
-                      <p>Recipe ID: {recipe.id}</p>
                       <p>Created At: {recipe.createdAt}</p>
                       <p>Duration: {recipe.duration} minutes</p>
                       <p>Servings: {recipe.serving}</p>
                       <p>Instructions: {recipe.instructions}</p>
-                      {recipe.image && (
+                      {recipe.img && (
                         <img
-                          src={recipe.image}
+                          src={recipe.img}
                           alt={recipe.name}
                           className="recipe-image"
                         />

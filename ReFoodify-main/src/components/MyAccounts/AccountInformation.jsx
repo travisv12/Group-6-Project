@@ -94,9 +94,6 @@ const AccountInformation = () => {
   const fetchData = async () => {
     try {
       const response = await dispatch(fetchUser()).unwrap();
-      // console.log("User data fetched successfully:", response);
-      // dispatch(setUserInfo(response));
-      // dispatch(setAvatarUrl(response.avatarUrl));
     } catch (err) {
       console.log("Fetch user data failed:", err.message);
     }

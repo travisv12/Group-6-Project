@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { signup } from "../../redux/user/actions";
+import { signup, fetchUser } from "../../redux/user/actions";
 
 import "./register.style.css";
 
@@ -35,6 +35,7 @@ const Register = () => {
       const result = await dispatch(
         signup({ username, email, password })
       ).unwrap();
+      await dispatch(fetchUser());
       // dispatch(setUser(result.userId));
       // dispatch(setAccessToken(result.accessToken));
       // dispatch(setRefreshToken(result.refreshToken));

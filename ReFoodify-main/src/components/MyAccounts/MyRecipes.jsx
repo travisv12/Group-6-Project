@@ -60,7 +60,7 @@ const MyRecipes = () => {
                 className="recipe-card-unique recipe-card-horizontal-unique"
               >
                 <img
-                  src={recipe.image || poached_eggs}
+                  src={recipe.img || poached_eggs}
                   alt={recipe.recipeName || "Recipe image"}
                   className="recipe-image-unique recipe-image-large-unique"
                   onError={(e) => {

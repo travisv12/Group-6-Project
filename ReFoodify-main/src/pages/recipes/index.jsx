@@ -5,7 +5,10 @@ import { IconSearch, IconX } from "@tabler/icons-react";
 import recipeBg from "@/assets/recipes_bg.png";
 import meetStew from "@/assets/meet_stew.png";
 import share_recipe_2 from "@/assets/share-recipe-2.png";
-import { fetchFilteredRecipes } from "../../redux/recipe/actions";
+import {
+  fetchFilteredRecipes,
+  fetchAllRecipes,
+} from "../../redux/recipe/actions";
 import Spinner from "@/components/Spinner";
 import { toast } from "react-toastify";
 
@@ -37,6 +40,7 @@ const Recipes = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const recipes = useSelector((state) => state.recipes.recipes);
+  const filteredRecipes = useSelector((state) => state.recipes.filteredRecipes);
   const loading = useSelector((state) => state.recipes.loading);
   const error = useSelector((state) => state.recipes.error);
   const isAuthenticated = useSelector((state) => !!state.user.accessToken);
@@ -48,7 +52,13 @@ const Recipes = () => {
     ingredients: [],
     instructions: "",
   });
-
+  const [visibleRecipes, setVisibleRecipes] = useState(4);
+  const showMoreRecipes = () => {
+    setVisibleRecipes((prevVisible) => prevVisible + 4);
+  };
+  useEffect(() => {
+    dispatch(fetchAllRecipes());
+  }, []);
   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
   const [filteredIngredients, setFilteredIngredients] = useState([]);
 
@@ -197,24 +207,26 @@ const Recipes = () => {
         </div>
 
         {/* Display the first recipe's details */}
-        {recipes.length > 0 && (
+        {filteredRecipes?.length > 0 && (
           <div className="mt-[50px]">
             <div className="main-recipe-preview">
               <div className="mian-recipe-card">
                 <img
-                  src={recipes[0].image || meetStew}
+                  src={filteredRecipes[0].img || meetStew}
                   alt=""
                   className="main-recipe-image"
                 />
                 <div>
                   <div className="flex-center">
                     <div className="flex justify-center">
-                      <p className="mian-recipe-name">{recipes[0].name}</p>
+                      <p className="mian-recipe-name">
+                        {filteredRecipes[0].name}
+                      </p>
                     </div>
                   </div>
                   <div className="mian-recipe-details">
-                    <p>Duration: {recipes[0].duration} mins</p>
-                    <p>Serving: {recipes[0].serving} people</p>
+                    <p>Duration: {filteredRecipes[0].duration} mins</p>
+                    <p>Serving: {filteredRecipes[0].serving} people</p>
                   </div>
                   <Link to={`/recipes/details/${recipes[0]._id}`}>
                     <button className="btn-checkout-recipe">
@@ -258,11 +270,11 @@ const Recipes = () => {
         <div className="main-recipes-list">
           <div className="main-recipes-container">
             {recipes.length > 0 ? (
-              recipes.map((recipe, index) => (
+              recipes.slice(0, visibleRecipes).map((recipe, index) => (
                 <div className="main-recipe-preview" key={index}>
                   <div className="mian-recipe-card">
                     <img
-                      src={recipe.image || meetStew}
+                      src={recipe.img || meetStew}
                       alt={recipe.name}
                       className="main-recipe-image"
                     />
@@ -288,18 +300,17 @@ const Recipes = () => {
             ) : (
               <p className="no-recipes">No recipes saved yet.</p>
             )}
-
-            {/* {recipes.length > 3 && (
-              <div className="btn-show-more">
-                <button className="btn-show-more-recipe">SHOW MORE</button>
-              </div>
-            )} */}
           </div>
-
-          {/* show more button */}
-          <div className="main-btn-show-more-recipe-container">
-            <button className="main-btn-show-more-recipe">Show More</button>
-          </div>
+          {visibleRecipes < recipes.length && (
+            <div className="main-btn-show-more-recipe-container">
+              <button
+                className="main-btn-show-more-recipe"
+                onClick={showMoreRecipes}
+              >
+                Show More
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

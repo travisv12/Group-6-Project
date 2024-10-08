@@ -20,6 +20,7 @@ const {
   getUserRecipesController,
   getRecipeByIdController,
   deleteRecipeController,
+  getAllRecipesController,
 } = require("../Controllers/recipeControllers");
 
 const router = express.Router();
@@ -27,6 +28,8 @@ const router = express.Router();
 router.post("/upload-image", upload.single("file"), (req, res) => {
   res.json({ imageUrl: `../../public/foodimage/${req.file.filename}` });
 });
+
+router.get("/recipes/all", getAllRecipesController);
 
 // Route for adding a recipe (protected)
 router.post("/add", authenticateJWT, createRecipeController);

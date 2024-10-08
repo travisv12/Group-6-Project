@@ -150,7 +150,7 @@ const UpdateRecipe = () => {
     e.preventDefault();
     dispatch(updateRecipe({ id, ...formData }));
     toast.success("Recipe updated successfully!"); // Show success toast
-    message.success("Recipe updated successfully!"); // Show success toast
+    // message.success("Recipe updated successfully!"); // Show success toast
     navigate("/my-account/my-recipes");
     if (loading) {
       return <div>Loading...</div>;

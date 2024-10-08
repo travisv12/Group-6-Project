@@ -10,6 +10,11 @@ const createRecipe = async (recipeData, userId, author) => {
   return recipe;
 };
 
+const getAllRecipes = async () => {
+  const recipes = await Recipe.find().sort({ createdAt: -1 });
+  return recipes;
+};
+
 const updateRecipe = async (id, userId, updateData) => {
   if (updateData._id) {
     delete updateData._id;
@@ -126,8 +131,6 @@ const filterRecipes = async (ingredients) => {
   return recipes;
 };
 
-
-
 module.exports = {
   createRecipe,
   updateRecipe,
@@ -135,4 +138,5 @@ module.exports = {
   getUserRecipes,
   filterRecipes,
   deleteRecipe,
+  getAllRecipes,
 };

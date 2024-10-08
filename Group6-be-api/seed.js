@@ -45,7 +45,7 @@ const seedRecipes = async () => {
         "Cook spaghetti. Brown the beef. Mix with tomato sauce. Combine with spaghetti.",
       duration: 30,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/spaghetti.jpg",
       userId: null, // Will be set later
       author: "Chef John",
       createdAt: new Date().toISOString().split("T")[0],
@@ -61,7 +61,7 @@ const seedRecipes = async () => {
         "Cook chicken. Add curry powder and coconut milk. Simmer until done.",
       duration: 40,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/chickencurry.jpg",
       userId: null, // Will be set later
       author: "Chef Jane",
       createdAt: new Date().toISOString().split("T")[0],
@@ -77,7 +77,7 @@ const seedRecipes = async () => {
         "Brown beef. Add potatoes and carrots. Simmer until tender.",
       duration: 120,
       serving: 6,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/beefstew.jpg",
       userId: null, // Will be set later
       author: "Chef John",
       createdAt: new Date().toISOString().split("T")[0],
@@ -92,7 +92,7 @@ const seedRecipes = async () => {
       instructions: "Stir fry vegetables. Add soy sauce. Serve with rice.",
       duration: 20,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/vegetablestir.jpg",
       userId: null, // Will be set later
       author: "Chef Jane",
       createdAt: new Date().toISOString().split("T")[0],
@@ -107,7 +107,7 @@ const seedRecipes = async () => {
       instructions: "Mix ingredients. Cook on griddle. Serve with syrup.",
       duration: 15,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/pancake.jpg",
       userId: null, // Will be set later
       author: "Chef John",
       createdAt: new Date().toISOString().split("T")[0],
@@ -122,7 +122,7 @@ const seedRecipes = async () => {
       instructions: "Toss lettuce with dressing and croutons. Serve chilled.",
       duration: 10,
       serving: 2,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/caesar.jpg",
       userId: null, // Will be set later
       author: "Chef Jane",
       createdAt: new Date().toISOString().split("T")[0],
@@ -138,7 +138,7 @@ const seedRecipes = async () => {
         "Butter bread. Place cheese between slices. Grill until golden.",
       duration: 10,
       serving: 1,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/grilledcheese.jpg",
       userId: null, // Will be set later
       author: "Chef John",
       createdAt: new Date().toISOString().split("T")[0],
@@ -154,7 +154,7 @@ const seedRecipes = async () => {
         "Cook tomatoes, onion, and garlic. Blend until smooth. Serve hot.",
       duration: 30,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/tomatosoup.jpg",
       userId: null, // Will be set later
       author: "Chef Jane",
       createdAt: new Date().toISOString().split("T")[0],
@@ -170,7 +170,7 @@ const seedRecipes = async () => {
         "Mix ingredients. Bake at 350°F for 30 minutes. Cool and serve.",
       duration: 60,
       serving: 8,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/chococake.jpg",
       userId: null, // Will be set later
       author: "Chef John",
       createdAt: new Date().toISOString().split("T")[0],
@@ -185,7 +185,7 @@ const seedRecipes = async () => {
       instructions: "Whisk eggs and milk. Cook in buttered pan until set.",
       duration: 5,
       serving: 2,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/scramble.jpg",
       userId: null, // Will be set later
       author: "Chef Jane",
       createdAt: new Date().toISOString().split("T")[0],
@@ -200,7 +200,7 @@ const seedRecipes = async () => {
       instructions: "Cook chicken. Boil fettuccine. Mix with Alfredo sauce.",
       duration: 30,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/alfredo.jpg",
       userId: null, // Will be set later
       author: "Chef John",
       createdAt: new Date().toISOString().split("T")[0],
@@ -215,7 +215,7 @@ const seedRecipes = async () => {
       instructions: "Cook fish. Assemble tacos with cabbage and tortillas.",
       duration: 20,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/fishtaco.jpg",
       userId: null, // Will be set later
       author: "Chef Jane",
       createdAt: new Date().toISOString().split("T")[0],
@@ -230,7 +230,7 @@ const seedRecipes = async () => {
       instructions: "Cook rice. Sauté mushrooms. Mix with Parmesan cheese.",
       duration: 45,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/risotto.jpg",
       userId: null, // Will be set later
       author: "Chef John",
       createdAt: new Date().toISOString().split("T")[0],
@@ -245,7 +245,7 @@ const seedRecipes = async () => {
       instructions: "Season lamb. Cook with rosemary and garlic.",
       duration: 25,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/lambchops.jpg",
       userId: null, // Will be set later
       author: "Chef Jane",
       createdAt: new Date().toISOString().split("T")[0],
@@ -260,7 +260,7 @@ const seedRecipes = async () => {
       instructions: "Prepare apples. Fill pie crust. Bake until golden.",
       duration: 90,
       serving: 8,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/applepie.jpg",
       userId: null, // Will be set later
       author: "Chef John",
       createdAt: new Date().toISOString().split("T")[0],
@@ -275,7 +275,7 @@ const seedRecipes = async () => {
       instructions: "Chop vegetables. Mix with feta cheese and dressing.",
       duration: 15,
       serving: 4,
-      img: "./images/demo-recipes.png",
+      img: "../../public/foodimage/greeksalad.jpg",
       userId: null, // Will be set later
       author: "Chef Jane",
       createdAt: new Date().toISOString().split("T")[0],
