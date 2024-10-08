@@ -89,19 +89,20 @@ const AccountInformation = () => {
     avatarUrl: userInfo?.avatarUrl,
   });
 
-  const [avatar, setAvatar] = useState(userInfo?.avatarUrl || Avatar);
+  const [avatar, setAvatar] = useState(userInfo.avatarUrl || Avatar);
+
+  const fetchData = async () => {
+    try {
+      const response = await dispatch(fetchUser()).unwrap();
+      // console.log("User data fetched successfully:", response);
+      // dispatch(setUserInfo(response));
+      // dispatch(setAvatarUrl(response.avatarUrl));
+    } catch (err) {
+      console.log("Fetch user data failed:", err.message);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(fetchUser()).unwrap();
-        // console.log("User data fetched successfully:", response);
-        // dispatch(setUserInfo(response));
-        // dispatch(setAvatarUrl(response.avatarUrl));
-      } catch (err) {
-        console.log("Fetch user data failed:", err.message);
-      }
-    };
     fetchData();
   }, []);
 
@@ -179,14 +180,15 @@ const AccountInformation = () => {
 
       try {
         const resultAction = await dispatch(updateUserAvatar(formData));
-        if (updateUserAvatar.fulfilled.match(resultAction)) {
-        const newAvatarUrl = resultAction.payload.avatarUrl;
-        setAvatar(newAvatarUrl);
-        console.log(newAvatarUrl);
-        setUpdatedUserInfo((prevInfo) => ({
-          ...prevInfo,
-          avatarUrl: newAvatarUrl,
-        }));
+        if (resultAction) {
+          const newAvatarUrl = resultAction.payload.avatarUrl;
+          // setAvatar(newAvatarUrl);
+          // console.log("New Avatar URL: ", newAvatarUrl);
+          // setUpdatedUserInfo((prevInfo) => ({
+          //   ...prevInfo,
+          //   avatarUrl: newAvatarUrl,
+          // }));
+          fetchData();
         }
       } catch (error) {
         console.error("Error uploading avatar:", error);
@@ -206,8 +208,6 @@ const AccountInformation = () => {
     navigate("/");
   };
 
-  
-
   return (
     <div className="account-container-responsive">
       <div className="account-content-responsive">
@@ -215,7 +215,7 @@ const AccountInformation = () => {
         <div className="profile-photo-section-responsive">
           <img
             // src={avatar}
-            src={user.avatarUrl || avatar}
+            src={userInfo.avatarUrl}
             alt={`${updatedUserInfo.username}'s avatar`}
             className="profile-photo-responsive"
           />

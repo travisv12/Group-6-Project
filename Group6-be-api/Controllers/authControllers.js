@@ -25,7 +25,7 @@ const signupController = async (req, res) => {
 // Handler for user login
 const loginController = async (req, res) => {
   const { email, password } = req.body;
-    
+
   try {
     const { userId, accessToken, refreshToken } = await loginUser({
       email,

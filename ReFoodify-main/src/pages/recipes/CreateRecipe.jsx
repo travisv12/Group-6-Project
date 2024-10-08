@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { IconSearch, IconX, IconCircleArrowLeft } from "@tabler/icons-react";
 import { v4 as uuidv4 } from "uuid";
 import recipeBg from "@/assets/recipe-detail-bg.png";
-import { updateRecipeImage } from "@/redux/slices/recipeSlice";
+// import { updateRecipeImage } from "@/redux/slices/recipeSlice";
 import {
   createRecipe,
   deleteRecipe,

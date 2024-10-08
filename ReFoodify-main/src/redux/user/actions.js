@@ -6,7 +6,7 @@ import {
   UPDATE_USER,
   REFRESH_ACCESS_TOKEN,
   LOGOUT,
-  UPDATE_AVATAR
+  UPDATE_AVATAR,
 } from "./actionTypes";
 import axiosInstance from "../axiosInstance";
 
@@ -96,14 +96,19 @@ export const logout = () => ({
 export const updateUserAvatar = createAsyncThunk(
   UPDATE_AVATAR,
   async (formData, { rejectWithValue }) => {
-    console.log("FORM DATA: ", formData);
     try {
       const response = await axiosInstance.post(
         "users/upload-avatar",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      if (!response.ok) throw new Error("Avatar upload failed");
-      return response.data;
+      if (response) {
+        return response.data;
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }

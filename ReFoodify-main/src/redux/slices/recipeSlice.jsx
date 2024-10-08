@@ -1,21 +1,21 @@
 // import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const updateRecipeImage = createAsyncThunk(
-  "recipes/updateRecipeImage",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const response = await fetch("http://localhost:3001/api/upload-image", {
-        method: "POST",
-        body: formData,
-      });
-      if (!response.ok) throw new Error("Avatar upload failed");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+// export const updateRecipeImage = createAsyncThunk(
+//   "recipes/updateRecipeImage",
+//   async (formData, { rejectWithValue }) => {
+//     try {
+//       const response = await fetch("http://localhost:3001/api/upload-image", {
+//         method: "POST",
+//         body: formData,
+//       });
+//       if (!response.ok) throw new Error("Avatar upload failed");
+//       const data = await response.json();
+//       return data;
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
 
 // // Thunk to fetch user's recipes
 // export const fetchUserRecipes = createAsyncThunk(

@@ -29,7 +29,7 @@ const Login = () => {
       // dispatch(setAccessToken(result.accessToken));
       // dispatch(setRefreshToken(result.refreshToken));
       // navigate("/my-account/account-information");
-      navigate("/");
+      navigate("/my-account/account-information");
     } catch (err) {
       console.error("Login failed:", err.message);
     }
