@@ -1,5 +1,6 @@
 const Product = require("../Models/Product");
 
+// Service for getting all products
 const getAllProducts = async () => {
   try {
     return await Product.find();
@@ -8,6 +9,7 @@ const getAllProducts = async () => {
   }
 };
 
+// Service for getting a single product by ID
 const getProductById = async (id) => {
   try {
     const product = await Product.findById(id);

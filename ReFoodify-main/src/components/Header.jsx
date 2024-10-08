@@ -4,7 +4,7 @@ import { useLocation, NavLink } from "react-router-dom";
 import { Dialog, PopoverGroup } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { Menu } from "@headlessui/react";
-import { getCartItemsCount } from "@/redux/slices/cartSlice";
+import { getCartItemsCount } from "@/redux/cart/actions";
 import {
   Bars3Icon,
   XMarkIcon,
@@ -21,6 +21,7 @@ import PropTypes from "prop-types";
 import avatar from "@/assets/genericAvatar.png";
 import { logout } from "@/redux/user/actions";
 import { useNavigate } from "react-router-dom";
+import { clearCart } from "@/redux/cart/actions";
 
 const navLinks = [
   {
@@ -172,7 +173,6 @@ const MobileMenu = memo(function MobileMenu({
                   <div className="flex items-center gap-2">
                     <span className="bg-primary text-white rounded-full px-2 py-1 text-xs">
                       {itemCount}
-                      console.log("Hello" : itemCount);
                     </span>
                   </div>
                 </NavLink>
@@ -211,7 +211,6 @@ MobileMenu.propTypes = {
 
 const DesktopMenu = memo(({ user, isActive, logout }) => {
   const itemCount = useSelector(getCartItemsCount);
-  // const { getCartItemsCount } = useCart();
 
   return (
     <>
@@ -316,9 +315,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user);
-
   const itemCount = useSelector(getCartItemsCount);
-  // const [cartItemCount, setCartItemCount] = useState(0);
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -339,9 +336,9 @@ export default function Header() {
   );
 
   const handleLogout = () => {
-    // Define your logout logic here
     console.log("User logged out");
     dispatch(logout());
+    dispatch(clearCart());
     navigate("/");
   };
 

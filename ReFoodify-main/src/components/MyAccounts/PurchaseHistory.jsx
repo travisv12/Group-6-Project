@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserOrders } from "@/redux/slices/orderSlice";
+import { fetchUserOrders } from "@/redux/order/actions";
 import Spinner from "@/components/Spinner";
 import image1 from "@/assets/purHisIm-1.png";
 import image2 from "@/assets/purHisIm-2.png";
 import image3 from "@/assets/purHisIm-3.png";
 import { useNavigate } from "react-router-dom";
-
 import "./purchaseHistory.style.css";
 
 const PurchaseHistory = () => {
@@ -14,10 +13,12 @@ const PurchaseHistory = () => {
   const navigate = useNavigate();
   const { orderHistory, loading, error } = useSelector((state) => state.order);
 
+  // Fetch user orders when the component mounts
   useEffect(() => {
     dispatch(fetchUserOrders());
-  }, [dispatch]);
+  }, []);
 
+  // Handle order click and navigate to order details page
   const handleCheckOrder = (orderId) => {
     navigate(`/order/${orderId}`);
   };

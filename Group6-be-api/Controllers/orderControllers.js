@@ -2,16 +2,16 @@ const {
   checkout,
   getUserOrders,
   getOrderById,
-  // getUserRewardPoints,
 } = require("../Services/orderService");
 
+// Controller for handling checkout
 const checkoutController = async (req, res) => {
   const userId = req.user.id;
   const { cart, cartTotal, earnedPoints } = req.body;
 
   // Transform cart items to match the expected structure
   const items = cart.map((item) => ({
-    productId: item.id,
+    productId: item.product.id,
     quantity: item.quantity || 1, // Assuming quantity is 1 if not provided
   }));
 
@@ -24,6 +24,7 @@ const checkoutController = async (req, res) => {
   }
 };
 
+// Controller for fetching user orders
 const getUserOrdersController = async (req, res) => {
   const userId = req.user.id;
 
@@ -36,6 +37,7 @@ const getUserOrdersController = async (req, res) => {
   }
 };
 
+// Controller for fetching order details
 const getOrderDetailsController = async (req, res) => {
   const userId = req.user.id;
   const { orderId } = req.params;
@@ -52,24 +54,8 @@ const getOrderDetailsController = async (req, res) => {
   }
 };
 
-
-const getUserRewardPointsController = async (req, res) => {
-  const userId = req.user.id;
-
-  try {
-    const { rewardPoints } = await getUserRewardPoints(
-      userId
-    );
-    res.status(200).json({ rewardPoints });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 module.exports = {
   checkoutController,
   getUserOrdersController,
   getOrderDetailsController,
-  getUserRewardPointsController,
 };

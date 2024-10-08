@@ -54,6 +54,7 @@ const CreateRecipe = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // New state for search term
 
+  // set up useEffect to fetch user recipes
   useEffect(() => {
     dispatch(fetchUserRecipes());
   }, [trigger]);
@@ -61,6 +62,7 @@ const CreateRecipe = () => {
     dispatch(fetchAllRecipes());
   }, [trigger]);
 
+  // Handle form input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -69,6 +71,7 @@ const CreateRecipe = () => {
     }));
   };
 
+  // Handle ingredient search input change
   const handleAddIngredient = (ingredient) => {
     if (!formData.ingredients.find((ing) => ing.name === ingredient)) {
       setFormData((prevFormData) => ({
@@ -78,10 +81,10 @@ const CreateRecipe = () => {
           { name: ingredient, quantity: "" }, // Add ingredient with an empty amount
         ],
       }));
-      console.log(`Added ingredient: ${ingredient}`);
     }
   };
 
+  // Handle removing an ingredient
   const handleRemoveIngredient = (ingredientName) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -91,16 +94,6 @@ const CreateRecipe = () => {
     }));
   };
 
-  // Handle changing the amount of an ingredient
-  // const handleAmountChange = (e, ingredientName) => {
-  //   const { value } = e.target;
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     ingredients: prevFormData.ingredients.map((ing) =>
-  //       ing.name === ingredientName ? { ...ing, amount: value } : ing
-  //     ),
-  //   }));
-  // };
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -138,6 +131,7 @@ const CreateRecipe = () => {
     }));
   };
 
+  // Handle ingredient quantity change
   const handleQuantityChange = (e, ingredientName) => {
     const { value } = e.target;
     setFormData((prevFormData) => ({
@@ -148,11 +142,9 @@ const CreateRecipe = () => {
     }));
   };
 
-  // Save or update the recipe
+  // Save the recipe
   const handleSubmit = async () => {
     setTrigger((prev) => prev + 1);
-    // Log the form data to debug
-    console.log("Form Data:", formData);
     // Ensure required fields are present
     if (
       !formData.name ||
@@ -172,7 +164,6 @@ const CreateRecipe = () => {
 
     try {
       await dispatch(createRecipe(newRecipe)).unwrap(); // Dispatch the createRecipe thunk
-      console.log("Recipe saved to database", newRecipe);
       toast.success("Recipe saved successfully!");
 
       // Reset form and image preview
@@ -207,7 +198,6 @@ const CreateRecipe = () => {
   const handleDeleteRecipe = async (_id) => {
     setTrigger((prev) => prev + 1);
     try {
-      console.log(`Deleting recipe with ID: ${_id}`);
       await dispatch(deleteRecipe(_id)).unwrap();
       toast.success("Recipe deleted successfully!");
       dispatch(fetchUserRecipes());

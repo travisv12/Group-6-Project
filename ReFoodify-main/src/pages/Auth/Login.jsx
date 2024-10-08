@@ -15,12 +15,14 @@ const Login = () => {
   const loading = useSelector((state) => state.user.loading);
   const error = useSelector((state) => state.user.error);
 
+  // set up a useEffect to log the userAccessToken whenever it changes
   useEffect(() => {
     if (userAccessToken) {
       console.log("access token updated:", userAccessToken);
     }
   }, [userAccessToken]);
 
+  // handle login form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     // setError("");

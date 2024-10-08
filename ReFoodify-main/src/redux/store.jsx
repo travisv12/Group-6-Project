@@ -4,10 +4,9 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import { combineReducers } from "redux";
 import userReducer from "./user/reducer";
 import recipeReducer from "./recipe/reducer";
-import productReducer from "./slices/productSlice";
-import cartReducer from "./slices/cartSlice";
-import orderReducer from "./slices/orderSlice";
-// import authReducer from "./slices/authSlice";
+import productReducer from "./product/reducer";
+import cartReducer from "./cart/reducer";
+import orderReducer from "./order/reducer";
 
 const persistConfig = {
   key: "root",

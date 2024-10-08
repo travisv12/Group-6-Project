@@ -1,5 +1,6 @@
 const Recipe = require("../Models/recipe");
 
+// Create new recipes
 const createRecipe = async (recipeData, userId, author) => {
   const recipe = new Recipe({
     ...recipeData,
@@ -30,6 +31,7 @@ const updateRecipe = async (id, userId, updateData) => {
   return "Recipe updated successfully";
 };
 
+// delete a recipe
 const deleteRecipe = async (id, userId) => {
   const recipe = await Recipe.findOneAndDelete({ _id: id, userId });
   if (!recipe) {
@@ -40,6 +42,7 @@ const deleteRecipe = async (id, userId) => {
   return "Recipe deleted successfully";
 };
 
+// Get a recipe by ID
 const getRecipeById = async (id, userId) => {
   const recipe = await Recipe.findOne({ _id: id, userId });
   if (!recipe) {
@@ -48,19 +51,17 @@ const getRecipeById = async (id, userId) => {
   return recipe;
 };
 
+// Get all recipes of a user
 const getUserRecipes = async (userId) => {
   const recipes = await Recipe.find({ userId }).sort({ createdAt: -1 });
   return recipes;
 };
 
+// // Get all recipes of a user
 const filterRecipes = async (ingredients) => {
-  console.log("Input Ingredients:", ingredients);
-
   const lowerCaseIngredients = ingredients.map((ingredient) =>
     ingredient.toLowerCase()
   );
-
-  console.log("Lowercase Ingredients:", lowerCaseIngredients);
 
   const recipes = await Recipe.aggregate([
     {
@@ -114,20 +115,6 @@ const filterRecipes = async (ingredients) => {
       },
     },
   ]);
-  // Detailed logging for each recipe
-  recipes.forEach((recipe) => {
-    console.log(`Recipe: ${recipe.name}`);
-    console.log(`Exact Match Count: ${recipe.exactMatchCount}`);
-    console.log(`Near Match Count: ${recipe.nearMatchCount}`);
-    console.log(
-      `Matching Ingredients Count: ${recipe.matchingIngredientsCount}`
-    );
-    recipe.ingredients.forEach((ingredient) => {
-      console.log(`Ingredient: ${ingredient.name}`);
-    });
-  });
-  console.log("Filtered Recipes:", recipes);
-
   return recipes;
 };
 

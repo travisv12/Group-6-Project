@@ -1,39 +1,44 @@
 const Order = require("../Models/order");
 const User = require("../Models/users");
 
+// Service for handling checkout
+const checkout = async (userId, checkoutData, earnedPoints) => {
+  const { items, cartTotal } = checkoutData;
+  console.log("Received checkout data:", checkoutData);
+  console.log("ITEMS:", items);
 
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
 
-  const checkout = async (userId, checkoutData, earnedPoints) => {
-    const { items, cartTotal } = checkoutData;
+  // Update user's reward points
+  user.rewardPoints += earnedPoints;
+  await user.save();
 
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new Error("User not found");
-    }
+  // Create new order
+  const newOrder = new Order({
+    userId,
+    items,
+    totalPrice: parseFloat(cartTotal),
+    earnedPoints,
+  });
 
-    // Update user's reward points
-    user.rewardPoints += earnedPoints;
-    await user.save();
+  await newOrder.save();
+  console.log("Order created:", newOrder);
+  return newOrder;
+};
 
-    // Create new order
-    const newOrder = new Order({
-      userId,
-      items,
-      totalPrice: parseFloat(cartTotal),
-      earnedPoints,
-    });
-
-    await newOrder.save();
-    return newOrder;
-  };
-
+// Service for fetching user orders
 const getUserOrders = async (userId) => {
   const orders = await Order.find({ userId }).populate("items.productId");
   return orders;
 };
 
+// Service for fetching order details
 const getOrderById = async (userId, orderId) => {
   const order = await Order.findOne({ _id: orderId, userId })
+    .sort({ createdAt: -1 })
     .populate("items.productId")
     .select("+earnedPoints"); // Explicitly include earnedPoints in the query result
 
@@ -41,22 +46,8 @@ const getOrderById = async (userId, orderId) => {
 };
 
 
-// const getUserRewardPoints = async (userId) => {
-//   const user = await User.findById(userId);
-//   if (!user) {
-//     throw new Error("User not found");
-//   }
-//   return {
-//     rewardPoints: user.rewardPoints,
-//   };
-// };
-
-
 module.exports = {
   checkout,
   getUserOrders,
   getOrderById,
-  // getUserRewardPoints,
 };
-
-

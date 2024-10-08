@@ -18,12 +18,14 @@ const Register = () => {
   const loading = useSelector((state) => state.user.loading);
   const error = useSelector((state) => state.user.error);
 
+  // set up a useEffect to log the userAccessToken whenever it changes
   useEffect(() => {
     if (userAccessToken) {
       console.log("access token updated:", userAccessToken);
     }
   }, [userAccessToken]);
 
+  // handle signup form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     // setError("");
@@ -44,8 +46,7 @@ const Register = () => {
       console.error("SignUp failed:", err.message);
     }
   };
-  // For now, just navigate to the home page
-  // navigate("/");
+ 
 
   return (
     <section

@@ -63,7 +63,6 @@ export const createRecipe = createAsyncThunk(
         "/add",
         JSON.stringify(recipeData)
       );
-      console.log(response);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);

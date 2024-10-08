@@ -18,7 +18,7 @@ const getAllRecipesController = async (req, res) => {
   }
 };
 
-// Handler for filtering recipes by ingredients
+// Handler for searching recipes by ingredients
 const filterRecipesController = async (req, res) => {
   const { ingredients } = req.body;
 

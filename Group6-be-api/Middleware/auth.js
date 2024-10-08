@@ -6,28 +6,32 @@ const db = require("../Models/database");
 
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
-
+// request logger middleware
 const requestLogger = (request, response, next) => {
   console.log(`${request.method} url:: ${request.url}`);
   next();
 };
 
+// error logger middleware
 const errorLogger = (error, request, response, next) => {
   console.log(`error ${error.message}`);
   next(error); // calling next middleware
 };
 
+// error handler middleware
 const errorResponder = (error, request, response, next) => {
   response.header("Content-Type", "application/json");
   const status = error.status || 400;
   response.status(status).send(error.message);
 };
 
+// invalid path handler middleware
 const invalidPathHandler = (request, response, next) => {
   response.status(400);
   response.send("invalid path");
 };
 
+// Middleware to authenticate JWT token
 const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (req.path == "/login" || req.path === "/signup" || req.path === "/refresh-token") return next();
@@ -47,6 +51,7 @@ const authenticateJWT = (req, res, next) => {
   }
 };
 
+// Middleware to verify refresh token
 const verifyRefreshToken = (req, res, next) => {
   const { token } = req.body;
   if (!token) {

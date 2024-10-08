@@ -1,5 +1,6 @@
 import React from "react";
 import "./Started.css";
+import { Link } from "react-router-dom";
 
 const Started = () => {
   return (
@@ -12,7 +13,14 @@ const Started = () => {
           <h2>SHAPE A SUSTAINABLE WORLD</h2>
         </div>
         <div className="started-button-container">
-          <button className="started-button">GET STARTED</button>
+          <Link
+            to="/register"
+            title=""
+            className="started-button"
+            role="button"
+          >
+            <span> GET STARTED</span>
+          </Link>
         </div>
       </div>
     </div>
