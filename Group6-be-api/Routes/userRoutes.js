@@ -53,9 +53,7 @@ router.post("/upload-avatar", upload.single("file"), async (req, res) => {
     res.status(500).json({ message: "Error updating avatar" });
   }
 });
-// router.post("/upload-avatar", upload.single("file"), (req, res) => {
-//   res.json({ avatarURL: `../../public/images/${req.file.filename}` });
-// });
+
 
 // Route for user sign-up
 router.post("/signup", validateLogin, signupController);

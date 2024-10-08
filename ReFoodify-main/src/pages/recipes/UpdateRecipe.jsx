@@ -42,7 +42,7 @@ const UpdateRecipe = () => {
     duration: "",
     serving: "",
     image: "",
-    ingredients: [], // Assumed to be an array of objects with name and amount
+    ingredients: [], 
     instructions: "",
   });
   const [searchTerm, setSearchTerm] = useState(""); // New state for search term
@@ -50,12 +50,14 @@ const UpdateRecipe = () => {
     useState(availableIngredients); // Filtered ingredients list
   const [imagePreview, setImagePreview] = useState(null);
 
+  // set up useEffect to fetch user recipes
   useEffect(() => {
     if (recipes.length === 0) {
       dispatch(fetchUserRecipes());
     }
   }, [dispatch, recipes.length]);
 
+  // Load recipe data with specific id from database when component mounts
   useEffect(() => {
     if (id && recipes.length > 0) {
       const selectedRecipe = recipes.find((recipe) => recipe._id === id);
@@ -75,15 +77,16 @@ const UpdateRecipe = () => {
     }
   }, [id, recipes]);
 
+  // Handle form input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    console.log(formData);
   };
 
+  // Handle ingredient search input change
   const handleAddIngredient = (ingredient) => {
     if (!formData.ingredients.some((ing) => ing.name === ingredient)) {
       setFormData((prevData) => ({
@@ -96,6 +99,7 @@ const UpdateRecipe = () => {
     }
   };
 
+  // Handle ingredient quantity change
   const handleRemoveIngredient = (ingredientName) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -105,6 +109,7 @@ const UpdateRecipe = () => {
     }));
   };
 
+  // Handle ingredient quantity change
   const handleIngredientAmountChange = (name, amount) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -114,6 +119,7 @@ const UpdateRecipe = () => {
     }));
   };
 
+  // Handle ingredient search input change
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -138,6 +144,7 @@ const UpdateRecipe = () => {
     }
   };
 
+  // Handle deleting the image
   const handleDeleteImage = () => {
     setImagePreview(null);
     setFormData((prevData) => ({
@@ -146,6 +153,7 @@ const UpdateRecipe = () => {
     }));
   };
 
+  // Handle update form 
   const handleUpdate = (e) => {
     e.preventDefault();
     dispatch(updateRecipe({ id, ...formData }));

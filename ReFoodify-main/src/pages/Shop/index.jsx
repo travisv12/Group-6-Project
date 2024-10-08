@@ -4,8 +4,8 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 // import { icons, shopData } from "@/data/products";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../redux/slices/productSlice";
-import { addToCart, updateQuantity } from "../../redux/slices/cartSlice";
+import { fetchProducts } from "@/redux/product/actions";
+import { addToCart, updateQuantity } from "../../redux/cart/actions";
 import almond_milk from "@/assets/almond-milk.png";
 import Spinner from "@/components/Spinner";
 import "./index.style.css";
@@ -13,7 +13,7 @@ import "./index.style.css";
 const Shop = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.items);
-  const products = useSelector((state) => state.products.products);
+  const products = useSelector((state) => state.products.product_items);
   const loading = useSelector((state) => state.products.loading);
   const error = useSelector((state) => state.products.error);
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,9 +27,10 @@ const Shop = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 8;
 
+  // Fetch products when component mounts
   useEffect(() => {
     dispatch(fetchProducts());
-  }, [dispatch]);
+  }, []);
 
   // Get unique companies from products
   const companies = [...new Set(products.map((item) => item.store))];
@@ -40,10 +41,12 @@ const Shop = () => {
       console.log("Price string is undefined or null:", priceString);
       return 0; // or any default value you prefer
     }
+
+    // Remove non-numeric characters except comma, dot, and minus
     const cleanedPrice = priceString
       .toString()
-      .replace(/[^\d,.-]/g, "") // Remove non-numeric characters except comma, dot, and minus
-      .replace(",", "."); // Convert comma to dot if necessary
+      .replace(/[^\d,.-]/g, "") 
+      .replace(",", "."); 
     const parsedPrice = parseFloat(cleanedPrice);
     return parsedPrice;
   };
@@ -78,6 +81,7 @@ const Shop = () => {
     );
   }
 
+  // Handle search changes
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
@@ -85,6 +89,8 @@ const Shop = () => {
       [name]: value,
     }));
   };
+
+  // Handle sort order changes
   const handleSortChange = (order) => {
     setSortOrder(order);
   };
@@ -101,7 +107,6 @@ const Shop = () => {
 
   // decrease quanity logic for cart icon
   const handleDecreaseQuantity = (product) => {
-    console.log("Decreasing quantity for product:", product);
     const currentQuantity =
       cart?.find((item) => item.id === product._id)?.quantity || 0;
     if (currentQuantity > 0) {
@@ -129,7 +134,6 @@ const Shop = () => {
         quantity: 1,
       })
     );
-    console.log({ dispatch });
   };
 
   return (
@@ -239,8 +243,9 @@ const Shop = () => {
                             -
                           </button>
                           <span className="shop-list-item-quantity-value">
-                            {cart?.find((item) => item.id === product._id)
-                              ?.quantity || 0}
+                            {cart?.find(
+                              (item) => item.product.id === product._id
+                            )?.quantity || 0}
                           </span>
                           <button
                             type="button"
@@ -285,11 +290,6 @@ const Shop = () => {
           </div>
         </div>
       </div>
-      {/* You can add a cart summary here
-      <div className="shop-cart-summary">
-        <p>Total Items in Cart: {itemCount}</p>
-        <p>Total Price: ${totalPrice.toFixed(2)}</p>
-      </div> */}
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
   LOGOUT,
   UPDATE_AVATAR,
 } from "./actionTypes";
+
 import axiosInstance from "../axiosInstance";
 
 // Async thunk for login

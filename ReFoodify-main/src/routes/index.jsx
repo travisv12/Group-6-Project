@@ -18,9 +18,10 @@ import AccountInformation from "@/components/MyAccounts/AccountInformation";
 import MyRecipes from "@/components/MyAccounts/MyRecipes";
 import PurchaseHistory from "@/components/MyAccounts/PurchaseHistory";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import ThankYou from "@/pages/ThankYou";
+import ThankYou from "@/pages/Thankyou/ThankYou";
 import PaymentForm from "@/components/paymentForm";
 import UserOrders from "@/components/userOrder";
+import NotFound from "@/pages/NotFound/NotFound";
 
 export default function Router() {
   const isAuthenticated = useSelector((state) => !!state.user.accessToken);
@@ -51,8 +52,7 @@ export default function Router() {
         },
         {
           path: "/recipes/createRecipe",
-          // element: <ProtectedRoute element={<CreateRecipe />} />,
-          element: <CreateRecipe />,
+          element: <ProtectedRoute element={<CreateRecipe />} />,
         },
         {
           path: "/about",
@@ -72,8 +72,7 @@ export default function Router() {
         },
         {
           path: "/my-account",
-          // element: <ProtectedRoute element={<MyAccount />} />,
-          element: <MyAccount />,
+          element: <ProtectedRoute element={<MyAccount />} />,
           children: [
             {
               index: true,
@@ -117,6 +116,10 @@ export default function Router() {
         {
           path: "/payment",
           element: <ProtectedRoute element={<PaymentForm />} />,
+        },
+        {
+          path: "*", // Catch-all route for undefined paths
+          element: <NotFound />, // Render the NotFound component
         },
       ],
     },

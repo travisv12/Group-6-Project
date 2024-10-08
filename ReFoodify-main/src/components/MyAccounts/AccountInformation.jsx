@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-// import {
-//   setAvatarUrl,
-//   setUser,
-//   fetchUser,
-//   updateUser,
-//   setUserInfo,
-//   logout,
-//   updateUserAvatar,
-// } from "@/redux/slices/userSlice";
 import {
   fetchUser,
   updateUser,
@@ -21,8 +12,7 @@ import Avatar from "@/assets/genericAvatar.png";
 import MailIcon from "@/assets/mail.png";
 import Reward from "@/assets/reward.png";
 import { useNavigate } from "react-router-dom";
-
-import "./accountInformation.style.css"; // Vanilla CSS
+import "./accountInformation.style.css"; 
 
 const InfoItem = ({ title, value, editable, onChange, isEditing, onDone }) => {
   const [inputValue, setInputValue] = useState(value);
@@ -66,6 +56,7 @@ const InfoItem = ({ title, value, editable, onChange, isEditing, onDone }) => {
   );
 };
 
+// Prop types for InfoItem
 InfoItem.propTypes = {
   title: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
@@ -84,7 +75,7 @@ const AccountInformation = () => {
   const [updatedUserInfo, setUpdatedUserInfo] = useState({
     username: userInfo?.username || "",
     email: userInfo?.email || "",
-    social: userInfo?.username || "mahnoorf",
+    social: userInfo?.username || "",
     points: userInfo?.rewardPoints || 0,
     avatarUrl: userInfo?.avatarUrl,
   });
@@ -99,10 +90,21 @@ const AccountInformation = () => {
     }
   };
 
+  //  fetching user information
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchUser()).unwrap();
+        // dispatch(setUserInfo(response));
+        // dispatch(setAvatarUrl(response.avatarUrl));
+      } catch (err) {
+        console.log("Fetch user data failed:", err.message);
+      }
+    };
     fetchData();
   }, []);
 
+  // set user information
   useEffect(() => {
     if (userInfo) {
       setUpdatedUserInfo({
@@ -115,10 +117,12 @@ const AccountInformation = () => {
     }
   }, [userInfo]);
 
+  // handle edit button click
   const handleEditClick = (field) => {
     setEditingField(field);
   };
 
+  // handle done button click
   const handleDoneClick = async (field, newValue) => {
     setUpdatedUserInfo((prevInfo) => ({
       ...prevInfo,
@@ -200,8 +204,7 @@ const AccountInformation = () => {
   const handleLogout = () => {
     // Dispatch action to clear tokens from Redux store
     dispatch(logout());
-
-    // Navigate to home page
+    dispatch(clearCart());
     navigate("/");
   };
 

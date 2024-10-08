@@ -1,5 +1,6 @@
 const productService = require("../Services/productService");
 
+// Controller for getting all products
 const getAllProducts = async (req, res) => {
   try {
     const products = await productService.getAllProducts();
@@ -9,6 +10,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+// Controller for getting a product by ID
 const getProductById = async (req, res) => {
   try {
     const product = await productService.getProductById(req.params.id);

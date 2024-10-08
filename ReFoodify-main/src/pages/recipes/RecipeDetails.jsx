@@ -12,7 +12,7 @@ const RecipeDetails = () => {
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null); // State to store the fetched recipe
 
-  // Load recipe data from localStorage when component mounts
+  // Load recipe data from database when component mounts
   useEffect(() => {
     const foundRecipe = recipes.find((recipe) => recipe._id === id);
     if (foundRecipe) {
@@ -25,11 +25,6 @@ const RecipeDetails = () => {
   if (!recipe) {
     return <div>Recipe not found</div>;
   }
-
-  // Fallback UI when recipe data is not yet available
-  // if (!recipe) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <div

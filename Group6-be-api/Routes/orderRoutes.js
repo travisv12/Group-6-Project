@@ -20,7 +20,4 @@ router.get('/my-purchases/:userId', authenticateJWT, getUserOrdersController);
 router.get('/order/:orderId', authenticateJWT, getOrderDetailsController);
 
 
-// Get user reward points route
-router.get('/reward-points', authenticateJWT, getUserRewardPointsController);
-
 module.exports = router;

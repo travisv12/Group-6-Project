@@ -7,6 +7,7 @@ require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
+// Create a user
 const createUser = async ({ username, password, role, email }) => {
   let user = await User.findOne({ username });
   if (user) {
@@ -24,7 +25,7 @@ const createUser = async ({ username, password, role, email }) => {
   });
   await user.save();
 
-  // return user._id;
+  // Generate access token
   const accessToken = jwt.sign(
     { id: user._id, username: user.username, role: user.role },
     JWT_SECRET,
@@ -32,12 +33,13 @@ const createUser = async ({ username, password, role, email }) => {
       expiresIn: "2h",
     }
   );
+  // Generate refresh token
   const refreshToken = jwt.sign(
     { id: user._id, username: user.username, role: user.role },
     REFRESH_TOKEN_SECRET,
     { expiresIn: "7d" }
   );
-
+  // Generate new refresh token
   const newRefreshToken = new RefreshToken({
     token: refreshToken,
     userId: user._id,
@@ -47,6 +49,7 @@ const createUser = async ({ username, password, role, email }) => {
   return { userId: user._id, accessToken, refreshToken };
 };
 
+// Login user
 const loginUser = async ({ email, password }) => {
   const user = await User.findOne({ email });
   if (!user) {
@@ -57,7 +60,7 @@ const loginUser = async ({ email, password }) => {
   if (!isMatch) {
     throw new Error("Password donot match");
   }
-
+  // Generate access token
   const accessToken = jwt.sign(
     { id: user._id, username: user.username, role: user.role },
     JWT_SECRET,
@@ -65,13 +68,13 @@ const loginUser = async ({ email, password }) => {
       expiresIn: "2h",
     }
   );
-
+  // Generate refresh token
   const refreshToken = jwt.sign(
     { id: user._id, username: user.username, role: user.role },
     REFRESH_TOKEN_SECRET,
     { expiresIn: "7d" }
   );
-
+  // Generate new refresh token
   const newRefreshToken = new RefreshToken({
     token: refreshToken,
     userId: user._id,
@@ -81,6 +84,7 @@ const loginUser = async ({ email, password }) => {
   return { userId: user._id, accessToken, refreshToken };
 };
 
+// Accessing new access token from refresh token service
 const refreshTokenService = async (token) => {
   const storedToken = await RefreshToken.findOne({ token });
   if (!storedToken) {
@@ -100,7 +104,7 @@ const refreshTokenService = async (token) => {
     });
 
     await RefreshToken.deleteOne({ token: storedToken.token });
-
+    // Issue new access token and refresh token
     const accessToken = jwt.sign(
       { id: decodedToken.id, role: decodedToken.role },
       JWT_SECRET,
@@ -129,6 +133,7 @@ const refreshTokenService = async (token) => {
   }
 };
 
+// Get user information
 const getUserInfo = async (userId) => {
   const user = await User.findById(userId).select("-password"); // Exclude password from the response
   if (!user) {
@@ -137,6 +142,7 @@ const getUserInfo = async (userId) => {
   return user;
 };
 
+// Update user information
 const updateUser = async (
   userId,
   { username, email, password, avatarUrl, rewardPoints }
@@ -156,13 +162,14 @@ const updateUser = async (
   }
 
   if (rewardPoints !== undefined) {
-    user.rewardPoints = rewardPoints; // Update reward points if provided
+    user.rewardPoints = rewardPoints;
   }
 
   await user.save();
   return user;
 };
 
+// Logout user
 const logoutUser = async (token) => {
   await RefreshToken.deleteOne({ token });
 };

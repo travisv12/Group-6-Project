@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchOrderDetails } from "@/redux/slices/orderSlice";
+import { fetchOrderDetails } from "@/redux/order/actions";
 import Spinner from "@/components/Spinner"; // Adjust the import path as needed
 import "./userOrders.style.css"; // Import the CSS file for styling
 
@@ -14,9 +14,10 @@ const UserOrders = () => {
     error,
   } = useSelector((state) => state.order);
 
+  // Fetch order details when the component mounts or when the orderId changes
   useEffect(() => {
     dispatch(fetchOrderDetails(orderId));
-  }, [dispatch, orderId]);
+  }, [orderId]);
 
   if (loading) {
     return <Spinner />;

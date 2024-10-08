@@ -54,6 +54,7 @@ const CreateRecipe = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // New state for search term
 
+  // set up useEffect to fetch user recipes
   useEffect(() => {
     dispatch(fetchUserRecipes());
   }, [trigger]);
@@ -61,6 +62,7 @@ const CreateRecipe = () => {
     dispatch(fetchAllRecipes());
   }, [trigger]);
 
+  // Handle form input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -69,6 +71,7 @@ const CreateRecipe = () => {
     }));
   };
 
+  // Handle ingredient search input change
   const handleAddIngredient = (ingredient) => {
     if (!formData.ingredients.find((ing) => ing.name === ingredient)) {
       setFormData((prevFormData) => ({
@@ -82,6 +85,7 @@ const CreateRecipe = () => {
     }
   };
 
+  // Handle removing an ingredient
   const handleRemoveIngredient = (ingredientName) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -138,6 +142,7 @@ const CreateRecipe = () => {
     }));
   };
 
+  // Handle ingredient quantity change
   const handleQuantityChange = (e, ingredientName) => {
     const { value } = e.target;
     setFormData((prevFormData) => ({
@@ -148,7 +153,7 @@ const CreateRecipe = () => {
     }));
   };
 
-  // Save or update the recipe
+  // Save the recipe
   const handleSubmit = async () => {
     setTrigger((prev) => prev + 1);
     // Log the form data to debug
@@ -207,7 +212,6 @@ const CreateRecipe = () => {
   const handleDeleteRecipe = async (_id) => {
     setTrigger((prev) => prev + 1);
     try {
-      console.log(`Deleting recipe with ID: ${_id}`);
       await dispatch(deleteRecipe(_id)).unwrap();
       toast.success("Recipe deleted successfully!");
       dispatch(fetchUserRecipes());

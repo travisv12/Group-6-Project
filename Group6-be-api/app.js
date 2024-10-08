@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./Models/database");
 const userRoutes = require("./Routes/userRoutes");
-const productRoutes = require("./routes/productRoutes");
+const productRoutes = require("./Routes/productRoutes");
 const recipeRoutes = require("./Routes/recipeRoutes");
 const orderRoutes = require("./Routes/orderRoutes");
 const {

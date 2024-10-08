@@ -2,11 +2,13 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import './recipeGenerator.style.css';
 
+// Recipe search component
 const RecipeGenerator = ({ initialIngredients = [], onRecipeGenerate }) => {
   const [ingredients, setIngredients] = useState(
     initialIngredients.map(ingredient => ({ name: ingredient, amount: '', selected: false }))
   );
 
+  // Handle checkbox change event
   const handleCheckboxChange = (name) => {
     setIngredients(prevIngredients =>
       prevIngredients.map(ingredient =>
@@ -17,6 +19,7 @@ const RecipeGenerator = ({ initialIngredients = [], onRecipeGenerate }) => {
     );
   };
 
+  // Handle amount change event
   const handleAmountChange = (name, value) => {
     setIngredients(prevIngredients =>
       prevIngredients.map(ingredient =>
@@ -27,6 +30,7 @@ const RecipeGenerator = ({ initialIngredients = [], onRecipeGenerate }) => {
     );
   };
 
+// setting ingredients for search
   const handleGenerateRecipe = () => {
     const selectedIngredients = ingredients.filter(ingredient => ingredient.selected);
     if (onRecipeGenerate) {
