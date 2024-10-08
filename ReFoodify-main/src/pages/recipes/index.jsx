@@ -103,7 +103,6 @@ const Recipes = () => {
       return;
     }
     dispatch(fetchFilteredRecipes(formData.ingredients, true));
-    console.log("Form data", formData);
   };
 
   // Handle adding custom ingredient from input

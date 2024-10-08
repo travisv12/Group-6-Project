@@ -59,13 +59,9 @@ const getUserRecipes = async (userId) => {
 
 // // Get all recipes of a user
 const filterRecipes = async (ingredients) => {
-  console.log("Input Ingredients:", ingredients);
-
   const lowerCaseIngredients = ingredients.map((ingredient) =>
     ingredient.toLowerCase()
   );
-
-  console.log("Lowercase Ingredients:", lowerCaseIngredients);
 
   const recipes = await Recipe.aggregate([
     {

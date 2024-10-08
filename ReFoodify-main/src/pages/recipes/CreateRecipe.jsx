@@ -81,7 +81,6 @@ const CreateRecipe = () => {
           { name: ingredient, quantity: "" }, // Add ingredient with an empty amount
         ],
       }));
-      console.log(`Added ingredient: ${ingredient}`);
     }
   };
 
@@ -95,16 +94,6 @@ const CreateRecipe = () => {
     }));
   };
 
-  // Handle changing the amount of an ingredient
-  // const handleAmountChange = (e, ingredientName) => {
-  //   const { value } = e.target;
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     ingredients: prevFormData.ingredients.map((ing) =>
-  //       ing.name === ingredientName ? { ...ing, amount: value } : ing
-  //     ),
-  //   }));
-  // };
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -156,8 +145,6 @@ const CreateRecipe = () => {
   // Save the recipe
   const handleSubmit = async () => {
     setTrigger((prev) => prev + 1);
-    // Log the form data to debug
-    console.log("Form Data:", formData);
     // Ensure required fields are present
     if (
       !formData.name ||
@@ -177,7 +164,6 @@ const CreateRecipe = () => {
 
     try {
       await dispatch(createRecipe(newRecipe)).unwrap(); // Dispatch the createRecipe thunk
-      console.log("Recipe saved to database", newRecipe);
       toast.success("Recipe saved successfully!");
 
       // Reset form and image preview

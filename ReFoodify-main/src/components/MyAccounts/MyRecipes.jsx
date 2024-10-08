@@ -25,7 +25,6 @@ const MyRecipes = () => {
 
   // Handle edit button click, navigate to update page with recipe ID in the URL
   const handleEdit = (_id) => {
-    console.log("Editing recipe with ID:", _id);
     navigate(`/recipes/update/${_id}`);
   };
 

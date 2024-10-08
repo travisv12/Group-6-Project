@@ -57,7 +57,6 @@ export const fetchUserOrders = createAsyncThunk(
       const response = await axiosInstance.get(
         `/orders/my-purchases/${userId}`
       );
-      console.log("FETCJ USER ORDER DATA: ", response.data);
       if (!response.data) {
         throw new Error("Failed to fetch user orders");
       }
@@ -74,7 +73,6 @@ export const fetchOrderDetails = createAsyncThunk(
   async (orderId, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(`/orders/order/${orderId}`);
-      console.log("FETCJ USER ORDER DATA FR SINGLE ORDER: ", response.data);
 
       if (!response.data) {
         throw new Error("Failed to fetch order details");

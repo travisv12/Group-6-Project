@@ -95,14 +95,12 @@ const AccountInformation = () => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchUser()).unwrap();
-        // dispatch(setUserInfo(response));
-        // dispatch(setAvatarUrl(response.avatarUrl));
       } catch (err) {
         console.log("Fetch user data failed:", err.message);
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   // set user information
   useEffect(() => {

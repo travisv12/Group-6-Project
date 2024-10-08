@@ -15,7 +15,6 @@ const PaymentForm = () => {
   const navigate = useNavigate();
   const cart_order = useSelector((state) => state.cart.cart_order);
 
-
   const formatCardNumber = (value) => {
     return value.replace(/\D/g, "").replace(/(\d{4})(?=\d)/g, "$1-");
   };
@@ -33,23 +32,16 @@ const PaymentForm = () => {
     setCardNumber(formattedValue);
   };
 
-// Handle expiry date input change
+  // Handle expiry date input change
   const handleExpiryDateChange = (e) => {
     const formattedValue = formatExpiryDate(e.target.value);
     setExpiryDate(formattedValue);
   };
 
-// handle payment method and checking out logic for reedem points 
+  // handle payment method and checking out logic for reedem points
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(checkout(cart_order))
-      .unwrap()
-      .then((response) => {
-        console.log("Checkout successful:", response);
-      })
-      .catch((error) => {
-        console.error("Checkout failed:", error);
-      });
+    dispatch(checkout(cart_order)).unwrap();
     dispatch(clearCart());
     toast.success("Payment successful!");
     navigate("/thank-you");

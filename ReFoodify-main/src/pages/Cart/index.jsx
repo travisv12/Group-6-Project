@@ -35,7 +35,6 @@ const Cart = () => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchUser()).unwrap();
-        console.log("User data fetched successfully:", response);
       } catch (err) {
         console.log("Fetch user data failed:", err.message);
       }
@@ -98,7 +97,6 @@ const Cart = () => {
             rewardPoints: userInfo.rewardPoints - 5000,
           })
         ).unwrap();
-        console.log("Updated user:", updatedUser);
 
         setUpdatedUserInfo((prevInfo) => ({
           ...prevInfo,
@@ -120,10 +118,9 @@ const Cart = () => {
 
 // checkout
   const handleCheckout = () => {
-    const discountedTotal = (cartTotal - totalDiscount).toFixed(2);
     const checkoutData = {
       cart: cart,
-      cartTotal: discountedTotal, // Use the calculated discounted total
+      cartTotal: estimatedTotal, // Use the calculated discounted total
     };
     dispatch(checkoutCart(checkoutData));
     navigate("/payment", { state: checkoutData });

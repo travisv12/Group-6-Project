@@ -31,22 +31,12 @@ const cartReducer = (state = initialState, action) => {
           items: updatedItems,
         };
       } else {
-        console.log("NEW ITEM ADDED: ", action.payload);
         // Item does not exist in cart, add new item
         return {
           ...state,
           items: [...state.items, action.payload],
         };
       }
-      // const { product, quantity } = action.payload;
-      // const existingItem = state.items.find((item) => item.id === product.id);
-      // if (existingItem) {
-      //   existingItem.quantity += quantity;
-      // } else {
-      //   state.items.push({ ...product, quantity });
-      // }
-      // console.log("Item added to cart:", state.items); // Optional: Add logging for debugging
-      // return { ...state };
     }
 
     case REMOVE_FROM_CART: {
@@ -58,7 +48,6 @@ const cartReducer = (state = initialState, action) => {
     }
 
     case SET_CART_ORDER: {
-      console.log("SETING CART ORDER REDUCER: ", action.payload);
       return {
         ...state,
         cart_order: action.payload,
