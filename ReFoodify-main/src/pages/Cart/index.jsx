@@ -1,8 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import {
-  removeFromCart,
-  updateQuantity,
-} from "@/redux/cart/actions";
+import { removeFromCart, updateQuantity } from "@/redux/cart/actions";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { checkoutCart } from "@/redux/cart/actions";
@@ -20,9 +17,9 @@ const Cart = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const [cartTotal, setCartTotal] = useState(0);
   const totalDiscount = cart.reduce((sum, item) => {
-  const originalPrice = parseFloat(item.product.price);
-  const discountedPrice = parseFloat(item.product.discountedPrice);
-  return sum + (originalPrice - discountedPrice) * item.quantity;
+    const originalPrice = parseFloat(item.product.price);
+    const discountedPrice = parseFloat(item.product.discountedPrice);
+    return sum + (originalPrice - discountedPrice) * item.quantity;
   }, 0);
 
   const [updatedUserInfo, setUpdatedUserInfo] = useState({
@@ -116,7 +113,7 @@ const Cart = () => {
     }
   };
 
-// checkout
+  // checkout
   const handleCheckout = () => {
     const checkoutData = {
       cart: cart,
@@ -128,12 +125,13 @@ const Cart = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="container mx-auto p-4 text-center">
-        <h1 className="text-2xl font-bold mb-4">My shopping cart</h1>
-        <p>Your cart is empty.</p>
+      <div className="container mx-auto p-4 text-center my-12">
+        <h1 className="text-4xl font-bold mb-4 text-white">OOPS!</h1>
+        <p className="text-2xl text-white">Your cart is empty.</p>
         <Link
           to="/shop"
-          className="bg-yellow-500 text-white px-4 py-2 rounded inline-block mt-4"
+          className="bg-yellow-500 text-white text-xl px-6 py-3 rounded inline-block mt-6 shadow-md"
+          style={{ textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)" }}
         >
           Go to Shop
         </Link>
@@ -202,7 +200,7 @@ const Cart = () => {
 
           <div className="cart-summary">
             <h2 className="cart-summary-title">
-              Order <em>Summary</em>
+              <em>Order Summary</em>
             </h2>
             <div className="cart-summary-details">
               <div className="cart-summary-item">

@@ -301,6 +301,7 @@ const seedProducts = async () => {
       discountedPrice: 2.1,
       store: "Prisma",
       location: "Aisle 3",
+      img: "../../../public/images/orange.jpg",
     },
     {
       name: "Apple",
@@ -308,6 +309,7 @@ const seedProducts = async () => {
       discountedPrice: 1.2,
       store: "K-Market",
       location: "Aisle 1",
+      img: "../../../public/images/apple.png",
     },
     {
       name: "Banana",
@@ -315,6 +317,7 @@ const seedProducts = async () => {
       discountedPrice: 1.0,
       store: "Lidl",
       location: "Aisle 2",
+      img: "../../../public/images/banana.png",
     },
     {
       name: "Grapes",
@@ -322,6 +325,7 @@ const seedProducts = async () => {
       discountedPrice: 2.5,
       store: "S-Market",
       location: "Aisle 4",
+      img: "../../../public/images/grape.jpg",
     },
     {
       name: "Milk",
@@ -329,6 +333,7 @@ const seedProducts = async () => {
       discountedPrice: 0.8,
       store: "Prisma",
       location: "Aisle 5",
+      img: "../../../public/images/milk.jpg",
     },
     {
       name: "Bread",
@@ -336,6 +341,7 @@ const seedProducts = async () => {
       discountedPrice: 1.5,
       store: "K-Market",
       location: "Aisle 6",
+      img: "../../../public/images/bread.jpg",
     },
     {
       name: "Butter",
@@ -343,6 +349,7 @@ const seedProducts = async () => {
       discountedPrice: 1.2,
       store: "Lidl",
       location: "Aisle 7",
+      img: "../../../public/images/butter.jpg",
     },
     {
       name: "Cheese",
@@ -350,6 +357,7 @@ const seedProducts = async () => {
       discountedPrice: 2.0,
       store: "S-Market",
       location: "Aisle 8",
+      img: "../../../public/images/cheese.png",
     },
     {
       name: "Yogurt",
@@ -357,6 +365,7 @@ const seedProducts = async () => {
       discountedPrice: 0.9,
       store: "Prisma",
       location: "Aisle 9",
+      img: "../../../public/images/yogurt.jpg",
     },
     {
       name: "Chicken",
@@ -364,6 +373,7 @@ const seedProducts = async () => {
       discountedPrice: 4.5,
       store: "K-Market",
       location: "Aisle 10",
+      img: "../../../public/images/chicken.jpg",
     },
     {
       name: "Beef",
@@ -371,6 +381,7 @@ const seedProducts = async () => {
       discountedPrice: 6.0,
       store: "Lidl",
       location: "Aisle 11",
+      img: "../../../public/images/beef.jpg",
     },
     {
       name: "Fish",
@@ -378,6 +389,7 @@ const seedProducts = async () => {
       discountedPrice: 5.0,
       store: "S-Market",
       location: "Aisle 12",
+      img: "../../../public/images/fish.jpg",
     },
     {
       name: "Rice",
@@ -385,6 +397,7 @@ const seedProducts = async () => {
       discountedPrice: 1.2,
       store: "Prisma",
       location: "Aisle 13",
+      img: "../../../public/images/rice.jpg",
     },
     {
       name: "Pasta",
@@ -392,6 +405,7 @@ const seedProducts = async () => {
       discountedPrice: 1.0,
       store: "K-Market",
       location: "Aisle 14",
+      img: "../../../public/images/pasta.jpg",
     },
     {
       name: "Tomato Sauce",
@@ -399,6 +413,87 @@ const seedProducts = async () => {
       discountedPrice: 0.8,
       store: "Lidl",
       location: "Aisle 15",
+      img: "../../../public/images/tomatosauce.jpg",
+    },
+    {
+      name: "Spinach",
+      price: 2.0,
+      discountedPrice: 1.8,
+      store: "S-Market",
+      location: "Aisle 16",
+      img: "../../../public/images/spinach.jpg",
+    },
+    {
+      name: "Avocado",
+      price: 1.8,
+      discountedPrice: 1.5,
+      store: "Prisma",
+      location: "Aisle 17",
+      img: "../../../public/images/avocado.jpg",
+    },
+    {
+      name: "Olive Oil",
+      price: 5.0,
+      discountedPrice: 4.5,
+      store: "K-Market",
+      location: "Aisle 18",
+      img: "../../../public/images/oliveoil.jpg",
+    },
+    {
+      name: "Salmon",
+      price: 8.0,
+      discountedPrice: 7.0,
+      store: "Lidl",
+      location: "Aisle 19",
+      img: "../../../public/images/salmon.jpg",
+    },
+    {
+      name: "Quinoa",
+      price: 3.5,
+      discountedPrice: 3.0,
+      store: "S-Market",
+      location: "Aisle 20",
+      img: "../../../public/images/quinoa.jpg",
+    },
+    {
+      name: "Almond Milk",
+      price: 2.5,
+      discountedPrice: 2.2,
+      store: "Prisma",
+      location: "Aisle 21",
+      img: "../../../public/images/almondmilk.jpg",
+    },
+    {
+      name: "Tofu",
+      price: 2.0,
+      discountedPrice: 1.8,
+      store: "K-Market",
+      location: "Aisle 22",
+      img: "../../../public/images/tofu.jpg",
+    },
+    {
+      name: "Honey",
+      price: 4.0,
+      discountedPrice: 3.5,
+      store: "Lidl",
+      location: "Aisle 23",
+      img: "../../../public/images/honey.jpg",
+    },
+    {
+      name: "Greek Yogurt",
+      price: 3.0,
+      discountedPrice: 2.7,
+      store: "S-Market",
+      location: "Aisle 24",
+      img: "../../../public/images/greekyogurt.jpeg",
+    },
+    {
+      name: "Almonds",
+      price: 5.5,
+      discountedPrice: 5.0,
+      store: "Prisma",
+      location: "Aisle 25",
+      img: "../../../public/images/almonds.jpg",
     },
   ];
 

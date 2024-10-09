@@ -8,7 +8,7 @@ import "./recipeDetails.style.css";
 
 const RecipeDetails = () => {
   const { id } = useParams(); // Extract the recipe ID from the URL
-   const recipes = useSelector((state) => state.recipes.recipes);
+  const recipes = useSelector((state) => state.recipes.recipes);
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null); // State to store the fetched recipe
 
@@ -54,12 +54,12 @@ const RecipeDetails = () => {
           <div>
             <h1 className="recipe-detail-title">{recipe.name}</h1>
             <div className="recipe-meta">
-              <p className="-ml-8">Duration: {recipe.duration} minutes</p>
+              <p>Duration: {recipe.duration} minutes</p>
               <p>Serving: {recipe.serving} people</p>
             </div>
           </div>
           <div className="recipe-author">
-            <span className="text-green-700 mr-1">by</span>
+            <span className="text-green-700 mr-1">by </span>
             {recipe.author || "Unknown Author"}
           </div>
         </div>
@@ -67,7 +67,7 @@ const RecipeDetails = () => {
         {/* Image */}
         <div className="recipe-image-section">
           <img
-            src={recipe.image || meet_stew} // Show recipe image or fallback to meat stew
+            src={recipe.img || meet_stew} // Show recipe image or fallback to meat stew
             alt={recipe.name}
             className="recipe-detail-image"
           />
@@ -90,19 +90,9 @@ const RecipeDetails = () => {
 
           {/* Instructions */}
           <div className="instructions-section">
-            <h2 className="instructions-title">Instructions</h2>
-            <div>
-              {typeof recipe.instructions === "string" ? (
-                <p>{recipe.instructions}</p>
-              ) : (
-                <ol className="instructions-list">
-                  {recipe.instructions.map((instruction, index) => (
-                    <li key={index} className="instructions-item">
-                      {instruction}
-                    </li>
-                  ))}
-                </ol>
-              )}
+            <div className="instructions-title">Instructions</div>
+            <div className="instructions-list">
+              <p>{recipe.instructions}</p>
             </div>
           </div>
         </div>

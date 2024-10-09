@@ -1,20 +1,22 @@
 .user-orders-container {
-  padding: 20px;
+  padding: 40px;
   max-width: 800px;
   margin: 0 auto;
 }
 
 .user-orders-title {
   font-size: 2em;
-  margin-bottom: 20px;
+  color: white;
+  margin: 0 auto;
   text-align: center;
+  width: 100%;
 }
 
 .order-card {
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 20px;
-  background-color: #c6b219ac;
+  padding: 25px;
+  background-color: #ffffff;
 }
 
 .order-id {
@@ -39,6 +41,12 @@
   margin-top: 10px;
 }
 
+.order-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
 .order-item p {
   margin: 5px 0;
 }
@@ -47,12 +55,57 @@
   font-weight: bold;
   font-size: 1.2em;
   color: #090c0a;
-  margin-top: 10px;
-  padding: 5px;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 15px;
   background-color: #78a87c;
   border-radius: 5px;
 }
 
 .points-value {
-  color: #2E7D32;
+  color: #2e7d32;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #dd922f;
+  color: white;
+  text-shadow: 1px 1px 5px #000(0, 0, 0, 0.5);
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  left: 0;
+}
+
+.back-button:hover {
+  background-color: #f5ab3b;
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 10px;
+}
+
+.item-details {
+  flex: 1;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.icon-back {
+  margin-right: 5px;
 }

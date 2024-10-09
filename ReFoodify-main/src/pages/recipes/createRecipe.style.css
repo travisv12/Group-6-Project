@@ -1,4 +1,3 @@
-
 .header-section {
   background-color: #295143;
   padding: 20px 0;
@@ -24,6 +23,10 @@
   gap: 10px;
   padding: 10px 20px;
   border-radius: 10px;
+  margin-left: 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
 }
 
 .icon-back {
@@ -35,6 +38,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  margin-right: 3rem;
 }
 
 .btn-share {
@@ -42,12 +46,12 @@
   color: #295143;
   padding: 10px 30px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
   border-radius: 10px;
 }
 
 .share-text {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
 }
 
 .background-section {
@@ -58,13 +62,15 @@
 /* Content Container */
 .content-container {
   max-width: 1140px;
-  margin: 0 auto;
+  margin: auto;
   padding: 10px;
 }
 
 .create-form-container {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   background-color: rgba(255, 255, 255, 0.953);
-  padding: 20px;
+  padding: 35px;
   /* border-radius: 20px; */
 }
 
@@ -243,11 +249,15 @@
 /* Saved Recipes */
 .saved-recipes {
   margin-top: 40px;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
 }
 
 .saved-recipes-title {
   font-size: 1.75rem;
   font-weight: bold;
+  margin-bottom: 10px;
+  margin-left: 1rem;
 }
 
 .saved-recipes-list {
@@ -264,20 +274,57 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row-reverse;
 }
 
-.recipe-name {
-  font-size: 1.5rem;
+.recipe-info {
+  flex: 3;
+  padding: 10px;
+}
+
+.recipe-info .recipe-name {
+  font-size: 1.6rem;
   font-weight: bold;
 }
 
+.recipe-info p {
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.recipe-image-container {
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  flex: 2;
+}
+
 .recipe-image {
-  width: 100%;
+  width: auto;
   height: auto;
   max-height: 200px;
   object-fit: cover;
   border-radius: 10px;
   margin-top: 20px;
+  margin-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .recipe-card {
+    flex-direction: column;
+  }
+
+  .recipe-info {
+    order: 1;
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .recipe-image-container {
+    order: 2;
+  }
 }
 
 /* Delete Button */
@@ -293,8 +340,10 @@
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 5px;
 }
-
 
 .btn-generate-recipe {
   background-color: #f6bb2b;
@@ -304,4 +353,5 @@
   font-weight: bold;
   border: none;
   cursor: pointer;
+  margin-top: 1rem;
 }

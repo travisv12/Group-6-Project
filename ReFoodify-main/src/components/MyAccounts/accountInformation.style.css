@@ -107,8 +107,10 @@
 .social-icon-responsive,
 .payment-icon-responsive,
 .reward-icon-responsive {
-  width: 40px;
-  height: 40px;
+  max-width: 60px;
+  max-height: 60px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .action-button-small-responsive {

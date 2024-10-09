@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { fetchOrderDetails } from "@/redux/order/actions";
 import Spinner from "@/components/Spinner"; // Adjust the import path as needed
 import "./userOrders.style.css"; // Import the CSS file for styling
+import { Link } from "react-router-dom";
+import { IconCircleArrowLeft } from "@tabler/icons-react";
 
 const UserOrders = () => {
   const { orderId } = useParams();
@@ -33,8 +35,13 @@ const UserOrders = () => {
 
   return (
     <div className="user-orders-container">
-      <h1 className="user-orders-title">Order Details</h1>
-
+      <div className="order-header">
+        <Link to="/my-account/purchase-history" className="back-button">
+          <IconCircleArrowLeft className="icon-back" />
+          <span>Go back</span>
+        </Link>
+        <h1 className="user-orders-title">Order Details</h1>
+      </div>
       <div className="order-card">
         <h2 className="order-id">Order ID: {order._id}</h2>
         <p className="order-date">
@@ -46,12 +53,19 @@ const UserOrders = () => {
           <ul>
             {order.items.map((item, index) => (
               <li key={index} className="order-item">
-                <p>Name: {item.productId.name}</p>
-                <p>Original Price: {item.productId.price} €</p>
-                <p>Discounted Price: {item.productId.discountedPrice} €</p>
-                <p>Quantity: {item.quantity}</p>
-                <p>Store: {item.productId.store}</p>
-                <p>Location: {item.productId.location}</p>
+                <img
+                  src={item.productId.img}
+                  alt={item.productId.name}
+                  className="product-image"
+                />
+                <div className="item-details">
+                  <p>Name: {item.productId.name}</p>
+                  <p>Original Price: {item.productId.price} €</p>
+                  <p>Discounted Price: {item.productId.discountedPrice} €</p>
+                  <p>Quantity: {item.quantity}</p>
+                  <p>Store: {item.productId.store}</p>
+                  <p>Location: {item.productId.location}</p>
+                </div>
               </li>
             ))}
           </ul>

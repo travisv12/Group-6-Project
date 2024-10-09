@@ -52,10 +52,13 @@ const Recipes = () => {
     ingredients: [],
     instructions: "",
   });
-  const [visibleRecipes, setVisibleRecipes] = useState(4);
-  const showMoreRecipes = () => {
-    setVisibleRecipes((prevVisible) => prevVisible + 4);
-  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const recipesPerPage = 4;
+  const indexOfLastRecipe = currentPage * recipesPerPage;
+  const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+  const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   useEffect(() => {
     dispatch(fetchAllRecipes());
   }, []);
@@ -269,7 +272,7 @@ const Recipes = () => {
         <div className="main-recipes-list">
           <div className="main-recipes-container">
             {recipes.length > 0 ? (
-              recipes.slice(0, visibleRecipes).map((recipe, index) => (
+              currentRecipes.map((recipe, index) => (
                 <div className="main-recipe-preview" key={index}>
                   <div className="mian-recipe-card">
                     <img
@@ -300,14 +303,22 @@ const Recipes = () => {
               <p className="no-recipes">No recipes saved yet.</p>
             )}
           </div>
-          {visibleRecipes < recipes.length && (
-            <div className="main-btn-show-more-recipe-container">
-              <button
-                className="main-btn-show-more-recipe"
-                onClick={showMoreRecipes}
-              >
-                Show More
-              </button>
+          {recipes.length > recipesPerPage && (
+            <div className="pagination">
+              {Array.from(
+                { length: Math.ceil(recipes.length / recipesPerPage) },
+                (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => paginate(i + 1)}
+                    className={`pagination-button ${
+                      currentPage === i + 1 ? "active" : ""
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                )
+              )}
             </div>
           )}
         </div>

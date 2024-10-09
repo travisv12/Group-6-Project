@@ -94,7 +94,6 @@ const CreateRecipe = () => {
     }));
   };
 
-
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -380,25 +379,29 @@ const CreateRecipe = () => {
                 {userRecipes.map((recipe, index) => (
                   <li key={index} className="recipe-item">
                     <div className="recipe-card">
-                      <h3 className="recipe-name">{recipe.name}</h3>
-                      <p>Created At: {recipe.createdAt}</p>
-                      <p>Duration: {recipe.duration} minutes</p>
-                      <p>Servings: {recipe.serving}</p>
-                      <p>Instructions: {recipe.instructions}</p>
-                      {recipe.img && (
-                        <img
-                          src={recipe.img}
-                          alt={recipe.name}
-                          className="recipe-image"
-                        />
-                      )}
-                      <div className="btn-delete-container">
-                        <button
-                          className="btn-delete-recipe"
-                          onClick={() => handleDeleteRecipe(recipe._id)}
-                        >
-                          Delete
-                        </button>
+                      <div className="recipe-info">
+                        <h3 className="recipe-name">{recipe.name}</h3>
+                        <p>Created At: {recipe.createdAt}</p>
+                        <p>Duration: {recipe.duration} minutes</p>
+                        <p>Servings: {recipe.serving}</p>
+                        <p>Instructions: {recipe.instructions}</p>
+                        <div className="btn-delete-container">
+                          <button
+                            className="btn-delete-recipe"
+                            onClick={() => handleDeleteRecipe(recipe._id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                      <div className="recipe-image-container">
+                        {recipe.img && (
+                          <img
+                            src={recipe.img}
+                            alt={recipe.name}
+                            className="recipe-image"
+                          />
+                        )}
                       </div>
                     </div>
                   </li>

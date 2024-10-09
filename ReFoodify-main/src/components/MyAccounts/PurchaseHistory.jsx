@@ -65,14 +65,19 @@ const PurchaseHistory = () => {
                   className="purchase-image purchase-image-large"
                 />
                 <div className="purchase-details purchase-details-left">
-                  <div className="text-center md:text-left">
+                  <div className="text-center md:text-left text-xl">
                     <p className="text-lg font-bold text-black">
                       {order.storeName}
                     </p>
-                    <p>{new Date(order.purchaseDate).toLocaleDateString()}</p>
+                    <p>
+                      Purchase Date:{" "}
+                      {new Date(order.purchaseDate).toLocaleDateString()}
+                    </p>
                   </div>
                   <div className="purchase-buttons purchase-buttons-between">
-                    <p className="purchase-price">{order.totalPrice} €</p>
+                    <p className="purchase-price">
+                      Total: {order.totalPrice} €
+                    </p>
                     <button
                       className="button-check-order"
                       onClick={() => handleCheckOrder(order._id)}

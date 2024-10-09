@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   avatarUrl: {
     type: String,
-    default: "/images/avatar.jpg",
+    default: "../../../public/avatars/avatar.jpg",
   },
   rewardPoints: {
     type: Number,

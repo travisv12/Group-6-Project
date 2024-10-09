@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { signup, fetchUser } from "../../redux/user/actions";
+import { fetchProducts } from "@/redux/product/actions";
 
 import "./register.style.css";
 
@@ -38,6 +39,7 @@ const Register = () => {
         signup({ username, email, password })
       ).unwrap();
       await dispatch(fetchUser());
+      await dispatch(fetchProducts());
       // dispatch(setUser(result.userId));
       // dispatch(setAccessToken(result.accessToken));
       // dispatch(setRefreshToken(result.refreshToken));
@@ -46,7 +48,6 @@ const Register = () => {
       console.error("SignUp failed:", err.message);
     }
   };
- 
 
   return (
     <section

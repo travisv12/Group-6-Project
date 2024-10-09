@@ -12,7 +12,7 @@ import Avatar from "@/assets/genericAvatar.png";
 import MailIcon from "@/assets/mail.png";
 import Reward from "@/assets/reward.png";
 import { useNavigate } from "react-router-dom";
-import "./accountInformation.style.css"; 
+import "./accountInformation.style.css";
 
 const InfoItem = ({ title, value, editable, onChange, isEditing, onDone }) => {
   const [inputValue, setInputValue] = useState(value);
@@ -80,11 +80,9 @@ const AccountInformation = () => {
     avatarUrl: userInfo?.avatarUrl,
   });
 
-  const [avatar, setAvatar] = useState(userInfo.avatarUrl || Avatar);
-
   const fetchData = async () => {
     try {
-       dispatch(fetchUser()).unwrap();
+      dispatch(fetchUser()).unwrap();
     } catch (err) {
       console.log("Fetch user data failed:", err.message);
     }
@@ -94,7 +92,7 @@ const AccountInformation = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-         await dispatch(fetchUser()).unwrap();
+        await dispatch(fetchUser()).unwrap();
       } catch (err) {
         console.log("Fetch user data failed:", err.message);
       }
@@ -148,20 +146,11 @@ const AccountInformation = () => {
       ).unwrap();
 
       if (response) {
-        setAvatar(defaultAvatarUrl);
         setUpdatedUserInfo((prevInfo) => ({
           ...prevInfo,
           avatarUrl: defaultAvatarUrl,
         }));
-
-        dispatch(
-          setUserInfo({
-            ...userInfo,
-            avatarUrl: defaultAvatarUrl,
-          })
-        );
-        dispatch(setAvatarUrl(defaultAvatarUrl));
-        // dispatch(setUser({ avatarUrl: defaultAvatarUrl }));
+        fetchData();
 
         console.log("Avatar removed successfully");
       }
@@ -181,12 +170,6 @@ const AccountInformation = () => {
         const resultAction = await dispatch(updateUserAvatar(formData));
         if (resultAction) {
           const newAvatarUrl = resultAction.payload.avatarUrl;
-          // setAvatar(newAvatarUrl);
-          // console.log("New Avatar URL: ", newAvatarUrl);
-          // setUpdatedUserInfo((prevInfo) => ({
-          //   ...prevInfo,
-          //   avatarUrl: newAvatarUrl,
-          // }));
           fetchData();
         }
       } catch (error) {
@@ -212,7 +195,6 @@ const AccountInformation = () => {
         {/* Profile Photo and Actions */}
         <div className="profile-photo-section-responsive">
           <img
-            // src={avatar}
             src={userInfo.avatarUrl}
             alt={`${updatedUserInfo.username}'s avatar`}
             className="profile-photo-responsive"

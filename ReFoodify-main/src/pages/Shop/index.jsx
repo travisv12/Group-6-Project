@@ -25,7 +25,40 @@ const Shop = () => {
   });
   const [sortOrder, setSortOrder] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 8;
+  const productsPerPage = 12;
+  const [quantities, setQuantities] = useState({});
+
+  const handleQuantityChange = (productId, value) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [productId]: Math.max(0, parseInt(value) || 0),
+    }));
+  };
+
+  const handleIncreaseQuantity = (product) => {
+    handleQuantityChange(product._id, (quantities[product._id] || 0) + 1);
+  };
+
+  const handleDecreaseQuantity = (product) => {
+    handleQuantityChange(product._id, (quantities[product._id] || 0) - 1);
+  };
+  const handleAddToCart = (product) => {
+    const quantity = quantities[product._id] || 1;
+    dispatch(
+      addToCart({
+        product: {
+          id: product._id,
+          name: product.name,
+          price: parsePrice(product.price),
+          discountedPrice: parsePrice(product.discountedPrice),
+          store: product.store,
+          image: product.img,
+        },
+        quantity: quantity,
+      })
+    );
+    setQuantities((prev) => ({ ...prev, [product._id]: 0 }));
+  };
 
   // Fetch products when component mounts
   useEffect(() => {
@@ -45,8 +78,8 @@ const Shop = () => {
     // Remove non-numeric characters except comma, dot, and minus
     const cleanedPrice = priceString
       .toString()
-      .replace(/[^\d,.-]/g, "") 
-      .replace(",", "."); 
+      .replace(/[^\d,.-]/g, "")
+      .replace(",", ".");
     const parsedPrice = parseFloat(cleanedPrice);
     return parsedPrice;
   };
@@ -106,35 +139,35 @@ const Shop = () => {
   const handlePagination = (pageNumber) => setCurrentPage(pageNumber);
 
   // decrease quanity logic for cart icon
-  const handleDecreaseQuantity = (product) => {
-    const currentQuantity =
-      cart?.find((item) => item.id === product._id)?.quantity || 0;
-    if (currentQuantity > 0) {
-      dispatch(
-        updateQuantity({
-          productId: product._id,
-          quantity: currentQuantity - 1,
-        })
-      );
-    }
-  };
+  // const handleDecreaseQuantity = (product) => {
+  //   const currentQuantity =
+  //     cart?.find((item) => item.id === product._id)?.quantity || 0;
+  //   if (currentQuantity > 0) {
+  //     dispatch(
+  //       updateQuantity({
+  //         productId: product._id,
+  //         quantity: currentQuantity - 1,
+  //       })
+  //     );
+  //   }
+  // };
 
   // increase quanity logic for cart icon
-  const handleIncreaseQuantity = (product) => {
-    dispatch(
-      addToCart({
-        product: {
-          id: product._id,
-          name: product.name,
-          price: parsePrice(product.price),
-          discountedPrice: parsePrice(product.discountedPrice),
-          store: product.store,
-          image: product.image,
-        },
-        quantity: 1,
-      })
-    );
-  };
+  // const handleIncreaseQuantity = (product) => {
+  //   dispatch(
+  //     addToCart({
+  //       product: {
+  //         id: product._id,
+  //         name: product.name,
+  //         price: parsePrice(product.price),
+  //         discountedPrice: parsePrice(product.discountedPrice),
+  //         store: product.store,
+  //         image: product.image,
+  //       },
+  //       quantity: 1,
+  //     })
+  //   );
+  // };
 
   return (
     <div className="shop-container">
@@ -151,7 +184,7 @@ const Shop = () => {
         <div className="shop-filters-container">
           <div className="shop-filters-header">
             <FiFilter className="shop-filters-icon" />
-            <p className="shop-filters-title">Filter</p>
+            <p className="shop-filters-title"> Filter</p>
           </div>
           <div className="shop-filters-controls mt-5">
             <select
@@ -210,7 +243,7 @@ const Shop = () => {
                       <a href={product.link}>
                         <img
                           className="shop-list-item-image"
-                          src={product.image || almond_milk}
+                          src={product.img || almond_milk}
                           alt={product.name}
                         />
                       </a>
@@ -225,31 +258,32 @@ const Shop = () => {
 
                       <div className="shop-list-item-details">
                         <p className="shop-list-item-price">
-                          Discount price:{" "}
+                          Discounted price:{" "}
                           <span className="shop-list-item-price-value">
-                            ${product.discountedPrice}
+                            € {product.discountedPrice}
                           </span>
                         </p>
                         <p className="shop-list-item-actual-price">
-                          Actual Price: ${product.price}
+                          Original Price: € {product.price}
                         </p>
 
                         <div className="shop-list-item-quantity">
                           <button
                             type="button"
-                            className="shop-list-item-quantity-button"
+                            className="shop-list-item-quantity-button1"
                             onClick={() => handleDecreaseQuantity(product)}
                           >
                             -
                           </button>
                           <span className="shop-list-item-quantity-value">
-                            {cart?.find(
+                            {/* {cart?.find(
                               (item) => item.product.id === product._id
-                            )?.quantity || 0}
+                            )?.quantity || 0} */}
+                            {quantities[product._id] || 0}
                           </span>
                           <button
                             type="button"
-                            className="shop-list-item-quantity-button"
+                            className="shop-list-item-quantity-button2"
                             onClick={() => handleIncreaseQuantity(product)}
                           >
                             +
@@ -260,7 +294,7 @@ const Shop = () => {
                         <button
                           className="shop-list-item-add-to-cart-button"
                           type="button"
-                          onClick={() => addToCart(product)}
+                          onClick={() => handleAddToCart(product)}
                         >
                           Add to cart
                         </button>
