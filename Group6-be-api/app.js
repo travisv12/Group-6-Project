@@ -1,4 +1,6 @@
 require("dotenv").config();
+const swaggerUI = require("swagger-ui-express");
+const swaggerSpec = require("./swagger.json"); // Assuming swagger.json is in the same directory
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./Models/database");
@@ -20,6 +22,8 @@ app.use(cors());
 connectDB();
 
 app.use(express.json());
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 // Use the user routes
 app.use("/api/users", userRoutes);
