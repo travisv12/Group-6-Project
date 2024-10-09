@@ -29,8 +29,8 @@ const Login = () => {
     // setError("");
     try {
       const result = await dispatch(login({ email, password })).unwrap();
-      await dispatch(fetchUser());
-      await dispatch(fetchProducts());
+      await dispatch(fetchUser()).unwrap();
+      await dispatch(fetchProducts()).unwrap();
       // dispatch(setAccessToken(result.accessToken));
       // dispatch(setRefreshToken(result.refreshToken));
       // navigate("/my-account/account-information");

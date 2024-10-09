@@ -38,8 +38,8 @@ const Register = () => {
       const result = await dispatch(
         signup({ username, email, password })
       ).unwrap();
-      await dispatch(fetchUser());
-      await dispatch(fetchProducts());
+      await dispatch(fetchUser()).unwrap();
+      await dispatch(fetchProducts()).unwrap();
       // dispatch(setUser(result.userId));
       // dispatch(setAccessToken(result.accessToken));
       // dispatch(setRefreshToken(result.refreshToken));

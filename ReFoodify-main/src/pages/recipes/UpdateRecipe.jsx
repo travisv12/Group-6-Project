@@ -38,11 +38,11 @@ const UpdateRecipe = () => {
   const recipes = useSelector((state) => state.recipes.userRecipes);
   const loading = useSelector((state) => state.recipes.loading);
   const [formData, setFormData] = useState({
-    recipeName: "",
+    name: "",
     duration: "",
     serving: "",
     image: "",
-    ingredients: [], 
+    ingredients: [],
     instructions: "",
   });
   const [searchTerm, setSearchTerm] = useState(""); // New state for search term
@@ -63,7 +63,7 @@ const UpdateRecipe = () => {
       const selectedRecipe = recipes.find((recipe) => recipe._id === id);
       if (selectedRecipe) {
         setFormData({
-          recipeName: selectedRecipe.name,
+          name: selectedRecipe.name,
           ingredients: selectedRecipe.ingredients || [],
           instructions: selectedRecipe.instructions,
           duration: selectedRecipe.duration,
@@ -153,7 +153,7 @@ const UpdateRecipe = () => {
     }));
   };
 
-  // Handle update form 
+  // Handle update form
   const handleUpdate = (e) => {
     e.preventDefault();
     dispatch(updateRecipe({ id, ...formData }));
@@ -203,8 +203,8 @@ const UpdateRecipe = () => {
                     <label className="form-label">Recipe name:</label>
                     <input
                       type="text"
-                      name="recipeName"
-                      value={formData.recipeName}
+                      name="name"
+                      value={formData.name}
                       onChange={handleChange}
                       className="input-field"
                     />

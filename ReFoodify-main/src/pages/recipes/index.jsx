@@ -230,7 +230,7 @@ const Recipes = () => {
                     <p>Duration: {filteredRecipes[0].duration} mins</p>
                     <p>Serving: {filteredRecipes[0].serving} people</p>
                   </div>
-                  <Link to={`/recipes/details/${recipes[0]._id}`}>
+                  <Link to={`/recipes/details/${filteredRecipes[0]._id}`}>
                     <button className="btn-checkout-recipe">
                       CHECK OUT RECIPE
                     </button>

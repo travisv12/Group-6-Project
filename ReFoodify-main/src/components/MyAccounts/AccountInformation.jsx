@@ -195,7 +195,7 @@ const AccountInformation = () => {
         {/* Profile Photo and Actions */}
         <div className="profile-photo-section-responsive">
           <img
-            src={userInfo.avatarUrl}
+            src={updatedUserInfo.avatarUrl}
             alt={`${updatedUserInfo.username}'s avatar`}
             className="profile-photo-responsive"
           />
@@ -294,7 +294,10 @@ const AccountInformation = () => {
               <div>
                 <h2 className="account-info-title">My Reward Points</h2>
                 <p className="account-info-value">
-                  {userInfo ? `${userInfo.rewardPoints} points` : "Loading..."}
+                  {/* {userInfo ? `${userInfo.rewardPoints} points` : "Loading..."} */}
+                  {updatedUserInfo
+                    ? `${updatedUserInfo.points} points`
+                    : "Loading..."}
                 </p>
               </div>
             </div>
