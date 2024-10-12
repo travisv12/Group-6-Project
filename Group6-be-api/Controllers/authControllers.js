@@ -9,6 +9,14 @@ const {
 const signupController = async (req, res) => {
   const { username, password, email } = req.body;
 
+  console.log("@@@@@");
+  console.log(req.body);
+
+  // Check for missing fields
+  if (!username || !password || !email) {
+    return res.status(400).send({ error: "All fields required" });
+  }
+
   try {
     const { userId, accessToken, refreshToken } = await createUser({
       username,
@@ -18,14 +26,13 @@ const signupController = async (req, res) => {
     res.status(201).send({ userId, accessToken, refreshToken });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(400).send({ error: err.message });
   }
 };
 
 // Handler for user login
 const loginController = async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const { userId, accessToken, refreshToken } = await loginUser({
       email,
@@ -34,7 +41,7 @@ const loginController = async (req, res) => {
     res.status(200).json({ userId, accessToken, refreshToken });
   } catch (err) {
     console.error(err.message);
-    res.status(401).send(err.message);
+    res.status(401).send({ error: "Invalid credentials" });
   }
 };
 
@@ -66,7 +73,7 @@ const logoutController = async (req, res) => {
     await logoutUser(refreshToken);
     res.sendStatus(204);
   } catch (err) {
-    console.error(err.message);
+    // console.error(err.message);
     res.status(500).send("Server error");
   }
 };

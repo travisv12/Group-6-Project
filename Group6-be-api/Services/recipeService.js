@@ -2,6 +2,13 @@ const Recipe = require("../Models/recipe");
 
 // Create new recipes
 const createRecipe = async (recipeData, userId, author) => {
+  const { name, ingredients, instructions, duration, serving } = recipeData;
+  // Validate required fields
+  if (!name || !ingredients || !instructions || !duration || !serving) {
+    throw new Error(
+      "Name, ingredients, instructions, duration, and serving are required"
+    );
+  }
   const recipe = new Recipe({
     ...recipeData,
     userId,

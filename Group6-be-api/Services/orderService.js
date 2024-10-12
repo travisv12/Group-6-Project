@@ -4,8 +4,6 @@ const User = require("../Models/users");
 // Service for handling checkout
 const checkout = async (userId, checkoutData, earnedPoints) => {
   const { items, cartTotal } = checkoutData;
-  console.log("Received checkout data:", checkoutData);
-  console.log("ITEMS:", items);
 
   const user = await User.findById(userId);
   if (!user) {
@@ -25,7 +23,6 @@ const checkout = async (userId, checkoutData, earnedPoints) => {
   });
 
   await newOrder.save();
-  console.log("Order created:", newOrder);
   return newOrder;
 };
 
