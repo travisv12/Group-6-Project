@@ -9,6 +9,10 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
 // Create a user
 const createUser = async ({ username, password, role, email }) => {
+  if (!username || !password || !email) {
+    throw new Error("Please add all fields");
+  }
+
   let user = await User.findOne({ username });
   if (user) {
     throw new Error("User already exists");

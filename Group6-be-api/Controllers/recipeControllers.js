@@ -41,8 +41,11 @@ const createRecipeController = async (req, res) => {
     const recipe = await createRecipe(recipeData, userId, author);
     res.status(201).json(recipe);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
+       if (err.message.includes("required")) {
+         res.status(400).json({ error: err.message });
+       } else {
+         res.status(500).send("Server error");
+       }
   }
 };
 

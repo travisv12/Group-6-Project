@@ -54,9 +54,8 @@ router.post("/upload-avatar", upload.single("file"), async (req, res) => {
   }
 });
 
-
 // Route for user sign-up
-router.post("/signup", validateLogin, signupController);
+router.post("/signup", signupController);
 
 // Route for user login
 router.post("/login", loginController);
