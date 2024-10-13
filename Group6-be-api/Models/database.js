@@ -10,7 +10,7 @@ const connectDB = async () => {
     await mongoose.connect(dbURI);
     console.log(
       `MongoDB connected to ${
-        process.env.NODE_ENV === "test" ? "test" : "production"
+        process.env.NODE_ENV === "test" ? "test" : "development"
       } database`
     );
   } catch (err) {

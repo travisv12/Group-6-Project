@@ -3,7 +3,7 @@ import { store } from "./store";
 import { refreshAccessToken } from "./user/actions";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3001/api",
+  baseURL: "http://localhost:4000/api",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

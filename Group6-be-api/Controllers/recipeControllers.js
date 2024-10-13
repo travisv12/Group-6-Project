@@ -41,7 +41,6 @@ const createRecipeController = async (req, res) => {
     const recipe = await createRecipe(recipeData, userId, author);
     res.status(201).json(recipe);
   } catch (err) {
-    console.log(err.message);
        if (err.message.includes("required")) {
          res.status(400).json({ error: err.message });
        } else {

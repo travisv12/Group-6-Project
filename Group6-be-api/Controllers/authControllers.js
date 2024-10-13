@@ -9,8 +9,6 @@ const {
 const signupController = async (req, res) => {
   const { username, password, email } = req.body;
 
-  console.log("@@@@@");
-  console.log(req.body);
 
   // Check for missing fields
   if (!username || !password || !email) {
@@ -25,7 +23,6 @@ const signupController = async (req, res) => {
     });
     res.status(201).send({ userId, accessToken, refreshToken });
   } catch (err) {
-    console.error(err.message);
     res.status(400).send({ error: err.message });
   }
 };
@@ -40,7 +37,6 @@ const loginController = async (req, res) => {
     });
     res.status(200).json({ userId, accessToken, refreshToken });
   } catch (err) {
-    console.error(err.message);
     res.status(401).send({ error: "Invalid credentials" });
   }
 };

@@ -35,7 +35,6 @@ describe("User Routes", () => {
       };
 
       const result = await api.post("/api/users/signup").send(invalidUserData);
-      console.log("error", result.body);
       expect(result.status).toBe(400);
       expect(result.body).toHaveProperty("error");
     });

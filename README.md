@@ -8,10 +8,11 @@
 
 ## Project Scope:
 
-The project aims to create a society that contributes towards a sustainable food system by reducing food waste and promoting responsible consumption.
+The project aims to create a society that contributes towards food sustainability by reducing food waste and promoting responsible consumption.
 
-ReFoodify allows users to save near expiry food items at their home by suggesting to convert these items into delicious meals. It encourages users to reduce food waste by consuming near expiry food rather than throwing them away. It also allows users to share their recipes as well, which others can use to prepare their meals.
-In addition to that, it allows users to buy near expiry discounted food items available in their nearby supermarkets. When user buys these items from the website, user gets `reward points` on every purchase, which user can see in his account page. Once user reaches `5000 reward points`, user can get `5€` discount on next purchase. This is to incentivies user interation and help them to save money on their purchases.
+ReFoodify allows users to save near expiry food items at their home by suggesting to convert these items into delicious meals rather than throwing them away. It also allows users to share their recipes as well, which other users can use to prepare their meals.
+
+In addition to that, it allows users to buy near expiry discounted food items available in their nearby supermarkets. When a user buys these items from the website, the user gets `reward points` on every purchase made, which can be seen in the user account page. As the user reaches `5000 reward points`, the user can get a `5€` discount on the next purchase. This is to incentives user interaction and help them to save money on their purchases.
 
 # Project Description:
 
@@ -33,12 +34,12 @@ Link : https://www.figma.com/design/1KzgiAhu10xel2PcK9ZwQr/Figma-basics?node-id=
 - Multer: Middleware for handling file uploads.
 - MongoDB - NoSQL database for flexible data storage<br>
 - Mongoose - ODM (Object Data Modeling) library for MongoDB and Node.js<br>
-- bcryptjs - Library for hashing passwords<br>
+- Bcryptjs - Library for hashing passwords<br>
 - JSON Web Tokens (JWT) - For secure authentication<br>
 - Supertest - Testing library for HTTP assertions<br>
 - Jest - JavaScript testing framework<br>
-- dotenv - For managing environment variables<br>
-- MongoDB Atlas - For deloying database on AWS Cloud variables<br>
+- Dotenv - For managing environment variables<br>
+- MongoDB Atlas - For deploying database on AWS Cloud variables<br>
 
 
 ## Swagger API Documentation
@@ -49,19 +50,24 @@ Swagger is used to generate interactive API documentation for ReFoodify. It prov
 
 1. Redux Store Architect and State Management.
    
-2.  Responsive UI Design.
+2. Responsive UI Design.
 
 3. Refresh Token based authentication mechanism.
 
-4. xios API Instances.
+4. Axios API Instances.
    
 5. Incentivizes user engagement.
+
+## Backend-end Deployment
+
+Back-end Deployment Link: https://group-6-project-651h.onrender.com
+
 
 # Usage
 
 ### Part 1
 
-1. **Install Frontend Dependencies & Start the App**  
+- **Install Frontend Dependencies & Start the App**  
    Navigate to the frontend directory `ReFoodify-main`, install dependencies, and start the application:
 
    ```sh
@@ -72,11 +78,13 @@ Swagger is used to generate interactive API documentation for ReFoodify. It prov
 
 ### Part 2
 
-- Navigate to the `Group6-be-api` directory and install the necessary dependencies:
+- **Install Backend Dependencies & Start the Server** 
+  Navigate to the `Group6-be-api` directory and install the necessary dependencies:
 
 ```sh
 cd Group6-be-api
 npm install
+node seed.js
 npm run dev
 ```
 
@@ -97,7 +105,7 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 - The project uses Supertest for API testing, to run and check the users.test, recipes.test and orders.test files:
 
   ```sh
-   cd frontend
+   cd Group6-be-api
    npm install
    npm test
   ```
@@ -106,10 +114,10 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 
 - Once the server is running, you can access the Swagger JSON endpoints at the following URL:
 
-`http://localhost:3001/api`
+`http://localhost:4001/api`
 
 - The Swagger JSON file can be accessed directly at:
-  `http://localhost:3001/api/swagger.json`
+  `http://localhost:4001/api/swagger.json`
 
 
 ---
@@ -126,7 +134,7 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 - **Explanation:**
   - Handles account information like user name, email, profile picture and reward points.
   - Handle purchase history including order details and payment information.
-  - Manages posted recipes and recipe management like editing and deleting exisitng recipes.
+  - Manages posted recipes and recipe management like editing and deleting existing recipes.
 
 ### Header.jsx
 
@@ -155,7 +163,7 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 
 - **Functions:** Contains the logic for recipe management. It includes pages like index, CreateRecipe, UpdateRecipe and RecipeDetails.
 - **Explanation:**
-  - Index.jsx: Display the generate recipe logic from available ingredients.
+  - Index.jsx: Display the generated recipe logic from available ingredients.
   - CreateRecipe.jsx: Allows users to create new recipes.
   - UpdateRecipe.jsx: Allows users to update existing recipes.
 
@@ -163,13 +171,13 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 
 - **Functions:** Contains the logic for displaying near expiry food items.
 - **Explanation:**
-  - Index.jsx: Displays the list of near expiry food items. It renders the list of near expiry food items from database and displays them.
+  - Index.jsx: Displays the list of near expiry food items. It renders the list of near expiry food items from the database and displays them.
 
 ### Cart
 
-- **Functions:** Contains the logic for cart management. It shows chosen items and calculates the total price and discount price. It also handles reedem points logic which user can reedem.
+- **Functions:** Contains the logic for cart management. 
 - **Explanation:**
-  - Index.jsx: Displays the cart items and calculates the total price and discount price. It also handles reedem points logic which user can reedem.
+  - Index.jsx: Displays the cart items and calculates the total price and discount price. It also handles redeem points logic which the user can redeem.
 
 ## 3. src/redux/
 
@@ -179,41 +187,41 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 
 - **Explanation:**
 
-  - actions.js: Defines the actions for generating, adding, removing, and updating recipes. It also handles fetching user specific recipes.
-  - actionTypes.js: Defines the action types for recipe-related actions.
-  - reducer.js: Defines the reducer function for updating the recipe state based on dispatched actions.
+  - *actions.js*: Defines the actions for generating, adding, removing, and updating recipes. It also handles fetching user specific recipes.
+  - *actionTypes.js*: Defines the action types for recipe-related actions.
+  - *reducer.js*: Defines the reducer function for updating the recipe state based on dispatched actions.
 
   ### user
 
   **Functions:** Manages the user state and handles user-related actions. It has three separate files:
 
   - **Explanation:**
-  - actions.js: Defines the actions for user authentication, login, logout, and updating user information. It also handles refresh token logic.
-  - actionTypes.js: Defines the action types for user-related actions.
-  - reducer.js: Defines the reducer function for updating the user state based on dispatched actions.
+  - *actions.js*: Defines the actions for user authentication, login, logout, and updating user information. It also handles refresh token logic.
+  - *actionTypes.js*: Defines the action types for user-related actions.
+  - *reducer.js*: Defines the reducer function for updating the user state based on dispatched actions.
 
 ### cart
 
 - **Functions:** Manages the cart state and handles cart-related actions. It has three separate files:
 
 - **Explanation:**
-  - actions.js: Defines the actions for adding, removing, and updating items in the cart.
-  - actionTypes.js: Defines the action types for cart-related actions.
-  - reducer.js: Defines the reducer function for updating the cart state based on dispatched actions.
+  - *actions.js*: Defines the actions for adding, removing, and updating items in the cart.
+  - *actionTypes.js*: Defines the action types for cart-related actions.
+  - *reducer.js*: Defines the reducer function for updating the cart state based on dispatched actions.
 
 ### order
 
 - **Functions:** Manages the order state and handles order-related actions. It has three separate files:
 - **Explanation:**
-  - actions.js: Defines the actions for checking out and placing orders. It also handle fetching user related orders.
-  - acctionTypes.js: Defines the action types for order-related actions.
-  - educer.js: Defines the reducer function for updating the order state based on dispatched actions.
+  - *actions.js*: Defines the actions for checking out and placing orders. It also handle fetching user related orders.
+  - *acctionTypes.js*: Defines the action types for order-related actions.
+  - *reducer.js*: Defines the reducer function for updating the order state based on dispatched actions.
 
 ### axiosInstance.js
 
-- **Functions:** Manages the axios instance for API calls.
+- **Functions:** Manages the Axios instance for API calls.
 - **Explanation:**
-- Manages the axios instance for API calls.
+- Manages the Axios instance for API calls.
 - Handles API calls for user authentication, recipe management, and cart management.
 - Includes file uploads for profile pictures.
 
@@ -233,7 +241,7 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 - **Explanation:**
 - Manages the routing for the application.
 - Includes routes for user authentication, recipe management, cart management, and order management.
-- It have authentication check from redux state that redirects to login page if user is not authenticated. It includes the protected routes for specific pages.
+- It has an authentication check from redux state that redirects to the login page if the user is not authenticated. It includes the protected routes for specific pages.
 
 ## 5. src/app.jsx
 
@@ -342,7 +350,7 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 - Implements any necessary middleware for recipe routes.
 - Includes authentication middleware where required.
 
-  ### cartRouter.js
+### cartRouter.js
 
   - **Functions:** Establishes routes for cart-related actions.
   - **Explanation:**
@@ -350,7 +358,7 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
   - Maps HTTP requests to cartController functions.
   - Includes authentication middleware where required.
 
-  ### orderRouter.js
+### orderRouter.js
 
   - **Functions:** Establishes routes for order-related actions.
   - **Explanation:**
@@ -358,7 +366,8 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
   - Maps HTTP requests to orderController functions.
   - Includes authentication middleware where required.
 
-- ### userRouter.js
+### userRouter.js
+
   - **Functions:** Establishes routes for user-related actions.
   - **Explanation:**
   - Uses Express Router to define API endpoints.
@@ -390,25 +399,24 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 - Implements JWT for user authentication
 - Refresh token logic for token expiration
 
-  ### recipeService.js
+### recipeService.js
 
-  - **Functions:** Manages recipe-related operations
-  - **Explanation:**
-  - Handles CRUD operations for recipes.
-  - Interacts with the Recipe model.
-  - Implements business logic for recipe-related features.
-  -
+- **Functions:** Manages recipe-related operations
+- **Explanation:**
+- Handles CRUD operations for recipes.
+- Interacts with the Recipe model.
+- Implements business logic for recipe-related features.
 
-  ### orderService.js
+### orderService.js
 
-  - **Functions:** Manages order-related operations
-  - **Explanation:**
-  - Handles CRUD operations for orders.
-  - Interacts with the Order model.
-  - Implements business logic for order-related features.
-  -
+- **Functions:** Manages order-related operations
+- **Explanation:**
+- Handles CRUD operations for orders.
+- Interacts with the Order model.
+- Implements business logic for order-related features.
 
-  ### cartService.js
+
+### cartService.js
 
   - **Functions:** Manages cart-related operations
   - **Explanation:**
@@ -416,7 +424,7 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
   - Interacts with the Cart model.
   - Implements business logic for cart-related features.
 
-  ### userService.js
+### userService.js
 
   - **Functions:** Manages user-related operations
   - **Explanation:**
@@ -441,11 +449,11 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 - Validates recipe creation, retrieval, and deletion.
 - Checks authentication and authorization mechanisms.
 - Ensures recipe data is properly handled and secured.
+  
 - ### orders.test.js
 
   **Functions:** Tests order-related API endpoints.
   **Explanation:**
-
   - Validates order creation, retrieval, and deletion.
   - Checks authentication and authorization mechanisms.
   - Ensures order.
@@ -463,25 +471,23 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 ##  7. Future Enhancements
 
 - Integrate with Supermarkets:
-Take free API's from supermarkets and integrate with our app to get the latest prices and products for shop list.
+Take free API's from supermarkets and integrate with our app to get the latest prices and products for the shop list.
 
-- Rating System:
+- *Rating System*:
 Allow users to rate and review recipes of other users. 
 
-- User recipe sharing points:
+- *User recipe sharing points*:
 Users can share their recipes with others. Once a recipe is shared, the user gets points based on the rating of the recipe.
 
-- PUSH notifications:
+- *PUSH notifications*:
 Users can get notifications when a new product is available in the store.
 
-- Nearest delivery option:
+- *Nearest delivery option*:
 Users can get the nearest delivery option based on their location. We can use Google Maps API to get the nearest delivery option.
 
 ## Backend-end Conclusion
 
-`add assesment here`
+`add assessment here`
 
 
-## Backend-end Deployment
 
-Back-end Deployment Link: https://group-6-project-651h.onrender.com
