@@ -32,8 +32,8 @@ Below images illustrate our project's display:
   
 </p>
 
-
 ## Project Figma design:
+
 Here is the project figma design:
 Link : https://www.figma.com/design/1KzgiAhu10xel2PcK9ZwQr/Figma-basics?node-id=802-75&t=jFiEZsEuFilpizqz-1
 
@@ -53,7 +53,6 @@ Link : https://www.figma.com/design/1KzgiAhu10xel2PcK9ZwQr/Figma-basics?node-id=
 - Dotenv - For managing environment variables<br>
 - MongoDB Atlas - For deploying database on AWS Cloud variables<br>
 
-
 ## Swagger API Documentation
 
 Swagger is used to generate interactive API documentation for ReFoodify. It provides a user-friendly interface to explore and test the API endpoints.
@@ -61,19 +60,16 @@ Swagger is used to generate interactive API documentation for ReFoodify. It prov
 # Core Features:
 
 1. Redux Store Architect and State Management.
-   
 2. Responsive UI Design.
 
 3. Refresh Token based authentication mechanism.
 
 4. Axios API Instances.
-   
 5. Incentivizes user engagement.
 
 ## Backend-end Deployment
 
 Back-end Deployment Link: https://group-6-project-651h.onrender.com
-
 
 # Usage
 
@@ -82,15 +78,15 @@ Back-end Deployment Link: https://group-6-project-651h.onrender.com
 - **Install Frontend Dependencies & Start the App**  
    Navigate to the frontend directory `ReFoodify-main`, install dependencies, and start the application:
 
-   ```sh
-   cd ReFoodify-main
-   npm install
-   npm run dev
-   ```
+  ```sh
+  cd ReFoodify-main
+  npm install
+  npm run dev
+  ```
 
 ### Part 2
 
-- **Install Backend Dependencies & Start the Server** 
+- **Install Backend Dependencies & Start the Server**
   Navigate to the `Group6-be-api` directory and install the necessary dependencies:
 
 ```sh
@@ -131,7 +127,6 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 - The Swagger JSON file can be accessed directly at:
   `http://localhost:4001/api/swagger.json`
 
-
 ---
 
 ## Self-Assessment of Code
@@ -142,126 +137,125 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 
 ### MyAccounts
 
-  - **Functions:** This component manages user accounts related functionalities. Like account information, purchase history, and recipe management.
-  - **Explanation:**
-    - Handles account information like user name, email, profile picture and reward points.
-    - Handle purchase history including order details and payment information.
-    - Manages posted recipes and recipe management like editing and deleting existing recipes.
+- **Functions:** This component manages user accounts related functionalities. Like account information, purchase history, and recipe management.
+- **Explanation:**
+  - Handles account information like user name, email, profile picture and reward points.
+  - Handle purchase history including order details and payment information.
+  - Manages posted recipes and recipe management like editing and deleting existing recipes.
 
 ### Header.jsx
 
-  - **Functions:** Renders the navigation bar and handles user authentication.
-  - **Explanation:**
-    - Handles user authentication status
-    - Displays appropriate links
-    - Manages logout functionality
+- **Functions:** Renders the navigation bar and handles user authentication.
+- **Explanation:**
+  - Handles user authentication status
+  - Displays appropriate links
+  - Manages logout functionality
 
 ### PaymentForm.jsx
 
-  - **Functions:** Renders the payment form and handles payment processing.
-  - **Explanation:**
-    - Renders the payment form for users to enter payment details.
-    - Handles payment processing and API calls for payment processing.
+- **Functions:** Renders the payment form and handles payment processing.
+- **Explanation:**
+  - Renders the payment form for users to enter payment details.
+  - Handles payment processing and API calls for payment processing.
 
 ## 2. src/pages/
 
 ### Auth
 
-  - **Functions:** Contains the logic for user authentication. It includes pages like Login and Register.
-  - **Explanation:**
-    - Manages user authentication logic including login and registration.
+- **Functions:** Contains the logic for user authentication. It includes pages like Login and Register.
+- **Explanation:**
+  - Manages user authentication logic including login and registration.
 
 ### Recipes
 
-  - **Functions:** Contains the logic for recipe management. It includes pages like index, CreateRecipe, UpdateRecipe and RecipeDetails.
-  - **Explanation:**
-    - Index.jsx: Display the generated recipe logic from available ingredients.
-    - CreateRecipe.jsx: Allows users to create new recipes.
-    - UpdateRecipe.jsx: Allows users to update existing recipes.
+- **Functions:** Contains the logic for recipe management. It includes pages like index, CreateRecipe, UpdateRecipe and RecipeDetails.
+- **Explanation:**
+  - Index.jsx: Display the generated recipe logic from available ingredients.
+  - CreateRecipe.jsx: Allows users to create new recipes.
+  - UpdateRecipe.jsx: Allows users to update existing recipes.
 
 ### Shop
 
-  - **Functions:** Contains the logic for displaying near expiry food items.
-  - **Explanation:**
-    - Index.jsx: Displays the list of near expiry food items. It renders the list of near expiry food items from the database and displays them.
+- **Functions:** Contains the logic for displaying near expiry food items.
+- **Explanation:**
+  - Index.jsx: Displays the list of near expiry food items. It renders the list of near expiry food items from the database and displays them.
 
 ### Cart
 
-  - **Functions:** Contains the logic for cart management. 
-  - **Explanation:**
-    - Index.jsx: Displays the cart items and calculates the total price and discount price. It also handles redeem points logic which the user can redeem.
+- **Functions:** Contains the logic for cart management.
+- **Explanation:**
+  - Index.jsx: Displays the cart items and calculates the total price and discount price. It also handles redeem points logic which the user can redeem.
 
 ## 3. src/redux/
 
 ### recipe
 
-  - **Functions:** Manages the recipe state and handles recipe-related actions. It has three separate files:
-  - **Explanation:**
-    - *actions.js*: Defines the actions for generating, adding, removing, and updating recipes. It also handles fetching user specific recipes.
-    - *actionTypes.js*: Defines the action types for recipe-related actions.
-    - *reducer.js*: Defines the reducer function for updating the recipe state based on dispatched actions.
+- **Functions:** Manages the recipe state and handles recipe-related actions. It has three separate files:
+- **Explanation:**
+  - _actions.js_: Defines the actions for generating, adding, removing, and updating recipes. It also handles fetching user specific recipes.
+  - _actionTypes.js_: Defines the action types for recipe-related actions.
+  - _reducer.js_: Defines the reducer function for updating the recipe state based on dispatched actions.
 
 ### user
 
-  - **Functions:** Manages the user state and handles user-related actions. It has three separate files:
-  - **Explanation:**
-    - *actions.js*: Defines the actions for user authentication, login, logout, and updating user information. It also handles refresh token logic.
-    - *actionTypes.js*: Defines the action types for user-related actions.
-    - *reducer.js*: Defines the reducer function for updating the user state based on dispatched actions.
+- **Functions:** Manages the user state and handles user-related actions. It has three separate files:
+- **Explanation:**
+  - _actions.js_: Defines the actions for user authentication, login, logout, and updating user information. It also handles refresh token logic.
+  - _actionTypes.js_: Defines the action types for user-related actions.
+  - _reducer.js_: Defines the reducer function for updating the user state based on dispatched actions.
 
 ### cart
 
 - **Functions:** Manages the cart state and handles cart-related actions. It has three separate files:
 - **Explanation:**
-    - *actions.js*: Defines the actions for adding, removing, and updating items in the cart.
-    - *actionTypes.js*: Defines the action types for cart-related actions.
-    - *reducer.js*: Defines the reducer function for updating the cart state based on dispatched actions.
+  - _actions.js_: Defines the actions for adding, removing, and updating items in the cart.
+  - _actionTypes.js_: Defines the action types for cart-related actions.
+  - _reducer.js_: Defines the reducer function for updating the cart state based on dispatched actions.
 
 ### order
 
 - **Functions:** Manages the order state and handles order-related actions. It has three separate files:
 - **Explanation:**
-  - *actions.js*: Defines the actions for checking out and placing orders. It also handle fetching user related orders.
-  - *acctionTypes.js*: Defines the action types for order-related actions.
-  - *reducer.js*: Defines the reducer function for updating the order state based on dispatched actions.
+  - _actions.js_: Defines the actions for checking out and placing orders. It also handle fetching user related orders.
+  - _acctionTypes.js_: Defines the action types for order-related actions.
+  - _reducer.js_: Defines the reducer function for updating the order state based on dispatched actions.
 
 ### axiosInstance.js
 
-  - **Functions:** Manages the Axios instance for API calls.
-  - **Explanation:**
-    - Manages the Axios instance for API calls.
-    - Handles API calls for user authentication, recipe management, and cart management.
-    - Includes file uploads for profile pictures.
+- **Functions:** Manages the Axios instance for API calls.
+- **Explanation:**
+  - Manages the Axios instance for API calls.
+  - Handles API calls for user authentication, recipe management, and cart management.
+  - Includes file uploads for profile pictures.
 
 ### store.js
 
-  - **Functions:** Manages the Redux store.
-  - **Explanation:**
-    - Manages the Redux store.
-    - Includes middleware for handling asynchronous actions.
-    - Includes reducers for managing user, recipe, cart, and order states.
+- **Functions:** Manages the Redux store.
+- **Explanation:**
+  - Manages the Redux store.
+  - Includes middleware for handling asynchronous actions.
+  - Includes reducers for managing user, recipe, cart, and order states.
 
 ## 4. src/routes/
 
 ### index.jsx
 
-  - **Functions:** Manages the routing for the application.
-  - **Explanation:**
-    - Manages the routing for the application.
-    - Includes routes for user authentication, recipe management, cart management, and order management.
-    - It has an authentication check from redux state that redirects to the login page if the user is not authenticated. It includes the protected routes for specific pages.
+- **Functions:** Manages the routing for the application.
+- **Explanation:**
+  - Manages the routing for the application.
+  - Includes routes for user authentication, recipe management, cart management, and order management.
+  - It has an authentication check from redux state that redirects to the login page if the user is not authenticated. It includes the protected routes for specific pages.
 
 ## 5. src/app.jsx
 
-  - **Functions:** Manages the application initialization.
-  - **Explanation:**
-    - Manages the application initialization.
-    - Includes middleware for handling asynchronous actions.
-
+- **Functions:** Manages the application initialization.
+- **Explanation:**
+  - Manages the application initialization.
+  - Includes middleware for handling asynchronous actions.
 
 ## Front-end Conclusion
 
-`add assessment here`
+The front-end of ReFoodify demonstrates a well-structured and modular React application utilizing Redux for state management. The codebase shows a clear separation of concerns with components, pages, and Redux logic organized into distinct directories. The use of Redux for managing application state ensures scalability and maintainability as the application grows. The implementation of features such as user authentication, recipe management, shopping cart functionality, and order processing showcases a comprehensive e-commerce solution. The responsive UI design and the integration of reward points system add to the user experience. Overall, the front-end codebase reflects good practices in React development and state management.
 
 ### Backend
 
@@ -269,233 +263,226 @@ Replace <db_username>, <db_password>, <database_name>, and <test_database_name> 
 
 ### authControllers.js
 
-  - **Functions:** Manages user authentication
-  - **Explanation:**
-    - Handles HTTP requests for user registration and login.
-    - Calls the authService for business logic.
-    - Handles user logout.
+- **Functions:** Manages user authentication
+- **Explanation:**
+  - Handles HTTP requests for user registration and login.
+  - Calls the authService for business logic.
+  - Handles user logout.
 
 ### recipeControllers.js
 
-  - **Functions:** Manages recipe-related operations
-  - **Explanation:**
-    - Handles HTTP requests for CRUD operations on recipes.
-    - Calls the recipeService for business logic.
+- **Functions:** Manages recipe-related operations
+- **Explanation:**
+  - Handles HTTP requests for CRUD operations on recipes.
+  - Calls the recipeService for business logic.
 
 ### orderControllers.js
 
-  - **Functions:** Manages order-related operations
-  - **Explanation:**
-    - Handles HTTP requests for CRUD operations on orders.
-    - Calls the orderService for business logic.
-  
+- **Functions:** Manages order-related operations
+- **Explanation:**
+  - Handles HTTP requests for CRUD operations on orders.
+  - Calls the orderService for business logic.
+
 ### cartControllers.js
 
-  - **Functions:** Manages cart-related operations
-  - **Explanation:**
-    - Handles HTTP requests for CRUD operations on cart items.
-    - Calls the cartService for business logic.
+- **Functions:** Manages cart-related operations
+- **Explanation:**
+  - Handles HTTP requests for CRUD operations on cart items.
+  - Calls the cartService for business logic.
 
 ### userControllers.js
 
-  - **Functions:** Manages user-related operations
-  - **Explanation:**
-    - Handles HTTP requests for CRUD operations on user accounts.
-    - Calls the userService for business logic.
+- **Functions:** Manages user-related operations
+- **Explanation:**
+  - Handles HTTP requests for CRUD operations on user accounts.
+  - Calls the userService for business logic.
 
 ## 2.Group-6-api/models/
 
 ### order.js
 
-  - **Functions:** Defines the schema for orders
-  - **Explanation:**
-    - Defines the structure of order documents in the database.
-    - Includes fields for order details, user information, and timestamps.
-    - Provides a model for database interactions.
-
+- **Functions:** Defines the schema for orders
+- **Explanation:**
+  - Defines the structure of order documents in the database.
+  - Includes fields for order details, user information, and timestamps.
+  - Provides a model for database interactions.
 
 ### recipeModel.js
 
-  - **Functions:** Defines the schema for recipes
-  - **Explanation:**
-    - Defines the structure of recipe documents in the database.
-    - Includes fields for recipe details, user information, and timestamps.
-    - Provides a model for database interactions.
+- **Functions:** Defines the schema for recipes
+- **Explanation:**
+  - Defines the structure of recipe documents in the database.
+  - Includes fields for recipe details, user information, and timestamps.
+  - Provides a model for database interactions.
 
 ### cartModel.js
 
-  - **Functions:** Defines the schema for cart items
-  - **Explanation:**
-    - Defines the structure of cart item documents in the database.
-    - Includes fields for cart item details, user information, and timestamps.
-    - Provides a model for database interactions.
+- **Functions:** Defines the schema for cart items
+- **Explanation:**
+  - Defines the structure of cart item documents in the database.
+  - Includes fields for cart item details, user information, and timestamps.
+  - Provides a model for database interactions.
 
 ### userModel.js
 
-  - **Functions:** Defines the schema for user accounts
-  - **Explanation:**
-    - Defines the structure of user account documents in the database.
-    - Includes fields for user authentication, profile information, and timestamps.
-    - Provides a model for database interactions.
+- **Functions:** Defines the schema for user accounts
+- **Explanation:**
+  - Defines the structure of user account documents in the database.
+  - Includes fields for user authentication, profile information, and timestamps.
+  - Provides a model for database interactions.
 
 ## 3.Group-6-api/routes/
 
 ### authRouter.js
 
-  - **Functions:** Sets up routes for authentication endpoints
-  - **Explanation:**
-    - Uses Express Router to define API endpoints.
-    - Maps HTTP requests to authController functions.
-    - Implements any necessary middleware for authentication routes.
-
+- **Functions:** Sets up routes for authentication endpoints
+- **Explanation:**
+  - Uses Express Router to define API endpoints.
+  - Maps HTTP requests to authController functions.
+  - Implements any necessary middleware for authentication routes.
 
 ### recipeRouter.js
 
-  - **Functions:** Establishes routes for recipe-related actions
-  - **Explanation:**
-    - Uses Express Router to define API endpoints.
-    - Maps HTTP requests to recipeController functions.
-    - Implements any necessary middleware for recipe routes.
-    - Includes authentication middleware where required.
+- **Functions:** Establishes routes for recipe-related actions
+- **Explanation:**
+  - Uses Express Router to define API endpoints.
+  - Maps HTTP requests to recipeController functions.
+  - Implements any necessary middleware for recipe routes.
+  - Includes authentication middleware where required.
 
 ### cartRouter.js
 
-  - **Functions:** Establishes routes for cart-related actions.
-  - **Explanation:**
-    - Uses Express Router to define API endpoints.
-    - Maps HTTP requests to cartController functions.
-    - Includes authentication middleware where required.
+- **Functions:** Establishes routes for cart-related actions.
+- **Explanation:**
+  - Uses Express Router to define API endpoints.
+  - Maps HTTP requests to cartController functions.
+  - Includes authentication middleware where required.
 
 ### orderRouter.js
 
-  - **Functions:** Establishes routes for order-related actions.
-  - **Explanation:**
-    - Uses Express Router to define API endpoints.
-    - Maps HTTP requests to orderController functions.
-    - Includes authentication middleware where required.
+- **Functions:** Establishes routes for order-related actions.
+- **Explanation:**
+  - Uses Express Router to define API endpoints.
+  - Maps HTTP requests to orderController functions.
+  - Includes authentication middleware where required.
 
 ### userRouter.js
 
-  - **Functions:** Establishes routes for user-related actions.
-  - **Explanation:**
-    - Uses Express Router to define API endpoints.
-    - Maps HTTP requests to userController functions.
-    - Includes authentication middleware where required.
+- **Functions:** Establishes routes for user-related actions.
+- **Explanation:**
+  - Uses Express Router to define API endpoints.
+  - Maps HTTP requests to userController functions.
+  - Includes authentication middleware where required.
 
 ## 4. Group-6-api/middleware/
 
 ### auth.js
 
-  - **Functions:** Implements authentication middleware
-  - **Explanation:**
-    - Verifies JWT tokens for protected routes
-    - Ensures only authenticated users can access certain endpoints
-    - Adds user information to the request object for downstream use.
-    - verify refresh token and provide new access token and refresh token.
-    - error logger for error handling.
-    - error response for error handling.
-    - invalid path error handling.
+- **Functions:** Implements authentication middleware
+- **Explanation:**
+  - Verifies JWT tokens for protected routes
+  - Ensures only authenticated users can access certain endpoints
+  - Adds user information to the request object for downstream use.
+  - verify refresh token and provide new access token and refresh token.
+  - error logger for error handling.
+  - error response for error handling.
+  - invalid path error handling.
 
 ## 5. Group-6-api/Services/
 
 ### authService.js
 
-  - **Functions:** Manages user authentication
-  - **Explanation:**
-    - Handles user registration and login
-    - Uses bcrypt for secure password hashing
-    - Implements JWT for user authentication
-    - Refresh token logic for token expiration
+- **Functions:** Manages user authentication
+- **Explanation:**
+  - Handles user registration and login
+  - Uses bcrypt for secure password hashing
+  - Implements JWT for user authentication
+  - Refresh token logic for token expiration
 
 ### recipeService.js
 
-  - **Functions:** Manages recipe-related operations
-  - **Explanation:**
-    - Handles CRUD operations for recipes.
-    - Interacts with the Recipe model.
-    - Implements business logic for recipe-related features.
+- **Functions:** Manages recipe-related operations
+- **Explanation:**
+  - Handles CRUD operations for recipes.
+  - Interacts with the Recipe model.
+  - Implements business logic for recipe-related features.
 
 ### orderService.js
 
-  - **Functions:** Manages order-related operations
-  - **Explanation:**
-    - Handles CRUD operations for orders.
-    - Interacts with the Order model.
-    - Implements business logic for order-related features.
-
+- **Functions:** Manages order-related operations
+- **Explanation:**
+  - Handles CRUD operations for orders.
+  - Interacts with the Order model.
+  - Implements business logic for order-related features.
 
 ### cartService.js
 
-  - **Functions:** Manages cart-related operations
-  - **Explanation:**
-    - Handles CRUD operations for cart items.
-    - Interacts with the Cart model.
-    - Implements business logic for cart-related features.
+- **Functions:** Manages cart-related operations
+- **Explanation:**
+  - Handles CRUD operations for cart items.
+  - Interacts with the Cart model.
+  - Implements business logic for cart-related features.
 
 ### userService.js
 
-  - **Functions:** Manages user-related operations
-  - **Explanation:**
-    - Handles CRUD operations for user accounts.
-    - Interacts with the User model.
-    - Implements business logic for user-related features.
+- **Functions:** Manages user-related operations
+- **Explanation:**
+  - Handles CRUD operations for user accounts.
+  - Interacts with the User model.
+  - Implements business logic for user-related features.
 
 ## 6. backend-protected/tests/
 
 ### users.test.js
 
-  - **Functions:** Tests user-related API endpoints
-  - **Explanation:**
-    - Validates user registration and login processes
-    - Checks authentication and authorization mechanisms
-    - Ensures user data is properly handled and secured
+- **Functions:** Tests user-related API endpoints
+- **Explanation:**
+  - Validates user registration and login processes
+  - Checks authentication and authorization mechanisms
+  - Ensures user data is properly handled and secured
 
 ### recipes.test.js
 
-  - **Functions:** Tests recipe-related API endpoints
-  - **Explanation:**
-    - Validates recipe creation, retrieval, and deletion.
-    - Checks authentication and authorization mechanisms.
-    - Ensures recipe data is properly handled and secured.
-    
+- **Functions:** Tests recipe-related API endpoints
+- **Explanation:**
+  - Validates recipe creation, retrieval, and deletion.
+  - Checks authentication and authorization mechanisms.
+  - Ensures recipe data is properly handled and secured.
+
 ### orders.test.js
 
-  - **Functions:** Tests order-related API endpoints.
-  - **Explanation:**
-    - Validates order creation, retrieval, and deletion.
-    - Checks authentication and authorization mechanisms.
-    - Ensures order.
-    - data is properly handled and secured.
+- **Functions:** Tests order-related API endpoints.
+- **Explanation:**
+  - Validates order creation, retrieval, and deletion.
+  - Checks authentication and authorization mechanisms.
+  - Ensures order.
+  - data is properly handled and secured.
 
 ### carts.test.js
 
-  - **Functions:** Tests cart-related API endpoints.
-  - **Explanation:**
-    - Validates cart item creation, retrieval, and deletion.
-    - Checks authentication and authorization mechanisms.
-    - Ensures cart item data is properly handled and secured.
+- **Functions:** Tests cart-related API endpoints.
+- **Explanation:**
+  - Validates cart item creation, retrieval, and deletion.
+  - Checks authentication and authorization mechanisms.
+  - Ensures cart item data is properly handled and secured.
 
- 
-##  7. Future Enhancements
+## 7. Future Enhancements
 
 - Integrate with Supermarkets:
-Take free API's from supermarkets and integrate with our app to get the latest prices and products for the shop list.
+  Take free API's from supermarkets and integrate with our app to get the latest prices and products for the shop list.
 
-- *Rating System*:
-Allow users to rate and review recipes of other users. 
+- _Rating System_:
+  Allow users to rate and review recipes of other users.
 
-- *User recipe sharing points*:
-Users can share their recipes with others. Once a recipe is shared, the user gets points based on the rating of the recipe.
+- _User recipe sharing points_:
+  Users can share their recipes with others. Once a recipe is shared, the user gets points based on the rating of the recipe.
 
-- *PUSH notifications*:
-Users can get notifications when a new product is available in the store.
+- _PUSH notifications_:
+  Users can get notifications when a new product is available in the store.
 
-- *Nearest delivery option*:
-Users can get the nearest delivery option based on their location. We can use Google Maps API to get the nearest delivery option.
+- _Nearest delivery option_:
+  Users can get the nearest delivery option based on their location. We can use Google Maps API to get the nearest delivery option.
 
-## Backend-end Conclusion
+## Backend Conclusion
 
-`add assessment here`
-
-
-
+The backend of ReFoodify is built with a robust architecture following the MVC pattern. It demonstrates a clear separation of concerns with controllers handling HTTP requests, services managing business logic, and models defining data structures. The use of middleware for authentication and error handling enhances security and improves code maintainability. The implementation of CRUD operations for users, recipes, carts, and orders provides a comprehensive API for the front-end. The inclusion of unit tests for API endpoints ensures reliability and facilitates future development. The use of MongoDB with Mongoose for data persistence offers flexibility in data modeling. Overall, the backend codebase showcases good practices in Node.js and Express.js development, providing a solid foundation for the ReFoodify application.
