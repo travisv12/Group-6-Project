@@ -19,7 +19,7 @@ import MyRecipes from "@/components/MyAccounts/MyRecipes";
 import PurchaseHistory from "@/components/MyAccounts/PurchaseHistory";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ThankYou from "@/pages/Thankyou/ThankYou";
-import PaymentForm from "@/components/paymentForm";
+import PaymentForm from "@/components/PaymentForm";
 import UserOrders from "@/components/userOrder";
 import NotFound from "@/pages/NotFound/NotFound";
 
