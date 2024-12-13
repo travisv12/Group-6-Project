@@ -23,12 +23,12 @@ ReFoodify is a comprehensive platform that combines recipes, shopping, and user 
 Below images illustrate our project's display:
 
 <p>
-<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/Login.png" alt="Login" width="350" height="180" /> &nbsp;&nbsp;
-<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/RecipePage.png" alt="recipe page" width="350" height="180" /> &nbsp;&nbsp;
-<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/ShareRecipe.png" alt="share recipe" width="350" height="180" /> &nbsp;&nbsp;
-<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/ShopPage.png" alt="shop page" width="350" height="180" /> &nbsp;&nbsp;
-<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/CartPage.png" alt="cart page" width="350" height="180" /> &nbsp;&nbsp;
-<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/PaymentForm.png" alt="payment page" width="350" height="180" /> &nbsp;&nbsp;
+<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/Login.png" alt="Login" width="320" height="180" /> &nbsp;&nbsp;
+<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/RecipePage.png" alt="recipe page" width="320" height="180" /> &nbsp;&nbsp;
+<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/ShareRecipe.png" alt="share recipe" width="320" height="180" /> &nbsp;&nbsp;
+<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/ShopPage.png" alt="shop page" width="320" height="180" /> &nbsp;&nbsp;
+<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/CartPage.png" alt="cart page" width="320" height="180" /> &nbsp;&nbsp;
+<img src="https://github.com/travisv12/Group-6-Project/blob/main/screenshots/PaymentForm.png" alt="payment page" width="320" height="180" /> &nbsp;&nbsp;
   
 </p>
 
